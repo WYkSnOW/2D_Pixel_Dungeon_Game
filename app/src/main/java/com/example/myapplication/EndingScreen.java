@@ -22,5 +22,13 @@ public class EndingScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button exit_btn = findViewById(R.id.goes_to_startingScreen);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.exit(0);
+            }
+        });
     }
 }
