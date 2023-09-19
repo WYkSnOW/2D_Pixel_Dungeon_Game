@@ -5,27 +5,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-public class ConfigScreen extends AppCompatActivity {
-
+public class EndingScreen extends AppCompatActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.config_screen);
+        setContentView(R.layout.ending_screen);
 
-        Button button = findViewById(R.id.goes_to_playerView);
+        Button button = findViewById(R.id.goes_to_startingScreen);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(ConfigScreen.this, PlayerView.class);
+                intent.setClass(EndingScreen.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
-
-
 }

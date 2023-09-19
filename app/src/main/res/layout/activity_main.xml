@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/Exit"
+        android:layout_width="140dp"
+        android:layout_height="70dp"
+        android:layout_gravity="right"
+        android:backgroundTint="@color/bottom_color_selector"
+        android:text="Exit"
+        android:textColor="#FF000000" />
+
+
+    <TextView
+        android:id="@+id/openText"
+        android:layout_width="394dp"
+        android:layout_height="165dp"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:gravity="center"
+        android:text="Welcome Screen"
+        android:textColor="#FF000000"
+        android:textSize="50sp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/goes_to_congifScreen"
+        android:layout_width="140dp"
+        android:layout_height="64dp"
+        android:layout_gravity="right"
+        android:backgroundTint="@color/bottom_color_selector"
+        android:text="Config"
+        android:textColor="#FF000000" />
+
+</LinearLayout>
