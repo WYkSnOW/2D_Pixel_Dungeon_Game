@@ -11,6 +11,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31" />
+        tools:targetApi="31" >
+
+        <activity android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ConfigScreen"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".PlayerView"
+            android:screenOrientation="landscape"/>
+        <activity android:name="EndingScreen"
+            android:screenOrientation="landscape"/>
+    </application>
+
+
+
 
 </manifest>
