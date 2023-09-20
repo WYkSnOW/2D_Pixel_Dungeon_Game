@@ -101,8 +101,8 @@ public class ConfigScreen extends AppCompatActivity {
                 intent.putExtras(bundle);
                 if (levelDifficulty != 0 && characterChoice != 0 && !(playerName.equals(""))) {
                     startActivity(intent);
+                    finish();
                 }
-                finish();
             }
         });
 
