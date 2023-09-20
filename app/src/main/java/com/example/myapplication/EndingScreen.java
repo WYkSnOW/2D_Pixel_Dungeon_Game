@@ -20,6 +20,7 @@ public class EndingScreen extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(EndingScreen.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

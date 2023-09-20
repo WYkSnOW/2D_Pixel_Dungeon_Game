@@ -3,6 +3,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,18 +17,22 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.goes_to_congifScreen);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-                    public void onClick(View v) {
+            public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, ConfigScreen.class);
                 startActivity(intent);
+                finish();
             }
         });
 
-        Button exit_btn = findViewById(R.id.Exit);
-        exit_btn.setOnClickListener(new View.OnClickListener() {
+        String a = "aaaaaa";
+        TextView t = findViewById(R.id.openText);
+
+        Button exitBtn = findViewById(R.id.Exit);
+        exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.exit(0);
+                finish();
             }
         });
     }

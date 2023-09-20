@@ -3,7 +3,7 @@
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <!--设置背景颜色-->
-            <solid android:color="#40FFFFFF" />
+            <solid android:color="#8F000000" />
             <!--设置渐变色angle=0从左到右渲染，angle=90从上到下渲染，angle=180从右到左渲染-->
             <gradient
                 android:angle="0"
