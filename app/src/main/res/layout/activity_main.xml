@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
 
     <Button
         android:id="@+id/Exit"
-        android:layout_width="140dp"
-        android:layout_height="70dp"
-        android:layout_gravity="right"
-        android:backgroundTint="@color/bottom_color_selector"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:background="@drawable/button_shape"
         android:text="Exit"
-        android:textColor="#FF000000" />
-
+        android:textColor="#FF000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.049" />
 
     <TextView
         android:id="@+id/openText"
@@ -25,15 +33,26 @@
         android:text="Welcome Screen"
         android:textColor="#FF000000"
         android:textSize="50sp"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/goes_to_congifScreen"
-        android:layout_width="140dp"
-        android:layout_height="64dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_gravity="right"
-        android:backgroundTint="@color/bottom_color_selector"
+        android:background="@drawable/button_shape"
         android:text="Config"
-        android:textColor="#FF000000" />
+        android:textColor="#FF000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.951" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
