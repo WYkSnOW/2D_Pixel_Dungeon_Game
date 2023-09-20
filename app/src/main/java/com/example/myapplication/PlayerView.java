@@ -25,9 +25,9 @@ public class PlayerView extends AppCompatActivity {
         TextView difficultyText = findViewById(R.id.difficulty);
         TextView startHealthText = findViewById(R.id.startHealth);
         name.setText("Player's name: " + playerName);
-        characterText.setText("Character: " + characterChoice);
+        characterText.setText("Character#: " + characterChoice);
         difficultyText.setText("Level of difficulty: " + levelDifficulty);
-        startHealthText.setText("StartHealthT: " + startHealth);
+        startHealthText.setText("StartHealth: " + startHealth);
 
 
 
