@@ -21,9 +21,8 @@ public class ConfigScreen extends AppCompatActivity {
         setContentView(R.layout.config_screen);
 
 
-
-
         EditText playerNameInput = (EditText) findViewById(R.id.playerName);
+        TextView playerNameRule = findViewById(R.id.playerNameRule);
         Button character1 = findViewById (R.id.character1);
         Button character2 = findViewById (R.id.character2);
         Button character3 = findViewById (R.id.character3);
@@ -94,24 +93,40 @@ public class ConfigScreen extends AppCompatActivity {
                 String playerName = playerNameInput.getText().toString();
                 Intent intent = new Intent();
                 intent.setClass(ConfigScreen.this, PlayerView.class);
+
                 Bundle bundle = new Bundle();
                 bundle.putString("playerName", playerName);
                 bundle.putInt("characterChoice", characterChoice);
                 bundle.putInt("levelDifficulty", levelDifficulty);
                 intent.putExtras(bundle);
-                if (levelDifficulty != 0 && characterChoice != 0 && !(playerName.equals(""))) {
+                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice ==0) {
+                    playerNameRule.setText(R.string.playerNameRule);
+                    //android:text="Player view"
+                } else {
                     startActivity(intent);
                     finish();
                 }
+                /*if (levelDifficulty != 0 && characterChoice != 0 && !(playerName.equals("")) && ifNotBlank(playerName)) {
+                    startActivity(intent);
+                    finish();
+                }*/
             }
         });
 
-
-
-
-
-
-
     }
+
+    private boolean ifNotBlank(String name) {
+        boolean r = false;
+        for (int i = 0; i < name.length(); i++) {
+            if (!(name.charAt(i) == ' ')) {
+                r = true;
+            }
+        }
+        if (name.charAt(0) == ' ') {
+            r = false;
+        }
+        return r;
+    }
+
 
 }
