@@ -60,7 +60,7 @@ public class PlayerView extends AppCompatActivity {
             characterIdleFile = getResources().getIdentifier("wizzard_m_idle_animation", "drawable", getPackageName());
             characterRunFile = getResources().getIdentifier("wizzard_m_run_animation", "drawable", getPackageName());
         }
-        character.setBackgroundResource(characterRunFile);
+        character.setBackgroundResource(characterIdleFile);
         characterAnimation = (AnimationDrawable) character.getBackground();
         characterAnimation.start();
 
