@@ -8,6 +8,7 @@
     android:orientation="horizontal"
     tools:context=".PlayerView">
 
+
     <ImageView
         android:id="@+id/map_back"
         android:layout_width="match_parent"
@@ -25,10 +26,25 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/game_map_1"
+
+    <TextView
+        android:id="@+id/playerView"
+        android:layout_width="406dp"
+        android:layout_height="167dp"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:gravity="center"
+        android:text="Player View"
+        android:textColor="#FF000000"
+        android:textSize="50sp"
+        android:textStyle="normal"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
@@ -43,6 +59,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.67" />
+        app:layout_constraintVertical_bias="0.188" />
+
 
     <Button
         android:id="@+id/goes_to_endingScreen"
@@ -66,12 +84,17 @@
         android:gravity="center"
         android:text="player's name"
         android:textColor="#FFFFFF"
+        android:layout_width="417dp"
+        android:layout_height="23dp"
+        android:gravity="center"
+        android:text="player's name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.233"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.797" />
+        app:layout_constraintVertical_bias="0.619" />
 
     <TextView
         android:id="@+id/characterBar"

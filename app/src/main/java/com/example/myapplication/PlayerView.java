@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import static com.example.myapplication.MainActivity.endMusic;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -40,6 +39,7 @@ public class PlayerView extends AppCompatActivity {
         TextView characterText = findViewById(R.id.characterBar);
         TextView difficultyText = findViewById(R.id.difficulty);
         TextView startHealthText = findViewById(R.id.startHealth);
+
         character = findViewById(R.id.character);
         //get character's location
         characterLeft = character.getLeft();
