@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         });
         animatorSet.start(); // 启动属性动画
 
-        Timer timer = new Timer(true);
 
 
 
@@ -119,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, ConfigScreen.class);
                 startActivity(intent);
+                timer.cancel();
                 finish();
             }
         });
