@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="playerNameRule">"Please make sure that:
+        1. Name can't start with a space
+        2. Name can't be blank or only contain space
+        3. Chose both character and level of difficulty"</string>
 </resources>

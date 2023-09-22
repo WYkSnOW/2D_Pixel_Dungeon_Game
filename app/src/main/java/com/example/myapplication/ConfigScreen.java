@@ -1,11 +1,17 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ConfigScreen extends AppCompatActivity {
     int levelDifficulty = 0;
     int characterChoice = 0;
+    private boolean animationState = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,42 +28,54 @@ public class ConfigScreen extends AppCompatActivity {
         setContentView(R.layout.config_screen);
 
 
-
-
+        //get id and create variable link to it
         EditText playerNameInput = (EditText) findViewById(R.id.playerName);
-        Button character1 = findViewById (R.id.character1);
-        Button character2 = findViewById (R.id.character2);
-        Button character3 = findViewById (R.id.character3);
+        TextView playerNameRule = findViewById(R.id.playerNameRule);
+
         Button difficulty1 = findViewById (R.id.difficulty1);
         Button difficulty2 = findViewById (R.id.difficulty2);
         Button difficulty3 = findViewById (R.id.difficulty3);
         Button startBtn = findViewById (R.id.goes_to_playerView);
 
-        character1.setOnClickListener(new View.OnClickListener() {
+        ImageView elf = findViewById(R.id.character1_elf);
+        ImageView lizard = findViewById(R.id.character2_lizard);
+        ImageView wizzard = findViewById(R.id.character3_wizzard);
+        AnimationDrawable elfAnimation = (AnimationDrawable) elf.getBackground();
+        AnimationDrawable lizardAnimation = (AnimationDrawable) lizard.getBackground();
+        AnimationDrawable wizzardAnimation = (AnimationDrawable) wizzard.getBackground();
+
+
+
+
+
+
+
+
+        elf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character1.setBackgroundResource(R.drawable.button_after_click);
-                character2.setBackgroundResource(R.drawable.button_shape);
-                character3.setBackgroundResource(R.drawable.button_shape);
                 characterChoice = 1;
+                elfAnimation.start();
+                lizardAnimation.stop();
+                wizzardAnimation.stop();
             }
         });
-        character2.setOnClickListener(new View.OnClickListener() {
+        lizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character2.setBackgroundResource(R.drawable.button_after_click);
-                character1.setBackgroundResource(R.drawable.button_shape);
-                character3.setBackgroundResource(R.drawable.button_shape);
                 characterChoice = 2;
+                elfAnimation.stop();
+                lizardAnimation.start();
+                wizzardAnimation.stop();
             }
         });
-        character3.setOnClickListener(new View.OnClickListener() {
+        wizzard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                character3.setBackgroundResource(R.drawable.button_after_click);
-                character2.setBackgroundResource(R.drawable.button_shape);
-                character1.setBackgroundResource(R.drawable.button_shape);
                 characterChoice = 3;
+                elfAnimation.stop();
+                lizardAnimation.stop();
+                wizzardAnimation.start();
             }
         });
         difficulty1.setOnClickListener(new View.OnClickListener() {
@@ -88,30 +107,47 @@ public class ConfigScreen extends AppCompatActivity {
         });
 
 
+        //button to Player view
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String playerName = playerNameInput.getText().toString();
-                Intent intent = new Intent();
-                intent.setClass(ConfigScreen.this, PlayerView.class);
+                String playerName = playerNameInput.getText().toString();//get player name from text bar
+                Intent intent = new Intent();//new intent
+                intent.setClass(ConfigScreen.this, PlayerView.class);//intent to open next activity
+
+                //new bundle contain players info
                 Bundle bundle = new Bundle();
                 bundle.putString("playerName", playerName);
                 bundle.putInt("characterChoice", characterChoice);
                 bundle.putInt("levelDifficulty", levelDifficulty);
-                intent.putExtras(bundle);
-                if (levelDifficulty != 0 && characterChoice != 0 && !(playerName.equals(""))) {
+                intent.putExtras(bundle);//add bundle to intent
+
+                //check all information is collect
+                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice ==0) {
+                    playerNameRule.setText(R.string.playerNameRule);
+                } else {
+                    //jump screen and close current activity
                     startActivity(intent);
                     finish();
                 }
             }
         });
 
-
-
-
-
-
-
     }
+
+    //check if player put in a in valid name
+    private boolean ifNotBlank(String name) {
+        boolean r = false;
+        for (int i = 0; i < name.length(); i++) {
+            if (!(name.charAt(i) == ' ')) {
+                r = true;
+            }
+        }
+        if (name.charAt(0) == ' ') {
+            r = false;
+        }
+        return r;
+    }
+
 
 }
