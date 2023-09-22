@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -18,9 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class ConfigScreen extends AppCompatActivity {
-    int levelDifficulty = 0;
-    int characterChoice = 0;
-    private boolean animationState = true;
+    private  int levelDifficulty = 0;
+    private  int characterChoice = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,23 +30,26 @@ public class ConfigScreen extends AppCompatActivity {
         EditText playerNameInput = (EditText) findViewById(R.id.playerName);
         TextView playerNameRule = findViewById(R.id.playerNameRule);
 
-        Button difficulty1 = findViewById (R.id.difficulty1);
-        Button difficulty2 = findViewById (R.id.difficulty2);
-        Button difficulty3 = findViewById (R.id.difficulty3);
-        Button startBtn = findViewById (R.id.goes_to_playerView);
+        Button difficulty1 = findViewById(R.id.difficulty1);
+        Button difficulty2 = findViewById(R.id.difficulty2);
+        Button difficulty3 = findViewById(R.id.difficulty3);
+        Button startBtn = findViewById(R.id.goes_to_playerView);
 
         ImageView elf = findViewById(R.id.character1_elf);
         ImageView knight = findViewById(R.id.character2_knight);
-        ImageView wizzard = findViewById(R.id.character3_wizzard);
-        AnimationDrawable elfAnimation = (AnimationDrawable) elf.getBackground();
-        AnimationDrawable knightAnimation = (AnimationDrawable) knight.getBackground();
-        AnimationDrawable wizzardAnimation = (AnimationDrawable) wizzard.getBackground();
+        ImageView wizard = findViewById(R.id.character3_wizzard);
 
         ImageView selectBox1 = findViewById(R.id.selectBox1);
         ImageView selectBox2 = findViewById(R.id.selectBox2);
         ImageView selectBox3 = findViewById(R.id.selectBox3);
 
+        //create animationDrawable
+        AnimationDrawable elfAnimation = (AnimationDrawable) elf.getBackground();
+        AnimationDrawable knightAnimation = (AnimationDrawable) knight.getBackground();
+        AnimationDrawable wizardAnimation = (AnimationDrawable) wizard.getBackground();
 
+
+        //setup background video
         VideoView backVideo = (VideoView) findViewById(R.id.configBackground);
         String uri = "android.resource://" + getPackageName() + "/" + R.raw.congif_background;
         backVideo.setVideoURI(Uri.parse(uri));
@@ -60,20 +61,14 @@ public class ConfigScreen extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
+        //start/stop animation base on player's click
         elf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 characterChoice = 1;
                 elfAnimation.start();
                 knightAnimation.stop();
-                wizzardAnimation.stop();
+                wizardAnimation.stop();
 
                 selectBox1.setBackgroundResource(R.drawable.selecter_animation);
                 AnimationDrawable boxAnimation = (AnimationDrawable) selectBox1.getBackground();
@@ -89,7 +84,7 @@ public class ConfigScreen extends AppCompatActivity {
                 characterChoice = 2;
                 elfAnimation.stop();
                 knightAnimation.start();
-                wizzardAnimation.stop();
+                wizardAnimation.stop();
 
                 selectBox2.setBackgroundResource(R.drawable.selecter_animation);
                 AnimationDrawable boxAnimation = (AnimationDrawable) selectBox2.getBackground();
@@ -98,13 +93,13 @@ public class ConfigScreen extends AppCompatActivity {
                 selectBox3.setBackgroundColor(0);
             }
         });
-        wizzard.setOnClickListener(new View.OnClickListener() {
+        wizard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 characterChoice = 3;
                 elfAnimation.stop();
                 knightAnimation.stop();
-                wizzardAnimation.start();
+                wizardAnimation.start();
 
                 selectBox3.setBackgroundResource(R.drawable.selecter_animation);
                 AnimationDrawable boxAnimation = (AnimationDrawable) selectBox3.getBackground();
@@ -114,6 +109,8 @@ public class ConfigScreen extends AppCompatActivity {
 
             }
         });
+
+        //Change difficulty value and btn's setting by clicking on button
         difficulty1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,23 +140,23 @@ public class ConfigScreen extends AppCompatActivity {
         });
 
 
-        //button to Player view
+        //move to next activity
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String playerName = playerNameInput.getText().toString();//get player name from text bar
-                Intent intent = new Intent();//new intent
-                intent.setClass(ConfigScreen.this, PlayerView.class);//intent to open next activity
+                String playerName = playerNameInput.getText().toString(); //get player name from text bar
+                Intent intent = new Intent(); //new intent
+                intent.setClass(ConfigScreen.this, PlayerView.class); //intent to open next activity
 
-                //new bundle contain players info
+                //new bundle contain player's info
                 Bundle bundle = new Bundle();
                 bundle.putString("playerName", playerName);
                 bundle.putInt("characterChoice", characterChoice);
                 bundle.putInt("levelDifficulty", levelDifficulty);
-                intent.putExtras(bundle);//add bundle to intent
+                intent.putExtras(bundle); //add bundle to intent
 
                 //check all information is collect
-                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice ==0) {
+                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice == 0) {
                     playerNameRule.setText(R.string.playerNameRule);
                 } else {
                     //jump screen and close current activity

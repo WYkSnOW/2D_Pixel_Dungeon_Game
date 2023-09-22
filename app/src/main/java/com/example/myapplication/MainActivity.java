@@ -20,14 +20,20 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private Timer timer;
     private boolean isZombieFlip;
+    /** @noinspection checkstyle:VisibilityModifier, checkstyle:VisibilityModifier */
+    private static MediaPlayer openBGM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //set and start background music
+        Uri uriBGM = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.open_background_bgm);
+        openBGM = MediaPlayer.create(this, uriBGM);
+        openBGM.start();
 
-
+        //set up background video
         VideoView backVideo = (VideoView) findViewById(R.id.MainBackground);
         String uri = "android.resource://" + getPackageName() + "/" + R.raw.knight_backgroung;
         backVideo.setVideoURI(Uri.parse(uri));
@@ -39,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        //Animation of a running zombie
         ImageView zombie = findViewById(R.id.runningCharacter);
         AnimationDrawable runningZombie = (AnimationDrawable) zombie.getBackground();
-        runningZombie.start(); //跑步动画开始
+        runningZombie.start();
 
+        //A timer that fit the character every 10 second(10000ms)
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -59,57 +65,32 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 10000, 10000);
 
+        //Create animation of moving imageView from 0f to 2000f and 2000f to 0f
+        ObjectAnimator moveForward = ObjectAnimator.ofFloat(zombie, "translationX", 0f, 2000f); //move from 0f to 2000f in x
+        moveForward.setDuration(10000); // take 10000ms (10 second to do)
+        ObjectAnimator moveBackward = ObjectAnimator.ofFloat(zombie, "translationX", 2000f, 0f); // move from 2000f to 0f in x
+        moveBackward.setDuration(10000); // take 10000ms (10 second to do)
 
-        /*
-        // 创建一个沿着X轴移动的属性动画
-        ObjectAnimator animator = ObjectAnimator.ofFloat(zombie, "translationX", 0f, 2000f); // 从0移动到500像素
-        animator.setDuration(3000); // 设置动画持续时间(animation time in millisecond)
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) { // 在动画结束后执行你的操作(action after animation end)
-                super.onAnimationEnd(animation);
-                // 创建反向动画
-                ObjectAnimator reverseAnimator = ObjectAnimator.ofFloat(zombie, "translationX", 2000f, 0f);
-                reverseAnimator.setDuration(3000);
-
-                reverseAnimator.start(); // 启动反向动画
-            }
-        });
-        animator.start(); // 启动属性动画*/
-
-        ObjectAnimator moveForward = ObjectAnimator.ofFloat(zombie, "translationX", 0f, 2000f);
-        moveForward.setDuration(10000); // 设置动画持续时间
-
-        // 创建一个沿着X轴移动回初始点的属性动画
-        ObjectAnimator moveBackward = ObjectAnimator.ofFloat(zombie, "translationX", 2000f, 0f);
-        moveBackward.setDuration(10000); // 设置动画持续时间
-
-        // 创建一个动画集合，包含先正向移动再反向移动的两个动画
+        // A Animatorset that contain two of the previous animation
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playSequentially(moveForward, moveBackward);
 
-        // 添加监听器，当动画结束时重新启动动画
+        //loop those two animation(replay when it's end)
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) { }
             @Override
             public void onAnimationEnd(Animator animation) {
-                // 重新启动动画
-                animatorSet.start();
+                animatorSet.start(); //restart
             }
-
             @Override
             public void onAnimationCancel(@NonNull Animator animator) { }
             @Override
             public void onAnimationRepeat(@NonNull Animator animator) { }
         });
-        animatorSet.start(); // 启动属性动画
+        animatorSet.start(); //start animation
 
-
-
-
-
-
+        //Button that take user to next activity
         Button button = findViewById(R.id.goes_to_congifScreen);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //Button that close the current activity and left the game.
         Button exitBtn = findViewById(R.id.Exit);
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,5 +111,13 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    //Function that can be call in other class to end the background music
+    public static void endMusic() {
+        if (openBGM != null && openBGM.isPlaying()) {
+            openBGM.stop();
+            openBGM.release();
+        }
     }
 }
