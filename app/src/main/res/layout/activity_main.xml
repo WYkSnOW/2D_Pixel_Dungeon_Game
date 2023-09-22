@@ -9,6 +9,39 @@
     tools:context=".MainActivity">
 
 
+    <VideoView
+        android:id="@+id/MainBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/welcomeWords"
+        android:layout_width="423dp"
+        android:layout_height="99dp"
+        android:background="@drawable/words_welcome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.942" />
+
+    <ImageView
+        android:id="@+id/runningCharacter"
+        android:layout_width="64dp"
+        android:layout_height="72dp"
+        android:background="@drawable/big_zombie_run_animation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <Button
         android:id="@+id/Exit"
         android:layout_width="100dp"
@@ -24,21 +57,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.049" />
 
-    <TextView
-        android:id="@+id/openText"
-        android:layout_width="394dp"
-        android:layout_height="165dp"
-        android:layout_gravity="center"
-        android:background="#00000000"
-        android:gravity="center"
-        android:text="Welcome Screen"
-        android:textColor="#FF000000"
-        android:textSize="50sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/goes_to_congifScreen"
@@ -54,6 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.951" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

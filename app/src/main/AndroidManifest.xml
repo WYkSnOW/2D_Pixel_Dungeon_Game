@@ -29,6 +29,8 @@
             android:screenOrientation="landscape"/>
         <activity android:name="EndingScreen"
             android:screenOrientation="landscape"/>
+        <activity android:name=".Music"
+            android:screenOrientation="landscape"/>
     </application>
 
 

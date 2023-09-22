@@ -3,13 +3,13 @@
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <!--设置背景颜色-->
-            <solid android:color="#8F000000" />
+            <solid android:color="#D3000000" />
             <!--设置渐变色angle=0从左到右渲染，angle=90从上到下渲染，angle=180从右到左渲染-->
             <gradient
                 android:angle="0"
-                android:startColor="#7020FF"
-                android:centerColor="#5B00FF"
-                android:endColor="#7020FF"
+                android:startColor="#FFFFFF"
+                android:centerColor="#FFFFFF"
+                android:endColor="#FFFFFF"
                 android:type="linear"/>
             <!--设置角的弧度-->
             <corners android:radius="30dp" />
@@ -28,7 +28,7 @@
     <item android:state_pressed="true">
         <shape>
             <!--设置点击之后的颜色-->
-            <solid android:color="#407EEF72" />
+            <solid android:color="#DF7EEF72" />
             <!--设置点击之后渐变色angle=0从左到右渲染，angle=90从上到下渲染，angle=180从右到左渲染-->
             <gradient
                 android:angle="0"

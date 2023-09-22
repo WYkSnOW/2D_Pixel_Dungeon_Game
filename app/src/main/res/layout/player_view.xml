@@ -8,6 +8,25 @@
     android:orientation="horizontal"
     tools:context=".PlayerView">
 
+
+    <ImageView
+        android:id="@+id/map_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <ImageView
+        android:id="@+id/map"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/game_map_1"
+
     <TextView
         android:id="@+id/playerView"
         android:layout_width="406dp"
@@ -19,12 +38,29 @@
         android:textColor="#FF000000"
         android:textSize="50sp"
         android:textStyle="normal"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/character"
+        android:layout_width="32dp"
+        android:layout_height="56dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.67" />
         app:layout_constraintVertical_bias="0.188" />
+
 
     <Button
         android:id="@+id/goes_to_endingScreen"
@@ -43,15 +79,21 @@
 
     <TextView
         android:id="@+id/nameBar"
+        android:layout_width="379dp"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:text="player's name"
+        android:textColor="#FFFFFF"
         android:layout_width="417dp"
         android:layout_height="23dp"
         android:gravity="center"
         android:text="player's name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.233"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.797" />
         app:layout_constraintVertical_bias="0.619" />
 
     <TextView
@@ -60,12 +102,13 @@
         android:layout_height="25dp"
         android:gravity="center"
         android:text="characterChoice"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.682" />
+        app:layout_constraintVertical_bias="0.866" />
 
     <TextView
         android:id="@+id/difficulty"
@@ -73,12 +116,13 @@
         android:layout_height="25dp"
         android:gravity="center"
         android:text="difficulty"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.932" />
 
     <TextView
         android:id="@+id/startHealth"
@@ -86,11 +130,12 @@
         android:layout_height="25dp"
         android:gravity="center"
         android:text="StartHealth"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.817" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
