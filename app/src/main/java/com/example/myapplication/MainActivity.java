@@ -19,7 +19,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private Timer timer;
-    private  int count = 0;
     private boolean isZombieFlip;
 
     @Override
@@ -29,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        VideoView backVideo = (VideoView) findViewById(R.id.congifBackground);
-        String uri = "android.resource://" + getPackageName() + "/" + R.raw.congif_background;
+        VideoView backVideo = (VideoView) findViewById(R.id.MainBackground);
+        String uri = "android.resource://" + getPackageName() + "/" + R.raw.knight_backgroung;
         backVideo.setVideoURI(Uri.parse(uri));
         backVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

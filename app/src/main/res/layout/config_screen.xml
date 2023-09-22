@@ -8,6 +8,17 @@
     android:orientation="horizontal"
     tools:context=".ConfigScreen">
 
+    <VideoView
+        android:id="@+id/configBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/tv_one"
         android:layout_width="645dp"
@@ -15,8 +26,8 @@
         android:layout_gravity="center_vertical"
         android:background="#00000000"
         android:gravity="center"
-        android:text="Config Screen"
-        android:textColor="#FF000000"
+        android:text="Click to Choice"
+        android:textColor="#FFFFFF"
         android:textSize="50sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,18 +52,18 @@
         app:layout_constraintVertical_bias="0.7" />
 
     <ImageView
-        android:id="@+id/character2_lizard"
+        android:id="@+id/character2_knight"
         android:layout_width="48dp"
         android:layout_height="84dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/lizard_m_idle_animation"
+        android:background="@drawable/knight_m_idle_animation"
         android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.699" />
 
     <ImageView
         android:id="@+id/character3_wizzard"
@@ -63,10 +74,49 @@
         android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.699" />
+
+    <ImageView
+        android:id="@+id/selectBox1"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.77" />
+
+    <ImageView
+        android:id="@+id/selectBox2"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.77" />
+
+    <ImageView
+        android:id="@+id/selectBox3"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.232"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.77" />
 
     <Button
         android:id="@+id/goes_to_playerView"
@@ -93,12 +143,13 @@
         android:hint="Enter your name here"
         android:inputType="text"
         android:maxLines="1"
+        android:textColor="#FFFFFFFF"
+        android:textColorHint="#FFFFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.614" />
+        app:layout_constraintVertical_bias="0.683" />
 
     <Button
         android:id="@+id/difficulty1"
@@ -143,11 +194,13 @@
         android:id="@+id/playerNameRule"
         android:layout_width="392dp"
         android:layout_height="70dp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.628"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_one"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintVertical_bias="0.987" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

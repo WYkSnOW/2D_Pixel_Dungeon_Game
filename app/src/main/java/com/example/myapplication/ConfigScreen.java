@@ -38,11 +38,27 @@ public class ConfigScreen extends AppCompatActivity {
         Button startBtn = findViewById (R.id.goes_to_playerView);
 
         ImageView elf = findViewById(R.id.character1_elf);
-        ImageView lizard = findViewById(R.id.character2_lizard);
+        ImageView knight = findViewById(R.id.character2_knight);
         ImageView wizzard = findViewById(R.id.character3_wizzard);
         AnimationDrawable elfAnimation = (AnimationDrawable) elf.getBackground();
-        AnimationDrawable lizardAnimation = (AnimationDrawable) lizard.getBackground();
+        AnimationDrawable knightAnimation = (AnimationDrawable) knight.getBackground();
         AnimationDrawable wizzardAnimation = (AnimationDrawable) wizzard.getBackground();
+
+        ImageView selectBox1 = findViewById(R.id.selectBox1);
+        ImageView selectBox2 = findViewById(R.id.selectBox2);
+        ImageView selectBox3 = findViewById(R.id.selectBox3);
+
+
+        VideoView backVideo = (VideoView) findViewById(R.id.configBackground);
+        String uri = "android.resource://" + getPackageName() + "/" + R.raw.congif_background;
+        backVideo.setVideoURI(Uri.parse(uri));
+        backVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start(); //
+            }
+        });
 
 
 
@@ -56,17 +72,30 @@ public class ConfigScreen extends AppCompatActivity {
             public void onClick(View view) {
                 characterChoice = 1;
                 elfAnimation.start();
-                lizardAnimation.stop();
+                knightAnimation.stop();
                 wizzardAnimation.stop();
+
+                selectBox1.setBackgroundResource(R.drawable.selecter_animation);
+                AnimationDrawable boxAnimation = (AnimationDrawable) selectBox1.getBackground();
+                boxAnimation.start();
+                selectBox2.setBackgroundColor(0);
+                selectBox3.setBackgroundColor(0);
+
             }
         });
-        lizard.setOnClickListener(new View.OnClickListener() {
+        knight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 characterChoice = 2;
                 elfAnimation.stop();
-                lizardAnimation.start();
+                knightAnimation.start();
                 wizzardAnimation.stop();
+
+                selectBox2.setBackgroundResource(R.drawable.selecter_animation);
+                AnimationDrawable boxAnimation = (AnimationDrawable) selectBox2.getBackground();
+                boxAnimation.start();
+                selectBox1.setBackgroundColor(0);
+                selectBox3.setBackgroundColor(0);
             }
         });
         wizzard.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +103,15 @@ public class ConfigScreen extends AppCompatActivity {
             public void onClick(View view) {
                 characterChoice = 3;
                 elfAnimation.stop();
-                lizardAnimation.stop();
+                knightAnimation.stop();
                 wizzardAnimation.start();
+
+                selectBox3.setBackgroundResource(R.drawable.selecter_animation);
+                AnimationDrawable boxAnimation = (AnimationDrawable) selectBox3.getBackground();
+                boxAnimation.start();
+                selectBox1.setBackgroundColor(0);
+                selectBox2.setBackgroundColor(0);
+
             }
         });
         difficulty1.setOnClickListener(new View.OnClickListener() {
