@@ -7,9 +7,9 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.VideoView;
 import androidx.annotation.NonNull;
@@ -20,8 +20,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private Timer timer;
     private boolean isZombieFlip;
-    /** @noinspection checkstyle:VisibilityModifier, checkstyle:VisibilityModifier */
     private static MediaPlayer openBGM;
+    private ImageView zombie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +31,16 @@ public class MainActivity extends AppCompatActivity {
         //set and start background music
         Uri uriBGM = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.open_background_bgm);
         openBGM = MediaPlayer.create(this, uriBGM);
+        openBGM.setLooping(true);
         openBGM.start();
 
         //set up background video
-        VideoView backVideo = (VideoView) findViewById(R.id.MainBackground);
-        String uri = "android.resource://" + getPackageName() + "/" + R.raw.knight_backgroung;
-        backVideo.setVideoURI(Uri.parse(uri));
-        backVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start(); //
-            }
-        });
+        Video mainBackgroundVideo = new Video(this, R.raw.knight_background);
+        FrameLayout backgroundVideoContainer = findViewById(R.id.MainBackground);
+        backgroundVideoContainer.addView(mainBackgroundVideo);
 
         //Animation of a running zombie
-        ImageView zombie = findViewById(R.id.runningCharacter);
+        zombie = findViewById(R.id.runningCharacter);
         AnimationDrawable runningZombie = (AnimationDrawable) zombie.getBackground();
         runningZombie.start();
 
@@ -55,13 +49,7 @@ public class MainActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (isZombieFlip) {
-                    zombie.setScaleX(1f);
-                    isZombieFlip = false;
-                } else {
-                    zombie.setScaleX(-1f);
-                    isZombieFlip = true;
-                }
+                flipRunningCharacter();
             }
         }, 10000, 10000);
 
@@ -97,8 +85,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, ConfigScreen.class);
+                timer.cancel(); //close timer
+                mainBackgroundVideo.surfaceDestroyed(mainBackgroundVideo.getHolder()); //close and release video
                 startActivity(intent);
-                timer.cancel();
                 finish();
             }
         });
@@ -108,9 +97,21 @@ public class MainActivity extends AppCompatActivity {
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                endMusic();
                 finish();
             }
         });
+    }
+
+
+    private void flipRunningCharacter() {
+        if (isZombieFlip) {
+            zombie.setScaleX(1f);
+            isZombieFlip = false;
+        } else {
+            zombie.setScaleX(-1f);
+            isZombieFlip = true;
+        }
     }
 
     //Function that can be call in other class to end the background music
