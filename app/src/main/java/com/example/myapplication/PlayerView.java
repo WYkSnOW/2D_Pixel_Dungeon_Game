@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import static com.example.myapplication.MainActivity.endMusic;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -50,8 +49,8 @@ public class PlayerView extends AppCompatActivity {
         //receive info form config screen
         Intent intent = getIntent();
         String playerName = intent.getStringExtra("playerName");
-        int characterChoice = intent.getIntExtra("characterChoice",0);
-        int levelDifficulty = intent.getIntExtra("levelDifficulty",0);
+        int characterChoice = intent.getIntExtra("characterChoice", 0);
+        int levelDifficulty = intent.getIntExtra("levelDifficulty", 0);
         int startHealth = 10 / levelDifficulty;
 
         //Create variable that link to TextView
@@ -70,16 +69,22 @@ public class PlayerView extends AppCompatActivity {
         //create animation variable base on character choice
         String characterNameText;
         if (characterChoice == 1) {
-            characterIdleFile = getResources().getIdentifier("elf_f_idle_animation", "drawable", getPackageName());
-            characterRunFile = getResources().getIdentifier("elf_f_run_animation", "drawable", getPackageName());
+            characterIdleFile = getResources().getIdentifier("elf_f_idle_animation",
+                    "drawable", getPackageName());
+            characterRunFile = getResources().getIdentifier("elf_f_run_animation",
+                    "drawable", getPackageName());
             characterNameText = "Elf";
         } else if (characterChoice == 2) {
-            characterIdleFile = getResources().getIdentifier("knight_m_idle_animation", "drawable", getPackageName());
-            characterRunFile = getResources().getIdentifier("knight_m_run_animation", "drawable", getPackageName());
+            characterIdleFile = getResources().getIdentifier("knight_m_idle_animation",
+                    "drawable", getPackageName());
+            characterRunFile = getResources().getIdentifier("knight_m_run_animation",
+                    "drawable", getPackageName());
             characterNameText = "Knight";
         } else {
-            characterIdleFile = getResources().getIdentifier("wizzard_m_idle_animation", "drawable", getPackageName());
-            characterRunFile = getResources().getIdentifier("wizzard_m_run_animation", "drawable", getPackageName());
+            characterIdleFile = getResources().getIdentifier("wizzard_m_idle_animation",
+                    "drawable", getPackageName());
+            characterRunFile = getResources().getIdentifier("wizzard_m_run_animation",
+                    "drawable", getPackageName());
             characterNameText = "Wizard";
         }
         character.setBackgroundResource(characterIdleFile);
