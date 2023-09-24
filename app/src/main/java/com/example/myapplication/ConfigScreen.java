@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +9,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -138,9 +135,11 @@ public class ConfigScreen extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String playerName = playerNameInput.getText().toString(); //get player name from text bar
+                //get player name from text bar
+                String playerName = playerNameInput.getText().toString();
                 Intent intent = new Intent(); //new intent
-                intent.setClass(ConfigScreen.this, PlayerView.class); //intent to open next activity
+                //intent to open next activity
+                intent.setClass(ConfigScreen.this, PlayerView.class);
 
                 //new bundle contain player's info
                 Bundle bundle = new Bundle();
@@ -150,7 +149,8 @@ public class ConfigScreen extends AppCompatActivity {
                 intent.putExtras(bundle); //add bundle to intent
 
                 //check all information is collect
-                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice == 0) {
+                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0
+                        || characterChoice == 0) {
                     playerNameRule.setText(R.string.playerNameRule);
                 } else {
                     //jump screen and close current activity
