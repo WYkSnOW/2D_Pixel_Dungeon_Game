@@ -14,7 +14,7 @@ public class EndingScreen extends AppCompatActivity {
         setContentView(R.layout.ending_screen);
 
 
-        //Goes back to the beginning of the game
+        //Goes back to the start of the game
         Button button = findViewById(R.id.goes_to_startingScreen);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
