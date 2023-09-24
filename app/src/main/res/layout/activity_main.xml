@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
 
-    <VideoView
+    <FrameLayout
         android:id="@+id/MainBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_gravity="end"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_style_1"
         android:text="Exit"
         android:textColor="#FF000000"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +63,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_gravity="right"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_style_1"
         android:text="Config"
         android:textColor="#FF000000"
         app:layout_constraintBottom_toBottomOf="parent"

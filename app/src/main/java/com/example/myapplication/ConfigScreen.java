@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -49,32 +50,13 @@ public class ConfigScreen extends AppCompatActivity {
         AnimationDrawable wizardAnimation = (AnimationDrawable) wizard.getBackground();
 
 
-        //setup background video
-        VideoView backVideo = (VideoView) findViewById(R.id.configBackground);
-        String uri = "android.resource://" + getPackageName() + "/" + R.raw.congif_background;
-        backVideo.setVideoURI(Uri.parse(uri));
-        backVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start(); //
-            }
-        });
+        //set up background video
+        Video mainBackgroundVideo = new Video(this, R.raw.congif_background);
+        FrameLayout backgroundVideoContainer = findViewById(R.id.configBackground);
+        backgroundVideoContainer.addView(mainBackgroundVideo);
 
         //start/stop animation base on player's click
         elf.setOnClickListener(new View.OnClickListener() {
-
-        EditText playerNameInput = (EditText) findViewById(R.id.playerName);
-        TextView playerNameRule = findViewById(R.id.playerNameRule);
-        Button character1 = findViewById (R.id.character1);
-        Button character2 = findViewById (R.id.character2);
-        Button character3 = findViewById (R.id.character3);
-        Button difficulty1 = findViewById (R.id.difficulty1);
-        Button difficulty2 = findViewById (R.id.difficulty2);
-        Button difficulty3 = findViewById (R.id.difficulty3);
-        Button startBtn = findViewById (R.id.goes_to_playerView);
-
-        character1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 characterChoice = 1;
@@ -126,27 +108,27 @@ public class ConfigScreen extends AppCompatActivity {
         difficulty1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                difficulty1.setBackgroundResource(R.drawable.button_after_click);
-                difficulty2.setBackgroundResource(R.drawable.button_shape);
-                difficulty3.setBackgroundResource(R.drawable.button_shape);
+                difficulty1.setBackgroundResource(R.drawable.button_difficulty1);
+                difficulty2.setBackgroundResource(R.drawable.button_before_click1);
+                difficulty3.setBackgroundResource(R.drawable.button_before_click1);
                 levelDifficulty = 1;
             }
         });
         difficulty2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                difficulty2.setBackgroundResource(R.drawable.button_after_click);
-                difficulty1.setBackgroundResource(R.drawable.button_shape);
-                difficulty3.setBackgroundResource(R.drawable.button_shape);
+                difficulty2.setBackgroundResource(R.drawable.button_difficulty2);
+                difficulty1.setBackgroundResource(R.drawable.button_before_click1);
+                difficulty3.setBackgroundResource(R.drawable.button_before_click1);
                 levelDifficulty = 2;
             }
         });
         difficulty3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                difficulty3.setBackgroundResource(R.drawable.button_after_click);
-                difficulty2.setBackgroundResource(R.drawable.button_shape);
-                difficulty1.setBackgroundResource(R.drawable.button_shape);
+                difficulty3.setBackgroundResource(R.drawable.button_difficulty3);
+                difficulty2.setBackgroundResource(R.drawable.button_before_click1);
+                difficulty1.setBackgroundResource(R.drawable.button_before_click1);
                 levelDifficulty = 3;
             }
         });
@@ -161,10 +143,6 @@ public class ConfigScreen extends AppCompatActivity {
                 intent.setClass(ConfigScreen.this, PlayerView.class); //intent to open next activity
 
                 //new bundle contain player's info
-                String playerName = playerNameInput.getText().toString();
-                Intent intent = new Intent();
-                intent.setClass(ConfigScreen.this, PlayerView.class);
-
                 Bundle bundle = new Bundle();
                 bundle.putString("playerName", playerName);
                 bundle.putInt("characterChoice", characterChoice);
@@ -176,18 +154,9 @@ public class ConfigScreen extends AppCompatActivity {
                     playerNameRule.setText(R.string.playerNameRule);
                 } else {
                     //jump screen and close current activity
-                intent.putExtras(bundle);
-                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice ==0) {
-                    playerNameRule.setText(R.string.playerNameRule);
-                    //android:text="Player view"
-                } else {
                     startActivity(intent);
                     finish();
                 }
-                /*if (levelDifficulty != 0 && characterChoice != 0 && !(playerName.equals("")) && ifNotBlank(playerName)) {
-                    startActivity(intent);
-                    finish();
-                }*/
             }
         });
 

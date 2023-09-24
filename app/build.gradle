@@ -12,6 +12,9 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,9 +32,11 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.badlogicgames.gdx:gdx:1.9.12' // 添加 libGDX 依赖
+    implementation 'com.badlogicgames.gdx:gdx-backend-android:1.9.12' // 添加 Android 后端依赖
+    // 可以根据需要添加其他的 libGDX 模块依赖
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

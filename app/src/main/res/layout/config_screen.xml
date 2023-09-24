@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     tools:context=".ConfigScreen">
 
-    <VideoView
+    <FrameLayout
         android:id="@+id/configBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,8 @@
         app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.7"
+        android:contentDescription="@string/descriptionElf"/>
 
     <ImageView
         android:id="@+id/character2_knight"
@@ -64,7 +65,8 @@
         app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.699" />
+        app:layout_constraintVertical_bias="0.699"
+        android:contentDescription="@string/descriptionKnight"/>
 
     <ImageView
         android:id="@+id/character3_wizzard"
@@ -78,7 +80,8 @@
         app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.699" />
+        app:layout_constraintVertical_bias="0.699"
+        android:contentDescription="@string/descriptionWizard"/>
 
     <ImageView
         android:id="@+id/selectBox1"
@@ -91,7 +94,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        app:layout_constraintVertical_bias="0.77"
+        android:contentDescription="@string/descriptionSelectBox"/>
 
     <ImageView
         android:id="@+id/selectBox2"
@@ -104,7 +108,8 @@
         app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        app:layout_constraintVertical_bias="0.77"
+        android:contentDescription="@string/descriptionSelectBox"/>
 
     <ImageView
         android:id="@+id/selectBox3"
@@ -117,23 +122,23 @@
         app:layout_constraintHorizontal_bias="0.232"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        app:layout_constraintVertical_bias="0.77"
+        android:contentDescription="@string/descriptionSelectBox"/>
 
     <Button
         android:id="@+id/goes_to_playerView"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_gravity="end"
-        android:background="@drawable/button_shape"
-        android:text="Start"
-        android:textColor="#FF000000"
+        android:background="@drawable/button_style_1"
+        android:text="@string/Start"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.989"
-        />
+        app:layout_constraintVertical_bias="0.955" />
 
     <EditText
         android:id="@+id/playerName"
@@ -141,7 +146,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center"
-        android:hint="Enter your name here"
+        android:hint="@string/nameBarHint"
         android:inputType="text"
         android:maxLines="1"
         android:textColor="#FFFFFFFF"
@@ -156,51 +161,43 @@
         android:id="@+id/difficulty1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_shape"
-        android:text="difficulty1"
+        android:background="@drawable/button_before_click1"
+        android:text="@string/difficulty1"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Button
         android:id="@+id/difficulty2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_shape"
-            
-        android:text="difficulty2"
+        android:background="@drawable/button_before_click1"
+        android:text="@string/difficulty2"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547" />
-
-        android:text="difficulty1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.908"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.393" />
-
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/difficulty3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_shape"
-
-        android:text="difficulty3"
+        android:background="@drawable/button_before_click1"
+        android:text="@string/difficulty3"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.794" />
+        app:layout_constraintVertical_bias="0.7" />
 
     <TextView
         android:id="@+id/playerNameRule"
@@ -210,38 +207,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.628"
-
-        android:text="difficulty2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.908"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589" />
-
-    <Button
-        android:id="@+id/difficulty3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_shape"
-        android:text="difficulty3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.908"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_one"
         app:layout_constraintVertical_bias="0.987" />
-
-    <TextView
-        android:id="@+id/playerNameRule"
-        android:layout_width="402dp"
-        android:layout_height="85dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_one"
-        app:layout_constraintVertical_bias="0.95" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
