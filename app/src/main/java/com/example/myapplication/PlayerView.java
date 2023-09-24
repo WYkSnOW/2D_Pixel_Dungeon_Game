@@ -52,7 +52,7 @@ public class PlayerView extends AppCompatActivity {
         String playerName = intent.getStringExtra("playerName");
         int characterChoice = intent.getIntExtra("characterChoice",0);
         int levelDifficulty = intent.getIntExtra("levelDifficulty",0);
-        int startHealth = 100 / levelDifficulty;
+        int startHealth = 10 / levelDifficulty;
 
         //Create variable that link to TextView
         TextView name = findViewById(R.id.nameBar);

@@ -11,11 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Timer;
 import java.util.TimerTask;
+
+
 
 public class MainActivity extends AppCompatActivity {
     private Timer timer;
@@ -23,9 +24,11 @@ public class MainActivity extends AppCompatActivity {
     private static MediaPlayer openBGM;
     private ImageView zombie;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         //set and start background music
