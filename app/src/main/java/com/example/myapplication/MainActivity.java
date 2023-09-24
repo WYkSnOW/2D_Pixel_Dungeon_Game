@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //set and start background music
-        Uri uriBGM = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.open_background_bgm);
+        Uri uriBGM = Uri.parse("android.resource://" + getPackageName() + "/"
+                + R.raw.open_background_bgm);
         openBGM = MediaPlayer.create(this, uriBGM);
         openBGM.setLooping(true);
         openBGM.start();
@@ -57,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
         }, 10000, 10000);
 
         //Create animation of moving imageView from 0f to 2000f and 2000f to 0f
-        ObjectAnimator moveForward = ObjectAnimator.ofFloat(zombie, "translationX", 0f, 2000f); //move from 0f to 2000f in x
+        ObjectAnimator moveForward = ObjectAnimator.ofFloat(zombie, "translationX",
+                0f, 2000f); //move from 0f to 2000f in x
         moveForward.setDuration(10000); // take 10000ms (10 second to do)
-        ObjectAnimator moveBackward = ObjectAnimator.ofFloat(zombie, "translationX", 2000f, 0f); // move from 2000f to 0f in x
+        ObjectAnimator moveBackward = ObjectAnimator.ofFloat(zombie, "translationX",
+                2000f, 0f); // move from 2000f to 0f in x
         moveBackward.setDuration(10000); // take 10000ms (10 second to do)
 
         // A Animatorset that contain two of the previous animation
@@ -89,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, ConfigScreen.class);
                 timer.cancel(); //close timer
-                mainBackgroundVideo.surfaceDestroyed(mainBackgroundVideo.getHolder()); //close and release video
+                //close and release video
+                mainBackgroundVideo.surfaceDestroyed(mainBackgroundVideo.getHolder());
                 startActivity(intent);
                 finish();
             }
