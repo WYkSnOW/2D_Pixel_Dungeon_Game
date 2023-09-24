@@ -1,8 +1,6 @@
 package com.example.myapplication;
 
 import static com.example.myapplication.MainActivity.endMusic;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -34,11 +32,6 @@ public class PlayerView extends AppCompatActivity {
     private boolean isMovingDown = false;
     private boolean isMovingRight = false;
     private boolean isMovingLeft = false;
-    private boolean isCharacterMoving = false;
-    private Timer timer;
-    private Timer timer2;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +43,8 @@ public class PlayerView extends AppCompatActivity {
         //receive info form config screen
         Intent intent = getIntent();
         String playerName = intent.getStringExtra("playerName");
-        int characterChoice = intent.getIntExtra("characterChoice",0);
-        int levelDifficulty = intent.getIntExtra("levelDifficulty",0);
+        int characterChoice = intent.getIntExtra("characterChoice", 0);
+        int levelDifficulty = intent.getIntExtra("levelDifficulty", 0);
         int startHealth = 10 / levelDifficulty;
 
         //Create variable that link to TextView
@@ -70,16 +63,17 @@ public class PlayerView extends AppCompatActivity {
         //create animation variable base on character choice
         String characterNameText;
         if (characterChoice == 1) {
-            characterIdleFile = getResources().getIdentifier("elf_f_idle_animation", "drawable", getPackageName());
-            characterRunFile = getResources().getIdentifier("elf_f_run_animation", "drawable", getPackageName());
+
+            characterIdleFile = getFileHelper("elf_f_idle_animation", "drawable");
+            characterRunFile = getFileHelper("elf_f_run_animation", "drawable");
             characterNameText = "Elf";
         } else if (characterChoice == 2) {
-            characterIdleFile = getResources().getIdentifier("knight_m_idle_animation", "drawable", getPackageName());
-            characterRunFile = getResources().getIdentifier("knight_m_run_animation", "drawable", getPackageName());
+            characterIdleFile = getFileHelper("knight_m_idle_animation", "drawable");
+            characterRunFile = getFileHelper("knight_m_run_animation", "drawable");
             characterNameText = "Knight";
         } else {
-            characterIdleFile = getResources().getIdentifier("wizzard_m_idle_animation", "drawable", getPackageName());
-            characterRunFile = getResources().getIdentifier("wizzard_m_run_animation", "drawable", getPackageName());
+            characterIdleFile = getFileHelper("wizzard_m_idle_animation", "drawable");
+            characterRunFile = getFileHelper("wizzard_m_run_animation", "drawable");
             characterNameText = "Wizard";
         }
         character.setBackgroundResource(characterIdleFile);
@@ -114,9 +108,7 @@ public class PlayerView extends AppCompatActivity {
         });
 
 
-
-
-        timer = new Timer();
+        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -216,12 +208,10 @@ public class PlayerView extends AppCompatActivity {
         characterAnimation.start();
     }
 
-    private void deflateMove() {
-        isMovingDown = false;
-        isMovingUp = false;
-        isMovingLeft = false;
-        isMovingRight = false;
+    private int getFileHelper(String key, String type) {
+        return getResources().getIdentifier(key, type, getPackageName());
     }
+
 
 
 

@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +9,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,9 +48,9 @@ public class ConfigScreen extends AppCompatActivity {
 
 
         //set up background video
-        Video mainBackgroundVideo = new Video(this, R.raw.congif_background);
+        Video configBackgroundVideo = new Video(this, R.raw.congif_background);
         FrameLayout backgroundVideoContainer = findViewById(R.id.configBackground);
-        backgroundVideoContainer.addView(mainBackgroundVideo);
+        backgroundVideoContainer.addView(configBackgroundVideo);
 
         //start/stop animation base on player's click
         elf.setOnClickListener(new View.OnClickListener() {
@@ -138,9 +135,11 @@ public class ConfigScreen extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String playerName = playerNameInput.getText().toString(); //get player name from text bar
+                //get player name from text bar
+                String playerName = playerNameInput.getText().toString();
                 Intent intent = new Intent(); //new intent
-                intent.setClass(ConfigScreen.this, PlayerView.class); //intent to open next activity
+                //intent to open next activity
+                intent.setClass(ConfigScreen.this, PlayerView.class);
 
                 //new bundle contain player's info
                 Bundle bundle = new Bundle();
@@ -150,9 +149,11 @@ public class ConfigScreen extends AppCompatActivity {
                 intent.putExtras(bundle); //add bundle to intent
 
                 //check all information is collect
-                if (playerName.equals("") || !(ifNotBlank(playerName)) || levelDifficulty == 0 || characterChoice == 0) {
+                if (canNotMoveOn(playerName, levelDifficulty, characterChoice)) {
                     playerNameRule.setText(R.string.playerNameRule);
                 } else {
+                    //close and release video
+                    configBackgroundVideo.surfaceDestroyed(configBackgroundVideo.getHolder());
                     //jump screen and close current activity
                     startActivity(intent);
                     finish();
@@ -163,7 +164,7 @@ public class ConfigScreen extends AppCompatActivity {
     }
 
     //check if player put in a in valid name
-    private boolean ifNotBlank(String name) {
+    private boolean ifValid(String name) {
         boolean r = false;
         for (int i = 0; i < name.length(); i++) {
             if (!(name.charAt(i) == ' ')) {
@@ -174,6 +175,11 @@ public class ConfigScreen extends AppCompatActivity {
             r = false;
         }
         return r;
+    }
+
+    //return true if player should not allow to move on to next activity
+    private boolean canNotMoveOn(String name, int levelDifficulty, int characterChoice) {
+        return name.equals("") || !(ifValid(name)) || levelDifficulty == 0 || characterChoice == 0;
     }
 
 
