@@ -34,8 +34,8 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
-    implementation 'com.badlogicgames.gdx:gdx:1.9.12' // 添加 libGDX 依赖
-    implementation 'com.badlogicgames.gdx:gdx-backend-android:1.9.12' // 添加 Android 后端依赖
+    implementation 'com.badlogicgames.gdx:gdx:1.12.0' // 添加 libGDX 依赖
+    implementation 'com.badlogicgames.gdx:gdx-backend-android:1.12.0' // 添加 Android 后端依赖
     // 可以根据需要添加其他的 libGDX 模块依赖
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
