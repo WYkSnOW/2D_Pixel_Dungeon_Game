@@ -1,20 +1,23 @@
 package com.example.myapplication.main;
 
 import android.content.Context;
-import android.view.KeyEvent;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.R;
+
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private final Game game;
+    private SurfaceHolder holder;
 
     public GamePanel(Context context) {
         super(context);
-        SurfaceHolder holder = getHolder();
+        holder = getHolder();
         holder.addCallback(this);
         game = new Game(holder);
     }
@@ -22,11 +25,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return game.touchEvent(event);
-    }
-
-
-    public boolean onKeyEvent(KeyEvent event) {
-        return game.keyEvent(event);
     }
 
     @Override
@@ -43,4 +41,5 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
 
     }
+
 }

@@ -1,7 +1,7 @@
 package com.example.myapplication.entities.enemies;
 
-import static com.example.myapplication.StartScreen.GAME_HEIGHT;
-import static com.example.myapplication.StartScreen.GAME_WIDTH;
+import static com.example.myapplication.main.MainActivity.GAME_HEIGHT;
+import static com.example.myapplication.main.MainActivity.GAME_WIDTH;
 
 import android.graphics.PointF;
 
@@ -15,7 +15,7 @@ public class Zombie extends Character {
     private long lastDirChange = System.currentTimeMillis();
     private Random rand = new Random();
     public Zombie(PointF pos) {
-        super(pos, GameCharacters.MOB1);
+        super(pos, GameCharacters.ZOMBIE);
     }
 
     public void update(double delta) {
@@ -34,32 +34,32 @@ public class Zombie extends Character {
         }
 
         switch (faceDir) { //检测是否碰撞到屏幕边缘，如果是则将方向翻转(1，将坐标位置改变，2.通过改变Face_Dir改变动画行数，变为对应目标的动画
-            case GameConstants.Face_Dir.DOWN:
+            case GameConstants.FaceDir.DOWN:
                 hitBox.top += delta * 300;
                 if (hitBox.top >= GAME_HEIGHT) { //2220为屏幕像素
-                    faceDir = GameConstants.Face_Dir.UP;
+                    faceDir = GameConstants.FaceDir.UP;
                     lastDirChange = System.currentTimeMillis();
                 }
                 break;
-            case GameConstants.Face_Dir.UP:
+            case GameConstants.FaceDir.UP:
                 hitBox.top -= delta * 300;
                 if (hitBox.top <= 0) {
-                    faceDir = GameConstants.Face_Dir.DOWN;
+                    faceDir = GameConstants.FaceDir.DOWN;
                     lastDirChange = System.currentTimeMillis();
                 }
                 break;
-            case GameConstants.Face_Dir.RIGHT:
+            case GameConstants.FaceDir.RIGHT:
                 hitBox.left += delta * 300;
                 if (hitBox.left >= GAME_WIDTH) {
-                    faceDir = GameConstants.Face_Dir.LEFT;
+                    faceDir = GameConstants.FaceDir.LEFT;
                     drawDir = 1;
                     lastDirChange = System.currentTimeMillis();
                 }
                 break;
-            case GameConstants.Face_Dir.LEFT:
+            case GameConstants.FaceDir.LEFT:
                 hitBox.left -= delta * 300;
                 if (hitBox.left <= 0) {
-                    faceDir = GameConstants.Face_Dir.RIGHT;
+                    faceDir = GameConstants.FaceDir.RIGHT;
                     drawDir = 0;
                     lastDirChange = System.currentTimeMillis();
                 }

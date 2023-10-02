@@ -1,7 +1,5 @@
 package com.example.myapplication.gmaestates;
 
-import android.view.KeyEvent;
-
 import com.example.myapplication.main.Game;
 
 public abstract class BaseState {
@@ -13,6 +11,4 @@ public abstract class BaseState {
     public  Game getGame() {
      return game;
     }
-
-    public abstract void onKeyDown(int keyCode, KeyEvent event);
 }

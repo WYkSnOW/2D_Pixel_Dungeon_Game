@@ -6,8 +6,8 @@ import com.example.myapplication.helper.GameConstants;
 
 public abstract class  Character extends Entity {
     protected int aniTick, aniIndex;
-    protected int faceDir = GameConstants.Face_Dir.RIGHT;
-    protected int drawDir = GameConstants.Face_Dir.RIGHT;
+    protected int faceDir = GameConstants.FaceDir.RIGHT;
+    protected int drawDir = GameConstants.FaceDir.RIGHT;
     protected final GameCharacters gameCharType;
 
 
