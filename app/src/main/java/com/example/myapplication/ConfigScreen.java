@@ -139,7 +139,7 @@ public class ConfigScreen extends AppCompatActivity {
                 String playerName = playerNameInput.getText().toString();
                 Intent intent = new Intent(); //new intent
                 //intent to open next activity
-                intent.setClass(ConfigScreen.this, PlayerView.class);
+                intent.setClass(ConfigScreen.this, StartScreen.class);
 
                 //new bundle contain player's info
                 Bundle bundle = new Bundle();

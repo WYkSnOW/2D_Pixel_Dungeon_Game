@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //set and start background music
-        Uri uriBGM = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.open_bgm);
-        openBGM = MediaPlayer.create(this, uriBGM);
-        openBGM.setLooping(true);
-        openBGM.start();
+        //Uri uriBGM = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.open_bgm);
+        //openBGM = MediaPlayer.create(this, uriBGM);
+        //openBGM.setLooping(true);
+        //openBGM.start();
 
         //set up background video
         Video mainBackgroundVideo = new Video(this, R.raw.knight_background);
