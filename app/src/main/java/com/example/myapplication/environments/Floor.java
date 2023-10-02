@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import com.example.myapplication.R;
 import com.example.myapplication.helper.GameConstants;
 import com.example.myapplication.helper.interfaces.BitmapMethods;
-import com.example.myapplication.StartScreen;
+import com.example.myapplication.main.MainActivity;
 
 public enum Floor implements BitmapMethods {
     OUTSIDE(R.drawable.map1, 30, 20);
@@ -15,10 +15,10 @@ public enum Floor implements BitmapMethods {
 
     private Bitmap[] sprites;
 
-    Floor(int resID, int tilesInWidth, int tilesInHeight){
+    Floor(int resID, int tilesInWidth, int tilesInHeight) {
         options.inScaled = false;
         sprites = new Bitmap[tilesInHeight * tilesInWidth];
-        Bitmap spriteSheet = BitmapFactory.decodeResource(StartScreen.getGameContext().getResources(), resID, options);
+        Bitmap spriteSheet = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(), resID, options);
         for(int j = 0; j < tilesInHeight; j++) {
             for(int i = 0; i < tilesInWidth; i++) {
                 int index = j * tilesInWidth + i;

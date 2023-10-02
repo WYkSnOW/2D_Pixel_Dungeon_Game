@@ -7,49 +7,54 @@ import android.graphics.PointF;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import com.example.myapplication.entities.Character;
+import com.example.myapplication.entities.GameCharacters;
 import com.example.myapplication.entities.Player;
 import com.example.myapplication.entities.enemies.Zombie;
 import com.example.myapplication.environments.MapManager;
 import com.example.myapplication.helper.GameConstants;
 import com.example.myapplication.helper.interfaces.GameStateInterFace;
 import com.example.myapplication.main.Game;
+import com.example.myapplication.ui.ButtonImage;
+import com.example.myapplication.ui.CustomButton;
+import com.example.myapplication.ui.PlayingUI;
 
 import java.util.Random;
 
-public abstract class Playing extends BaseState implements GameStateInterFace {
+public class Playing extends BaseState implements GameStateInterFace {
     private float cameraX, cameraY;
     private boolean movePlayer;
     private PointF lastTouchDiff;
     private MapManager mapManager;
     private Player player;
     private Zombie zombie;
+    private int characterChoice;
 
 
     //private ArrayList<RndSquare> squares = new ArrayList<>();
     private Random rand = new Random();
 
+    private PlayingUI playingUI;
 
-    //For touch circle
-    private float xCenter = 250, yCenter = 800, radius = 150; //x和y是圆中心位置，可调整. radius即半径
-    private Paint circlePaint;
 
-    private float xTouch, yTouch;
-    private boolean touchDown;
+
+
 
 
     public Playing(Game game) {
         super(game);
-        circlePaint = new Paint();
-        circlePaint.setColor(Color.RED);
-        circlePaint.setStyle(Paint.Style.STROKE);
-        circlePaint.setStrokeWidth(5);
+
         //mob1Pos = new PointF(rand.nextInt(GAME_WIDTH), rand.nextInt(GAME_HEIGHT)); //随机初始位置（在屏幕范围内）
 
         mapManager = new MapManager();
-        player = new Player();
+        player = new Player(GameCharacters.ELF);
         zombie = new Zombie(new PointF(100, 100));
-    }
+        playingUI = new PlayingUI(this);
 
+
+
+
+
+    }
     @Override
     public void update(double delta) {
         updatePlayerMove(delta);
@@ -62,21 +67,14 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
     public void render(Canvas c) {
         mapManager.draw(c);
 
-        drawUI(c); //Touch circle
 
         drawPlayer(c);
         drawCharacter(c,zombie);
+        playingUI.drawUI(c);
+
     }
 
-    private void drawUI(Canvas c) {
-        c.drawCircle(xCenter, yCenter, radius, circlePaint);
 
-        //if(touchDown) { //初始点击点在圆环内且并未松开鼠标触发，松开光标被刷新掉
-        //    c.drawLine(xCenter, yCenter, xTouch, yTouch, yellowPaint); //画出光标与圆形的三角形
-        //    c.drawLine(xCenter, yCenter, xTouch, yCenter, yellowPaint);
-        //    c.drawLine(xTouch, yTouch, xTouch, yCenter, yellowPaint);
-        //}
-    }
 
     private void drawPlayer(Canvas c) {
 
@@ -84,6 +82,8 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
                 player.getGameCharType().getSprite(player.getDrawDir(), player.getAniIndex()), //在本游戏中，行数Y是不同形态，而列数X是该姿势中的不同帧。根据不同输入需要调换，其他怪物同理
                 player.getHitBox().left, player.getHitBox().top, null
         );
+
+
 
     }
 
@@ -95,8 +95,14 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
     }
 
     private void updatePlayerMove(double delta) {
-        if (!movePlayer)
+        if (!movePlayer) {
+            if (player.getDrawDir() <= 1) {
+                player.setDrawDir(player.getDrawDir() + 2);
+                System.out.println("" + player.getDrawDir());
+            }
+
             return;
+        }
 
         float baseSpeed = (float) delta * 300;
         float ratio = Math.abs(lastTouchDiff.y) / Math.abs(lastTouchDiff.x);
@@ -107,21 +113,22 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
 
 
 
-        if(xSpeed > ySpeed) { //意味着x角度更大，角色应该随着x调整     实现角色移动时的动画切换
-            if (lastTouchDiff.x > 0) { //正数意味光标在圆环右侧，即朝右移动
-                player.setFaceDir(GameConstants.Face_Dir.RIGHT);
-                player.setDrawDir(GameConstants.Face_Dir.RIGHT);
-            } else if (lastTouchDiff.x < 0) {
-                player.setFaceDir(GameConstants.Face_Dir.LEFT);
-                player.setDrawDir(GameConstants.Face_Dir.LEFT);
-            }
-        } else {
-            if (lastTouchDiff.y > 0) {
-                player.setFaceDir(GameConstants.Face_Dir.UP);
-            } else if (lastTouchDiff.y < 0) {
-                player.setFaceDir(GameConstants.Face_Dir.DOWN);
-            }
+        //if(xSpeed > ySpeed) { //意味着x角度更大，角色应该随着x调整     实现角色移动时的动画切换
+        if (lastTouchDiff.x > 0) { //正数意味光标在圆环右侧，即朝右移动
+            player.setFaceDir(GameConstants.FaceDir.RIGHT);
+            player.setDrawDir(GameConstants.FaceDir.RIGHT);
+        } else if (lastTouchDiff.x < 0) {
+            player.setFaceDir(GameConstants.FaceDir.LEFT);
+            player.setDrawDir(GameConstants.FaceDir.LEFT);
         }
+        //} else {
+        if (lastTouchDiff.y > 0) {
+            player.setFaceDir(GameConstants.FaceDir.UP);
+        } else if (lastTouchDiff.y < 0) {
+            player.setFaceDir(GameConstants.FaceDir.DOWN);
+        }
+
+        //}
 
 
         if(lastTouchDiff.x < 0) {
@@ -131,8 +138,8 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
             ySpeed *= -1;
         }
 
-        int pWidth = GameConstants.Sprite.SIZE; //计算player的实际碰撞体积
-        int pHeight = GameConstants.Sprite.SIZE;
+        int pWidth = player.getPlayerWidth(); //计算player的实际碰撞体积
+        int pHeight = player.getPlayerHeight();
         if (xSpeed <= 0) //当角色往左边或上边移动时，判定点为左上角，则将碰撞修正设置为0
             pWidth = 0;
         if (ySpeed <= 0)
@@ -148,10 +155,21 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
 
     }
 
+    public void setGameStateToMenu() {
+        game.setCurrentGameState(Game.GameState.MENU);
+    }
+    public void setGameStateToEnd() {
+        game.setCurrentGameState(Game.GameState.END);
+    }
+
     public void setPlayerMoveTrue(PointF lastTouchDiff) { //查看是否应该移动角色（触发移动后没有松开光标）
         movePlayer = true;
         this.lastTouchDiff = lastTouchDiff;
 
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void setPlayerMoveFalse() {
@@ -159,44 +177,17 @@ public abstract class Playing extends BaseState implements GameStateInterFace {
         player.resetAnimation();
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     @Override
     public void touchEvents(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                float x = event.getX(); //找到点击位置的坐标
-                float y = event.getY();
-
-                float a = Math.abs(x - xCenter); //找到点击坐标与触控圈圆心的距离
-                float b = Math.abs(y - yCenter);
-                float c = (float) Math.hypot(a,b); //a与b的斜线
-
-                if(c <= radius) { //光标在圆环内部
-                    touchDown = true; //初始点击点在圆环内部
-                    xTouch = x;
-                    yTouch = y;
-                } else {
-                    game.setCurrentGameState(Game.GameState.MENU);
-                }
-                break;
-
-
-            case MotionEvent.ACTION_MOVE: //点击后移动光标
-                if(touchDown) { //只有点击圆环内部而后滑出可以操纵
-                    xTouch = event.getX();
-                    yTouch = event.getY();
-
-                    float xDiff = xTouch - xCenter; //负数意味点击点x值在圆心x值左边（小于），即角色应该左移，反之右移
-                    float yDiff = yTouch - yCenter;
-
-                    setPlayerMoveTrue(new PointF(xDiff, yDiff)); //传输进入控制板中决定玩家是否移动的function
-                }
-                break;
-            case MotionEvent.ACTION_UP: //松开光标
-                touchDown = false; //松开光标即操作消失
-                setPlayerMoveFalse();
-                break;
-        }
+        playingUI.touchEvent(event);
     }
+
+
+
 
 
 
