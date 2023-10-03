@@ -6,72 +6,16 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
-
-    <FrameLayout
-        android:id="@+id/MainBackground"
-        android:layout_width="match_parent"
+    <SurfaceView
+        android:id="@+id/s"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/welcomeWords"
-        android:layout_width="423dp"
-        android:layout_height="99dp"
-        android:background="@drawable/words_welcome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942" />
-
-    <ImageView
-        android:id="@+id/runningCharacter"
-        android:layout_width="64dp"
-        android:layout_height="72dp"
-        android:background="@drawable/big_zombie_run_animation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/Exit"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end"
-        android:background="@drawable/button_style_1"
-        android:text="Exit"
-        android:textColor="#FF000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.049" />
-
-
-    <Button
-        android:id="@+id/goes_to_congifScreen"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_gravity="right"
-        android:background="@drawable/button_style_1"
-        android:text="Config"
-        android:textColor="#FF000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.951" />
 
 
 
