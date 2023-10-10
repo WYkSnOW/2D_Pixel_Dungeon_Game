@@ -4,4 +4,17 @@
         1. Name can't start with a space
         2. Name can't be blank or only contain space
         3. Chose both character and level of difficulty"</string>
+    <string name="Start">"Start"</string>
+    <string name="difficulty1">"Easy"</string>
+    <string name="difficulty2">"Normal"</string>
+    <string name="difficulty3">"Hard"</string>
+    <string name="descriptionElf">"character 1 elf</string>
+    <string name="descriptionKnight">"character 2 knight</string>
+    <string name="descriptionWizard">"character 3 wizard</string>
+    <string name="nameBarHint">"Enter your name here"</string>
+    <string name="descriptionSelectBox">"pick box"</string>
+    <string name="displayPlayerName">"Player's Name: "</string>
+    <string name="character">"Character: "</string>
+    <string name="levelOfDifficty">"Level Of Difficty: "</string>
+    <string name="startHealthText">"Start Health: "</string>
 </resources>
