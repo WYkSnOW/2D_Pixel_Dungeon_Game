@@ -1,21 +1,23 @@
-package com.example.myapplication.Model.entities;
+package com.example.myapplication.Model.entities.Player;
 import com.example.myapplication.Model.helper.interfaces.BitmapMethods;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.myapplication.R;
-import com.example.myapplication.View.main.MainActivity;
+import com.example.myapplication.ViewModel.MainViewModel;
 
 public enum AttackEffects implements BitmapMethods {
 
     BIG_SWORD(R.drawable.big_sword);
 
-    final Bitmap weaponImg;
+    private final Bitmap weaponImg;
 
     AttackEffects(int resId) {
-        options.inScaled = false;
-        weaponImg = getScaledBitmap(BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(), resId, options));
+        OPTIONS.inScaled = false;
+        weaponImg = getScaledBitmap(BitmapFactory.decodeResource(
+                MainViewModel.getGameContext().getResources(), resId, OPTIONS)
+        );
     }
 
     public Bitmap getWeaponImg() {

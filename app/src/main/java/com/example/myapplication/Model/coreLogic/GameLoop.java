@@ -1,4 +1,4 @@
-package com.example.myapplication.View.main;
+package com.example.myapplication.Model.coreLogic;
 
 
 public class GameLoop implements Runnable {

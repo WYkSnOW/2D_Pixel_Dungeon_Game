@@ -3,89 +3,97 @@ package com.example.myapplication.Model.loopVideo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.interfaces.BitmapMethods;
 import com.example.myapplication.R;
-import com.example.myapplication.View.main.MainActivity;
+import com.example.myapplication.ViewModel.MainViewModel;
 
 public enum GameVideos implements BitmapMethods {
 
 
     MAIN_BACK_VIDEO(
             R.drawable.main_back_video,
-            1920,
-            1080,
-            9,
-            1,
-            MainActivity.getScaleRatio(),
-            8
+            GameConstants.VideosDefault.BACKGROUND_WIDTH,
+            GameConstants.VideosDefault.BACKGROUND_HEIGHT,
+            GameConstants.VideosDefault.MAIN_BACKGROUND_ANIMATIONX,
+            GameConstants.VideosDefault.MAIN_BACKGROUND_ANIMATIONY,
+            GameConstants.VideosDefault.BACKGROUND_SCALE,
+            GameConstants.VideosDefault.MAIN_BACKGROUND_ANIM_RATE
     ),
     DIFFICULTY_BOX(
             R.drawable.difficulty_box,
-            96,
-            96,
-            4,
-            1,
-            3,
-            4
+            GameConstants.VideosDefault.DIFFICULTY_BOX_WIDTH,
+            GameConstants.VideosDefault.DIFFICULTY_BOX_HEIGHT,
+            GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONX,
+            GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONY,
+            GameConstants.VideosDefault.DIFFICULTY_BOX_SCALE,
+            GameConstants.VideosDefault.DIFFICULTY_BOX_ANIM_RATE
 
     ),
     WITCH(
             R.drawable.witch_character_list,
-            43,
-            47,
-            6,
-            6,
-            6,
-            6
+            GameConstants.CharacterDefault.WITCH_WIDTH,
+            GameConstants.CharacterDefault.WITCH_HEIGHT,
+            GameConstants.CharacterDefault.WITCH_ANIMATION_X,
+            GameConstants.CharacterDefault.WITCH_ANIMATION_Y,
+            GameConstants.VideosDefault.WITCH_SCALE,
+            GameConstants.VideosDefault.WITCH_ANIM_RATE
     ),
     WITCH_ATTACK_EFFECT(
             R.drawable.witch_attack_effect,
-            86,
-            47,
-            6,
-            1,
-            3,
-            10
+            GameConstants.VideosDefault.WITCH_EFFECT_WIDTH,
+            GameConstants.VideosDefault.WITCH_EFFECT_HEIGHT,
+            GameConstants.VideosDefault.WITCH_EFFECT_ANIMATIONX,
+            GameConstants.VideosDefault.WITCH_EFFECT_ANIMATIONY,
+            GameConstants.VideosDefault.WITCH_EFFECT_SCALE,
+            GameConstants.VideosDefault.WITCH_EFFECT_ANIM_RATE
 
     ),
     TERESA(
             R.drawable.teresa_character_list,
-            43,
-            40,
-            8,
-            6,
-            7,
-            6
+            GameConstants.CharacterDefault.TERESA_WIDTH,
+            GameConstants.CharacterDefault.TERESA_HEIGHT,
+            GameConstants.CharacterDefault.TERESA_ANIMATION_X,
+            GameConstants.CharacterDefault.TERESA_ANIMATION_Y,
+            GameConstants.VideosDefault.TERESA_SCALE,
+            GameConstants.VideosDefault.TERESA_RATE
     ),
 
     WARRIOR(
             R.drawable.warrior_character_list,
-            55,
-            42,
-            8,
-            6,
-            7,
-            6
+            GameConstants.CharacterDefault.WARRIOR_WIDTH,
+            GameConstants.CharacterDefault.WARRIOR_HEIGHT,
+            GameConstants.CharacterDefault.WARRIOR_ANIMATION_X,
+            GameConstants.CharacterDefault.WARRIOR_ANIMATION_Y,
+            GameConstants.VideosDefault.WARRIOR_SCALE,
+            GameConstants.VideosDefault.WARRIOR_RATE
     ),
 
     CONFIG_BACK_VIDEO(
             R.drawable.config_back_video,
-            1920,
-            1080,
-            12,
-            1,
-            MainActivity.getScaleRatio(),
-            12
+            GameConstants.VideosDefault.BACKGROUND_WIDTH,
+            GameConstants.VideosDefault.BACKGROUND_HEIGHT,
+            GameConstants.VideosDefault.CONFIG_BACKGROUND_ANIMATIONX,
+            GameConstants.VideosDefault.CONFIG_BACKGROUND_ANIMATIONY,
+            GameConstants.VideosDefault.BACKGROUND_SCALE,
+            GameConstants.VideosDefault.CONFIG_BACKGROUND_ANIM_RATE
     );
 
     private final Bitmap spriteSheet;
     private final Bitmap[][] sprites;
     private int maxAnimIndex;
     private BitmapFactory.Options options = new BitmapFactory.Options();
-    private int width, height, cScale, animRate;
+    private int width;
+    private int height;
+    private int cScale;
+    private int animRate;
 
     //contain all video resource that is being use
-    GameVideos(int resID, int width, int height, int animationX, int animationY, double scale, int animRate) {
+    GameVideos(
+            int resID, int width, int height,
+            int animationX, int animationY,
+            double scale, int animRate
+    ) {
         options.inScaled = false;
         this.width = width;
         this.height = height;
@@ -95,11 +103,17 @@ public enum GameVideos implements BitmapMethods {
 
 
         sprites = new Bitmap[animationY][animationX];
-        spriteSheet = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(), resID, options);
+        spriteSheet = BitmapFactory.decodeResource(
+                MainViewModel.getGameContext().getResources(), resID, options
+        );
         for (int j = 0; j < sprites.length; j++) {
             for (int i = 0; i < sprites[j].length; i++) {
-                Bitmap temp = Bitmap.createBitmap(spriteSheet, width * i, height * j, width, height);
-                sprites[j][i] = Bitmap.createScaledBitmap(temp, (int) (width * scale), (int) (height * scale), false);
+                Bitmap temp = Bitmap.createBitmap(
+                        spriteSheet, width * i, height * j, width, height
+                );
+                sprites[j][i] = Bitmap.createScaledBitmap(
+                        temp, (int) (width * scale), (int) (height * scale), false
+                );
 
             }
         }

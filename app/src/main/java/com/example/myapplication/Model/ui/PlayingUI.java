@@ -1,7 +1,7 @@
 package com.example.myapplication.Model.ui;
 
-import static com.example.myapplication.View.main.MainActivity.gameHeight;
-import static com.example.myapplication.View.main.MainActivity.gameWidth;
+import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_HEIGHT;
+import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,15 +9,15 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
-import com.example.myapplication.ViewModel.gmaestates.Playing;
-import com.example.myapplication.View.main.MainActivity;
+import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
 
     //For UI
 
-    private final PointF joystickCenterPos = new PointF(250, gameHeight - 250); //x和y是圆中心位置，可调整. radius即半径
-    private final PointF attackBtnCenterPos = new PointF(gameWidth - 250, gameHeight - 250);
+    //x和y是圆中心位置，可调整. radius即半径
+    private final PointF joystickCenterPos = new PointF(250, GAME_HEIGHT - 250);
+    private final PointF attackBtnCenterPos = new PointF(GAME_WIDTH - 250, GAME_HEIGHT - 250);
     private final  int radius = 150;
     private final Paint circlePaint;
 
@@ -30,26 +30,36 @@ public class PlayingUI {
     private boolean touchDown;
 
     private CustomButton btnMenu;
-    public final Playing playing;
-
-
+    private final Playing playing;
     private CustomButton btnConfig;
+    private  int configStartX = GAME_WIDTH - ButtonImage.MENU_START.getWidth();
+    private int configStartY = GAME_HEIGHT - ButtonImage.MENU_START.getHeight();
 
-    private  int configStartX = MainActivity.gameWidth - ButtonImage.MENU_START.getWidth();
-    private int configStartY = gameHeight - ButtonImage.MENU_START.getHeight();
+    private int mapChoice;
+
 
     public PlayingUI(Playing playing) {
         this.playing = playing;
-
-
         circlePaint = new Paint();
         circlePaint.setColor(Color.GRAY);
         //circlePaint.setStyle(Paint.Style.STROKE);
         circlePaint.setAlpha(100);
         circlePaint.setStrokeWidth(5);
+        btnMenu = new CustomButton(
+                5,
+                5,
+                ButtonImage.PLAYING_MENU.getWidth(),
+                ButtonImage.PLAYING_MENU.getHeight()
+        );
+        btnConfig = new CustomButton(
+                configStartX,
+                configStartY,
+                ButtonImage.MENU_START.getWidth(),
+                ButtonImage.PLAYING_MENU.getHeight()
+        );
 
-        btnMenu = new CustomButton(5, 5, ButtonImage.PLAYING_MENU.getWidth(), ButtonImage.PLAYING_MENU.getHeight());
-        btnConfig = new CustomButton(configStartX, configStartY, ButtonImage.MENU_START.getWidth(), ButtonImage.PLAYING_MENU.getHeight());
+
+        mapChoice = 0;
 
     }
 
@@ -98,7 +108,7 @@ public class PlayingUI {
         float b = Math.abs(eventPos.y - circle.y);
         float c = (float) Math.hypot(a, b); //a与b的斜线
 
-        return c <= radius;//光标在圆环内部
+        return c <= radius; //光标在圆环内部
     }
     private boolean checkInsideJoyStick(PointF eventPos, int pointerId) {
         if (isInsideRadius(eventPos, joystickCenterPos)) {
@@ -127,7 +137,7 @@ public class PlayingUI {
             if (checkInsideJoyStick(eventPos, pointerId)) { //光标在圆环内部
                 touchDown = true; //初始点击点在圆环内部
             } else if (checkInsideAttackBtn(eventPos)) {
-                if(attackBtnPointerId < 0) {
+                if (attackBtnPointerId < 0) {
                     playing.setAttacking(true);
                     attackBtnPointerId = pointerId;
                 }
@@ -148,9 +158,11 @@ public class PlayingUI {
 
                 for (int i = 0; i < event.getPointerCount(); i++) {
                     if (event.getPointerId(i) == joystickPointerId) {
-                        float xDiff = event.getX(i) - joystickCenterPos.x; //负数意味点击点x值在圆心x值左边（小于），即角色应该左移，反之右移
+                        //负数意味点击点x值在圆心x值左边（小于），即角色应该左移，反之右移
+                        float xDiff = event.getX(i) - joystickCenterPos.x;
                         float yDiff = event.getY(i) - joystickCenterPos.y;
-                        playing.setPlayerMoveTrue(new PointF(xDiff, yDiff)); //传输进入控制板中决定玩家是否移动的function
+                        //传输进入控制板中决定玩家是否移动的function
+                        playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
                     }
                 }
 
@@ -158,9 +170,10 @@ public class PlayingUI {
 
 
 
-        } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) { //松开光标
+        } else if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_POINTER_UP) { //松开光标
 
-            if(pointerId == joystickPointerId) {
+            if (pointerId == joystickPointerId) {
                 resetJoystickButton();
             } else {
                 if (isIn(eventPos, btnMenu)) {
@@ -173,7 +186,14 @@ public class PlayingUI {
                 if (isIn(eventPos, btnConfig)) {
                     if (btnConfig.isPushed(pointerId)) {
                         resetJoystickButton();
-                        playing.setGameStateToEnd();
+                        if (mapChoice < 2) {
+                            mapChoice++;
+                            playing.getMapManager().changeCurrentMap(mapChoice);
+                        } else {
+                            mapChoice = 0;
+                            playing.getMapManager().resetMap();
+                            playing.setGameStateToEnd();
+                        }
                     }
                 }
             }

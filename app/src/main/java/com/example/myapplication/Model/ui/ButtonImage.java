@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.interfaces.BitmapMethods;
 import com.example.myapplication.R;
-import com.example.myapplication.View.main.MainActivity;
+import com.example.myapplication.ViewModel.MainViewModel;
 
 public enum ButtonImage implements BitmapMethods {
     MENU_START(
@@ -34,22 +34,28 @@ public enum ButtonImage implements BitmapMethods {
 
     UI_HOLDER1(
             R.drawable.ui_holder1,
-            GameConstants.UiSize.UI_Holder1_WIDTH,
-            GameConstants.UiSize.UI_Holder1_HEIGHT,
+            GameConstants.UiSize.UI_HOLDER1_WIDTH,
+            GameConstants.UiSize.UI_HOLDER1_HEIGHT,
             false,
             15
     );
 
-    private int width, height,scale;
+    private int width;
+    private int height;
+    private int scale;
 
-    private Bitmap normal, pushed;
+    private Bitmap normal;
+    private Bitmap pushed;
     ButtonImage(int resID, int width, int height, boolean haveAnim, int scale) {
-        options.inScaled = false;
+        OPTIONS.inScaled = false;
         this.height = height;
         this.width = width;
         this.scale = scale;
 
-        Bitmap buttonAtlas = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(), resID, options);
+        Bitmap buttonAtlas
+                = BitmapFactory.decodeResource(
+                        MainViewModel.getGameContext().getResources(), resID, OPTIONS
+        );
         normal = Bitmap.createBitmap(buttonAtlas, 0, 0, width, height);
         if (haveAnim) {
             pushed = Bitmap.createBitmap(buttonAtlas, width, 0, width, height);

@@ -1,6 +1,6 @@
-package com.example.myapplication.ViewModel.gmaestates;
+package com.example.myapplication.View.main.gameStates;
 
-import com.example.myapplication.View.main.Game;
+import com.example.myapplication.Model.coreLogic.Game;
 
 public abstract class BaseState {
     protected Game game;
@@ -9,6 +9,6 @@ public abstract class BaseState {
     }
 
     public  Game getGame() {
-     return game;
+        return game;
     }
 }

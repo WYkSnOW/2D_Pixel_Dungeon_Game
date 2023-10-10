@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 
 import com.example.myapplication.Model.helper.interfaces.BitmapMethods;
 import com.example.myapplication.R;
-import com.example.myapplication.View.main.MainActivity;
+import com.example.myapplication.ViewModel.MainViewModel;
 
 public enum GameImages implements BitmapMethods {
 
@@ -14,8 +14,10 @@ public enum GameImages implements BitmapMethods {
     private final Bitmap image;
 
     GameImages(int resID) {
-        options.inScaled = false;
-        image = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(), resID, options);
+        OPTIONS.inScaled = false;
+        image = BitmapFactory.decodeResource(
+                MainViewModel.getGameContext().getResources(), resID, OPTIONS
+        );
     }
 
     public Bitmap getImage() {

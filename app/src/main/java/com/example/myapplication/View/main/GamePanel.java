@@ -6,6 +6,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.Model.coreLogic.Game;
+
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 

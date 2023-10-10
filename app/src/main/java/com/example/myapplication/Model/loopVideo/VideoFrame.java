@@ -6,7 +6,8 @@ import android.graphics.RectF;
 import com.example.myapplication.Model.entities.Entity;
 
 public abstract class VideoFrame extends Entity {
-    protected int aniTick, aniIndex;
+    protected int aniTick;
+    protected int aniIndex;
     protected final GameVideos gameVideoType;
     private final RectF hitbox;
     private boolean pushed;

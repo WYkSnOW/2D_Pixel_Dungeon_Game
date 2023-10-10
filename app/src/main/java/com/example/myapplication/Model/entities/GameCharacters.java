@@ -2,52 +2,53 @@ package com.example.myapplication.Model.entities;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 
 import com.example.myapplication.R;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.interfaces.BitmapMethods;
-import com.example.myapplication.View.main.MainActivity;
+import com.example.myapplication.ViewModel.MainViewModel;
 
 public enum GameCharacters implements BitmapMethods {
 
 
     WARRIOR(
             R.drawable.warrior_character_list,
-            55,
-            42,
-            8,
-            6,
-            4,
-            24,
-            13
+            new PointF(GameConstants.CharacterDefault.WARRIOR_WIDTH,
+            GameConstants.CharacterDefault.WARRIOR_HEIGHT),
+            GameConstants.CharacterDefault.WARRIOR_ANIMATION_X,
+            GameConstants.CharacterDefault.WARRIOR_ANIMATION_Y,
+            GameConstants.CharacterDefault.WARRIOR_SCALE,
+            GameConstants.CharacterDefault.WARRIOR_HITBOX_OFF_SET_X,
+            GameConstants.CharacterDefault.WARRIOR_HITBOX_OFF_SET_Y
     ),
 
     WITCH(
             R.drawable.witch_character_list,
-            43,
-            47,
-            6,
-            6,
-            3,
-            11,
-            14
+            new PointF(GameConstants.CharacterDefault.WITCH_WIDTH,
+                    GameConstants.CharacterDefault.WITCH_HEIGHT),
+            GameConstants.CharacterDefault.WITCH_ANIMATION_X,
+            GameConstants.CharacterDefault.WITCH_ANIMATION_Y,
+            GameConstants.CharacterDefault.WITCH_SCALE,
+            GameConstants.CharacterDefault.WITCH_HITBOX_OFF_SET_X,
+            GameConstants.CharacterDefault.WITCH_HITBOX_OFF_SET_Y
     ),
 
     TERESA(
             R.drawable.teresa_character_list,
-            43,
-            40,
-            8,
-            6,
-            4,
-            19,
-            13
+            new PointF(GameConstants.CharacterDefault.TERESA_WIDTH,
+                    GameConstants.CharacterDefault.TERESA_HEIGHT),
+            GameConstants.CharacterDefault.TERESA_ANIMATION_X,
+            GameConstants.CharacterDefault.TERESA_ANIMATION_Y,
+            GameConstants.CharacterDefault.TERESA_SCALE,
+            GameConstants.CharacterDefault.TERESA_HITBOX_OFF_SET_X,
+            GameConstants.CharacterDefault.TERESA_HITBOX_OFF_SET_Y
     ),
 
     ZOMBIE(
             R.drawable.zombie_mob_list,
-            GameConstants.MobAnimDefault.ZOMBIE_WIDTH,
-            GameConstants.MobAnimDefault.ZOMBIE_HEIGHT,
+            new PointF(GameConstants.MobAnimDefault.ZOMBIE_WIDTH,
+                    GameConstants.MobAnimDefault.ZOMBIE_HEIGHT),
             GameConstants.MobAnimDefault.ZOMBIE_ANIM_X,
             GameConstants.MobAnimDefault.ZOMBIE_ANIM_Y,
             6,
@@ -60,11 +61,26 @@ public enum GameCharacters implements BitmapMethods {
     private Bitmap spriteSheet;
     private Bitmap[][] sprites; //
     // 素材一共Y行 * X列格，即[Y][X]
-    private int characterWidth, characterHeight, scale, maxAnimIndex, hitBoxOffSetX, hitBoxOffSetY;
+    private int characterWidth;
+    private int characterHeight;
+    private int scale;
+    private int maxAnimIndex;
+    private int hitBoxOffSetX;
+    private int hitBoxOffSetY;
 
 
 
-    GameCharacters(int resID, int width, int height, int animationX, int animationY, int scale, int hitBoxOffSetX, int hitBoxOffSetY) {
+    GameCharacters(
+            int resID,
+            PointF size,
+            int animationX, int animationY,
+            int scale,
+            int hitBoxOffSetX, int hitBoxOffSetY
+    ) {
+
+        int width = (int) size.x;
+        int height = (int) size.y;
+
         this.scale = scale;
         this.characterWidth = width;
         this.characterHeight = height;
@@ -72,18 +88,25 @@ public enum GameCharacters implements BitmapMethods {
         this.hitBoxOffSetX = hitBoxOffSetX;
         this.hitBoxOffSetY = hitBoxOffSetY;
 
-        options.inScaled = false;
+        OPTIONS.inScaled = false;
 
         sprites = new Bitmap[animationY][animationX];
-        spriteSheet = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(), resID, options);
+        spriteSheet = BitmapFactory.decodeResource(
+                MainViewModel.getGameContext().getResources(), resID, OPTIONS
+        );
         for (int j = 0; j < sprites.length; j++) {
             for (int i = 0; i < sprites[j].length; i++) {
-                Bitmap temp =  Bitmap.createBitmap(spriteSheet, width * i, height * j, width, height);
-                sprites[j][i] = Bitmap.createScaledBitmap(temp, (width * scale), (height * scale), false);
+                Bitmap temp
+                        =  Bitmap.createBitmap(
+                                spriteSheet, width * i, height * j, width, height
+                );
+                sprites[j][i]
+                        = Bitmap.createScaledBitmap(
+                                temp, (width * scale), (height * scale), false
+                );
             }
         }
 
-        //System.out.println("Width: " + spriteSheet.getWidth() + " Height: " + spriteSheet.getHeight());
     }
 
     public Bitmap getSpriteSheet() {

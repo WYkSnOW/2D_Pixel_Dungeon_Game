@@ -1,15 +1,16 @@
-package com.example.myapplication.View.main;
+package com.example.myapplication.Model.coreLogic;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import com.example.myapplication.ViewModel.gmaestates.Config;
-import com.example.myapplication.ViewModel.gmaestates.End;
-import com.example.myapplication.ViewModel.gmaestates.Menu;
-import com.example.myapplication.ViewModel.gmaestates.Playing;
+import com.example.myapplication.View.main.gameStates.Config;
+
+import com.example.myapplication.View.main.gameStates.End;
+import com.example.myapplication.View.main.gameStates.Menu;
+import com.example.myapplication.View.main.gameStates.Playing;
+import com.example.myapplication.ViewModel.MainViewModel;
 
 import java.util.Objects;
 
@@ -23,7 +24,6 @@ public class Game { //All update and render get set over here
     private GameLoop gameLoop;
     private GameState currentGameState = GameState.MENU;
 
-    private MediaPlayer mediaPlayer;
 
     public Game(SurfaceHolder holder) { //keep track to all game state and allow switch between them
         this.holder = holder;
@@ -69,10 +69,10 @@ public class Game { //All update and render get set over here
     }
 
     private void initGameStates() {
-        menu = new Menu(this);
-        playing = new Playing(this);
-        config = new Config(this);
-        end = new End(this);
+        menu = new Menu(this, MainViewModel.getGameContext());
+        playing = new Playing(this, MainViewModel.getGameContext());
+        config = new Config(this, MainViewModel.getGameContext());
+        end = new End(this, MainViewModel.getGameContext());
     }
 
     public boolean touchEvent(MotionEvent event) {
@@ -94,7 +94,7 @@ public class Game { //All update and render get set over here
     }
 
     public enum GameState {
-        MENU, PLAYING, CONFIG, END;
+        MENU, PLAYING, CONFIG, END, RESTART;
     }
 
     public GameState getCurrentGameState() {
@@ -107,6 +107,16 @@ public class Game { //All update and render get set over here
 
     public Playing getPlaying() {
         return playing;
+    }
+    public End getEnd() {
+        return end;
+    }
+    public Config getConfig() {
+        return config;
+    }
+    public void restartGame() {
+        config.initConfig();
+        playing.initPlaying();
     }
 
 }

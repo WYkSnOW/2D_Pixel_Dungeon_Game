@@ -1,6 +1,6 @@
 package com.example.myapplication.Model.entities.enemies;
 
-import static com.example.myapplication.View.main.MainActivity.gameWidth;
+
 
 import android.graphics.PointF;
 
@@ -24,7 +24,9 @@ public class RunningZombie extends Character {
         //检测是否碰撞到屏幕边缘，如果是则将方向翻转(1，将坐标位置改变，2.通过改变Face_Dir改变动画行数，变为对应目标的动画
         if (moveDir == GameConstants.MoveDir.RIGHT) {
             hitBox.left += delta * 300;
-            if (hitBox.left >= gameWidth - GameCharacters.ZOMBIE.getCharacterWidth()) {
+            if (hitBox.left
+                    >= GameConstants.UiSize.GAME_WIDTH
+                    - GameCharacters.ZOMBIE.getCharacterWidth()) {
                 moveDir = GameConstants.MoveDir.LEFT;
                 drawDir = 1;
 

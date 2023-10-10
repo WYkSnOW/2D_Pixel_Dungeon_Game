@@ -5,14 +5,17 @@ import android.graphics.PointF;
 import com.example.myapplication.Model.helper.GameConstants;
 
 public abstract class  Character extends Entity {
-    protected int aniTick, aniIndex;
+    protected int aniTick;
+    protected int aniIndex;
     protected int moveDir = GameConstants.MoveDir.RIGHT;
     protected int drawDir = GameConstants.DrawDir.RIGHT;
     protected int faceDir = GameConstants.FaceDir.RIGHT;
-    protected final GameCharacters gameCharType;
+    protected GameCharacters gameCharType;
 
-    protected int characterWidth, characterHeight, hitBoxOffsetX, hitBoxOffSetY;
-    private boolean hitBoxPointRight;
+    protected int characterWidth;
+    protected int characterHeight;
+    protected int hitBoxOffsetX;
+    protected int hitBoxOffSetY;
 
 
 
@@ -33,10 +36,7 @@ public abstract class  Character extends Entity {
 
 
     protected void updateAnimation() {
-        //if(!movePlayer){
-            //停止移动后停止动画循环，可将idle动画在这里实现（会停止共用此更新的怪物的动画）
-            //return;
-        //}
+
         aniTick++;
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;
