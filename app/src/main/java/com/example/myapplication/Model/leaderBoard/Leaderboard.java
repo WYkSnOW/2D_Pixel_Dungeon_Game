@@ -28,7 +28,6 @@ public class Leaderboard {
         return instance;
     }
 
-
     public ArrayList<Score> getPlayerRecords() {
         return playerRecords;
     }
@@ -53,14 +52,12 @@ public class Leaderboard {
         paint2.setTextSize(50);
         paint2.setColor(Color.RED);
 
-
-        c.drawText("Score of this game: " + currentScore.getScore(), 1500, 200, paint2);
-
         c.drawText("Score of this game: " + currentScore.getScore()
                 + "   Player name: " + currentScore.getPlayerName()
                 + "   Date: " + currentScore.getDate(),
                 500, 950,
                 paint2);
+
         for (int i = 0; i < playerRecords.size(); i++) {
             if (playerRecords.get(i).getIsNew()) {
                 c.drawText(
