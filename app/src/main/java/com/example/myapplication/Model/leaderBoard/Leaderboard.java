@@ -19,7 +19,6 @@ public class Leaderboard {
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
-
     }
 
     public static synchronized Leaderboard getInstance() {
@@ -28,6 +27,7 @@ public class Leaderboard {
         }
         return instance;
     }
+
 
     public ArrayList<Score> getPlayerRecords() {
         return playerRecords;
@@ -52,6 +52,10 @@ public class Leaderboard {
         paint2 = new Paint();
         paint2.setTextSize(50);
         paint2.setColor(Color.RED);
+
+
+        c.drawText("Score of this game: " + currentScore.getScore(), 1500, 200, paint2);
+
         c.drawText("Score of this game: " + currentScore.getScore()
                 + "   Player name: " + currentScore.getPlayerName()
                 + "   Date: " + currentScore.getDate(),
