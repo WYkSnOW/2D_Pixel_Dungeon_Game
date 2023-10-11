@@ -314,8 +314,6 @@ public class Config extends BaseState implements GameStateInterFace {
         }
     }
 
-
-
     private void changeNameAction(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (viewModel.isInBtn(event, nameBar)) { //when pressed button
