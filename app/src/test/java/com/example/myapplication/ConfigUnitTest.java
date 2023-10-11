@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import com.example.myapplication.Model.gameStatesLogic.ConfigLogic;
 
 import org.junit.Test;
-
+//Authored by Anisa Wellington
 public class ConfigUnitTest {
 
     @Test
