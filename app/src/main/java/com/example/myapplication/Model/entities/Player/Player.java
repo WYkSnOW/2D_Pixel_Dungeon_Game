@@ -68,9 +68,11 @@ public class Player extends Character {
 
     private void updateGameScore() {
         int tempScore = 20 - gameTime;
-        if (tempScore >= 0) {
-            this.currentScore = tempScore;
-        }
+        this.currentScore = checkScoreAboveZero(tempScore);
+    }
+
+    public static int checkScoreAboveZero(int tempScore) {
+        return Math.max(tempScore, 0);
     }
 
     private void updateGameTime() {
