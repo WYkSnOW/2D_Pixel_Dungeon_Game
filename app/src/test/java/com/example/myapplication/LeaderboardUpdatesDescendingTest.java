@@ -3,15 +3,12 @@ package com.example.myapplication;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
-public class leaderboardUpdatesDescendingTest {
+public class LeaderboardUpdatesDescendingTest {
     @Test
     public void leaderboardUpdatesDescendingTest() {
 

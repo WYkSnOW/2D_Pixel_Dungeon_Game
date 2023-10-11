@@ -8,7 +8,7 @@ import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import org.junit.Test;
 
-public class playerNameValidUnitTest {
+public class PlayerNameValidUnitTest {
 
     @Test
     public void testIsNameValid() {

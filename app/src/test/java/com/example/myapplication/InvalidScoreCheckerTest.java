@@ -3,13 +3,11 @@ package com.example.myapplication;
 import static org.junit.Assert.assertEquals;
 
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.leaderBoard.Leaderboard;
-import com.example.myapplication.Model.leaderBoard.Score.Score;
 
 import org.junit.Test;
 
 // Authored by Diya Jain
-public class invalidScoreCheckerTest {
+public class InvalidScoreCheckerTest {
 
     @Test
     public void testScoreIsAlwaysAboveZero() {
