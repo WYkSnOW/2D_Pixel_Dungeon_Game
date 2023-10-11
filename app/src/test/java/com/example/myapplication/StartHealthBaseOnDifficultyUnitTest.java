@@ -40,13 +40,5 @@ public class StartHealthBaseOnDifficultyUnitTest {
         assertNotEquals(healthWhenDiffOne, healthWhenDiffThree);
         assertNotEquals(healthWhenDiffTwo, healthWhenDiffThree);
 
-        if (android.os.Build.VERSION.SDK_INT
-                >= android.os.Build.VERSION_CODES.O) {
-            LocalDate currentDate = LocalDate.now();
-            String dateString = currentDate.toString();
-            System.out.println("" +dateString);
-        }
-
-
     }
 }
