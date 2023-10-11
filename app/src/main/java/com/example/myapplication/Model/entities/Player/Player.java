@@ -9,6 +9,8 @@ import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 
+import java.time.LocalDate;
+
 public class Player extends Character {
 
     private long lastUpdate;
@@ -68,9 +70,11 @@ public class Player extends Character {
 
     private void updateGameScore() {
         int tempScore = 20 - gameTime;
-        if (tempScore >= 0) {
-            this.currentScore = tempScore;
-        }
+        this.currentScore = checkScoreAboveZero(tempScore);
+    }
+
+    public static int checkScoreAboveZero(int tempScore) {
+        return Math.max(tempScore, 0);
     }
 
     private void updateGameTime() {
