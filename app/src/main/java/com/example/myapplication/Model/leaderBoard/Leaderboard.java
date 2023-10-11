@@ -17,13 +17,6 @@ public class Leaderboard {
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
-        paint1 = new Paint();
-        paint1.setTextSize(50);
-        paint1.setColor(Color.WHITE);
-
-        paint2 = new Paint();
-        paint2.setTextSize(50);
-        paint2.setColor(Color.RED);
     }
 
     public static synchronized Leaderboard getInstance() {
@@ -32,6 +25,7 @@ public class Leaderboard {
         }
         return instance;
     }
+
 
     public ArrayList<Score> getPlayerRecords() {
         return playerRecords;
@@ -44,6 +38,14 @@ public class Leaderboard {
     }
 
     public void drawLeaderBoard(Canvas c, Score currentScore) {
+        paint1 = new Paint();
+        paint1.setTextSize(50);
+        paint1.setColor(Color.WHITE);
+
+        paint2 = new Paint();
+        paint2.setTextSize(50);
+        paint2.setColor(Color.RED);
+
         c.drawText("Score of this game: " + currentScore.getScore(), 1500, 200, paint2);
         for (int i = 0; i < playerRecords.size(); i++) {
             if (playerRecords.get(i).getIsNew()) {
