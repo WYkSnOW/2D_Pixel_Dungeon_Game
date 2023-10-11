@@ -91,9 +91,7 @@ public class GameMap { //store world and help to draw map
 
         int tileIdTop = getSpriteID(tileX, tileYTop);
         int tileIdBottom = getSpriteID(tileX, tileYBottom);
-
         //System.out.println("Top: " + yTop + "  Bottom: " + yBottom);
-
 
         return (isMoveAbleBlock(tileIdTop) && isMoveAbleBlock(tileIdBottom));
     }
