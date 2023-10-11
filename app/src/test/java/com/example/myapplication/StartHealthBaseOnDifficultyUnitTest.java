@@ -1,15 +1,8 @@
 package com.example.myapplication;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.gameStatesLogic.ConfigLogic;
 
 import org.junit.Test;
 
@@ -30,9 +23,14 @@ public class StartHealthBaseOnDifficultyUnitTest {
         int difficultyThree = 3;
         int healthWhenDiffThree = Player.calculateStartingHealth(difficultyThree);
 
-        assertEquals(healthWhenDiffOne, 100); // expect that player's start health is 100 when difficulty is 1
-        assertEquals(healthWhenDiffTwo, 50); // expect that player's start health is 50 when difficulty is 2
-        assertEquals(healthWhenDiffThree, 33); // expect that player's start health is 33 when difficulty is 3
+        // expect that player's start health is 100 when difficulty is 1
+        assertEquals(healthWhenDiffOne, 100);
+
+        // expect that player's start health is 50 when difficulty is 2
+        assertEquals(healthWhenDiffTwo, 50);
+
+        // expect that player's start health is 33 when difficulty is 3
+        assertEquals(healthWhenDiffThree, 33);
 
         // expect that player have different start health when difficulty is different
         assertNotEquals(healthWhenDiffOne, healthWhenDiffTwo);
