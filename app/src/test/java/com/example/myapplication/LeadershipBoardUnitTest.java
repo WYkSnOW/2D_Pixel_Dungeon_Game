@@ -26,12 +26,16 @@ public class LeadershipBoardUnitTest {
         //expect that score 5 is at top of playerRecords (index 0)
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(0).getScore(),
                 scoreFive.getScore());
+        //expect that score 4 is in index 1
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(1).getScore(),
                 scoreFour.getScore());
+        //expect that score 3 is in index 2
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(2).getScore(),
                 scoreThree.getScore());
+        //expect that score 2 is in index 3
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(3).getScore(),
                 scoreTwo.getScore());
+        //expect that score 1 is in index 4
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(4).getScore(),
                 scoreOne.getScore());
     }
@@ -55,17 +59,22 @@ public class LeadershipBoardUnitTest {
         Leaderboard.getInstance().addPlayerRecord(scoreSix);
         Leaderboard.getInstance().addPlayerRecord(scoreSeven);
 
-        //expect that score 5 is at top of playerRecords (index 0)
+        //expect that score 7 is at top of playerRecords (index 0)
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(0).getScore(),
                 scoreSeven.getScore());
+        //expect that score 6 is in index 1
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(1).getScore(),
                 scoreSix.getScore());
+        //expect that score 5 is in index 2
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(2).getScore(),
                 scoreFive.getScore());
+        //expect that score 4 is in index 3
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(3).getScore(),
                 scoreFour.getScore());
+        //expect that score 3 is in index 4
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(4).getScore(),
                 scoreThree.getScore());
+        //expect that score 2 is in index 5
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(5).getScore(),
                 scoreTwo.getScore());
 
