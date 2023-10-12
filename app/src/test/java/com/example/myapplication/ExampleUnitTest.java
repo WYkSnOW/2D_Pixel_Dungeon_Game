@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.example.myapplication.View.main.MainActivity;
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -13,7 +13,7 @@ import com.example.myapplication.View.main.MainActivity;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
+    public void additionIsCorrect() {
         assertEquals(4, 2 + 2);
     }
 }

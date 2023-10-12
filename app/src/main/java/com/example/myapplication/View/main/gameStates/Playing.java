@@ -24,7 +24,6 @@ import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.ui.PlayingUI;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
 
-import java.time.LocalDate;
 import java.util.Random;
 
 public class Playing extends BaseState implements GameStateInterFace {

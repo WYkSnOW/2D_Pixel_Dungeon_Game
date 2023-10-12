@@ -1,7 +1,6 @@
 package com.example.myapplication.Model.leaderBoard.Score;
-
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Score {
     private String playerName;
@@ -17,8 +16,9 @@ public class Score {
         this.score = score;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalDate currentDate = LocalDate.now();
-            this.date = currentDate.toString();
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            this.date = currentDateTime.format(formatter);
         } else {
             this.date = "";
         }
