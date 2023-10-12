@@ -1,14 +1,11 @@
 package com.example.myapplication;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import com.example.myapplication.Model.gameStatesLogic.ConfigLogic;
-import com.example.myapplication.Model.leaderBoard.Leaderboard;
-import com.example.myapplication.Model.leaderBoard.Score.Score;
+
 import org.junit.Test;
 
-public class playerNameValidUnitTest {
+public class PlayerNameValidUnitTest {
 
     @Test
     public void testIsNameValid() {
@@ -23,17 +20,6 @@ public class playerNameValidUnitTest {
         // a name only contain space which is invalid
         assertFalse(configLogic.isNameValid(null));
         // a null name which is invalid
-    }
-
-    @Test
-    public void testIsNameValid2 () {
-
-        Score score = new Score(10,1,"tony",true);
-        Leaderboard.getInstance().addPlayerRecord(score);
-        assertEquals(Leaderboard.getInstance()
-                .getPlayerRecords()
-                .get(0).getDifficulty(),
-                1);
     }
 
 

@@ -3,10 +3,8 @@ package com.example.myapplication.Model.leaderBoard;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.leaderBoard.Score.ScoreComparator;
-
 import java.util.ArrayList;
 
 public class Leaderboard {
@@ -17,13 +15,7 @@ public class Leaderboard {
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
-        paint1 = new Paint();
-        paint1.setTextSize(50);
-        paint1.setColor(Color.WHITE);
 
-        paint2 = new Paint();
-        paint2.setTextSize(50);
-        paint2.setColor(Color.RED);
     }
 
     public static synchronized Leaderboard getInstance() {
@@ -38,21 +30,41 @@ public class Leaderboard {
     }
 
     public void addPlayerRecord(Score score) {
+
         updatePlayerState();
         playerRecords.add(score);
         updateLeaderBoard();
     }
 
     public void drawLeaderBoard(Canvas c, Score currentScore) {
-        c.drawText("Score of this game: " + currentScore.getScore(), 1500, 200, paint2);
+        paint1 = new Paint();
+        paint1.setTextSize(50);
+        paint1.setColor(Color.WHITE);
+
+        paint2 = new Paint();
+        paint2.setTextSize(50);
+        paint2.setColor(Color.RED);
+        c.drawText("Score of this game: " + currentScore.getScore()
+                + "   Player name: " + currentScore.getPlayerName()
+                + "   Date: " + currentScore.getDate(),
+                500, 950,
+                paint2);
         for (int i = 0; i < playerRecords.size(); i++) {
             if (playerRecords.get(i).getIsNew()) {
                 c.drawText(
-                        "Score: " + playerRecords.get(i).getScore(), 800, 200 + (i * 50), paint2
+                        "Score: " + playerRecords.get(i).getScore()
+                                + "   Player name: " + playerRecords.get(i).getPlayerName()
+                                + "   Date: " + playerRecords.get(i).getDate(),
+                        600, 200 + (i * 50),
+                        paint2
                 );
             } else {
                 c.drawText(
-                        "Score: " + playerRecords.get(i).getScore(), 800, 200 + (i * 50), paint1
+                        "Score: " + playerRecords.get(i).getScore()
+                                + "   Player name: " + playerRecords.get(i).getPlayerName()
+                                + "   Date: " + playerRecords.get(i).getDate(),
+                        600, 200 + (i * 50),
+                        paint1
                 );
             }
         }
@@ -70,6 +82,7 @@ public class Leaderboard {
             p.setIsNew(false);
         }
     }
+
 
     // 其他需要的方法...
 }

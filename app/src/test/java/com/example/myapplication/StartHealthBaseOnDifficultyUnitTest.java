@@ -2,11 +2,9 @@ package com.example.myapplication;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import org.junit.Test;
-import java.time.LocalDate;
+
 
 public class StartHealthBaseOnDifficultyUnitTest {
 
@@ -39,6 +37,5 @@ public class StartHealthBaseOnDifficultyUnitTest {
         assertNotEquals(healthWhenDiffOne, healthWhenDiffTwo);
         assertNotEquals(healthWhenDiffOne, healthWhenDiffThree);
         assertNotEquals(healthWhenDiffTwo, healthWhenDiffThree);
-
     }
 }
