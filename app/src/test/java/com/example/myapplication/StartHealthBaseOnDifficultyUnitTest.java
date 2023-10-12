@@ -3,10 +3,8 @@ package com.example.myapplication;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import com.example.myapplication.Model.entities.Player.Player;
-
 import org.junit.Test;
 
-import java.time.LocalDate;
 
 public class StartHealthBaseOnDifficultyUnitTest {
 
@@ -39,14 +37,5 @@ public class StartHealthBaseOnDifficultyUnitTest {
         assertNotEquals(healthWhenDiffOne, healthWhenDiffTwo);
         assertNotEquals(healthWhenDiffOne, healthWhenDiffThree);
         assertNotEquals(healthWhenDiffTwo, healthWhenDiffThree);
-
-        if (android.os.Build.VERSION.SDK_INT
-                >= android.os.Build.VERSION_CODES.O) {
-            LocalDate currentDate = LocalDate.now();
-            String dateString = currentDate.toString();
-            System.out.println("" +dateString);
-        }
-
-
     }
 }

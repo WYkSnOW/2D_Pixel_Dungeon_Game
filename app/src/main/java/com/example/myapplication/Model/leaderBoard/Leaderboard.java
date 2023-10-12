@@ -3,12 +3,8 @@ package com.example.myapplication.Model.leaderBoard;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import java.time.LocalDate;
-
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.leaderBoard.Score.ScoreComparator;
-
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Leaderboard {
@@ -34,11 +30,7 @@ public class Leaderboard {
     }
 
     public void addPlayerRecord(Score score) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalDate currentDate = LocalDate.now();
-            String dateString = currentDate.toString();
 
-        }
         updatePlayerState();
         playerRecords.add(score);
         updateLeaderBoard();
