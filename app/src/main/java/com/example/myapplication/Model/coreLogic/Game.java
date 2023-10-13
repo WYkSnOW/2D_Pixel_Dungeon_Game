@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.View.main.gameStates.Config;
 
 import com.example.myapplication.View.main.gameStates.End;
@@ -103,6 +104,11 @@ public class Game { //All update and render get set over here
 
     public void setCurrentGameState(GameState currentGameState) {
         this.currentGameState = currentGameState;
+    }
+    public void setGameStateToEnd() {
+        //Leaderboard.getInstance().addPlayerRecord(player.sumbitScore());
+        end.addPlayerRecord(Player.getInstance().sumbitScore());
+        setCurrentGameState(Game.GameState.END);
     }
 
     public Playing getPlaying() {

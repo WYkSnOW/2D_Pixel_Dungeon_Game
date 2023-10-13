@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
@@ -77,7 +78,8 @@ public class MapManager {
         }
     }
 
-    public void changeMap(Doorway doorwayTarget) {
+    public void changeMap(Doorway doorwayTarget, Game game) {
+
         this.currentMap = doorwayTarget.getGameMapLocatedIn();
 
         float cX = GameConstants.UiSize.GAME_WIDTH / 2 - doorwayTarget.getPosOfDoorway().x;
@@ -134,6 +136,9 @@ public class MapManager {
                 mapThree,
                 HelpMethods.createHitboxForDoorway(3, 0, DoorwayType.DOORWAY_Three)
         );
+
+        Doorway endGameDoorway = new Doorway(HelpMethods.createHitboxForDoorway(14, 29, DoorwayType.END_GAME_DOORWAY), mapThree);
+        endGameDoorway.setEndGameDoorway(true);
 
         currentMap = mapOne;
 

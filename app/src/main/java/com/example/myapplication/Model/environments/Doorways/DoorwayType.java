@@ -8,7 +8,8 @@ public enum DoorwayType implements BitmapMethods {
 
     DOORWAY_ONE(1, 3, 0), //单位为格子数量, offset单位为像素
     DOORWAY_TWO(2, 1, 50),
-    DOORWAY_Three(2, 1, 0);
+    DOORWAY_Three(2, 1, 0),
+    END_GAME_DOORWAY(4, 1, 0);
 
     private int doorwayWidth;
     private int doorwayHeight;

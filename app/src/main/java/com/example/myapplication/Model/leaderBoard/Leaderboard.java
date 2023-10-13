@@ -10,12 +10,13 @@ import java.util.ArrayList;
 public class Leaderboard {
     private static Leaderboard instance;
     private ArrayList<Score> playerRecords;
+    private Score newestScore;
     private Paint paint1 = new Paint();
     private Paint paint2 = new Paint();
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
-
+        this.newestScore = new Score(0, 0, "player", true);
     }
 
     public static synchronized Leaderboard getInstance() {
@@ -30,13 +31,13 @@ public class Leaderboard {
     }
 
     public void addPlayerRecord(Score score) {
-
+        this.newestScore = score;
         updatePlayerState();
         playerRecords.add(score);
         updateLeaderBoard();
     }
 
-    public void drawLeaderBoard(Canvas c, Score currentScore) {
+    public void drawLeaderBoard(Canvas c) {
         paint1 = new Paint();
         paint1.setTextSize(50);
         paint1.setColor(Color.WHITE);
@@ -44,9 +45,9 @@ public class Leaderboard {
         paint2 = new Paint();
         paint2.setTextSize(50);
         paint2.setColor(Color.RED);
-        c.drawText("Score of this game: " + currentScore.getScore()
-                + "   Player name: " + currentScore.getPlayerName()
-                + "   Date: " + currentScore.getDate(),
+        c.drawText("Score of this game: " + newestScore.getScore()
+                + "   Player name: " + newestScore.getPlayerName()
+                + "   Date: " + newestScore.getDate(),
                 500, 950,
                 paint2);
         for (int i = 0; i < playerRecords.size(); i++) {
