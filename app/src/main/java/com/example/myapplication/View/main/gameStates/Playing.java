@@ -18,6 +18,7 @@ import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.interfaces.GameStateInterFace;
+import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.loopVideo.GameAnimation;
 import com.example.myapplication.Model.coreLogic.Game;
@@ -166,7 +167,12 @@ public class Playing extends BaseState implements GameStateInterFace {
         Doorway doorwayPlayerIsOn = mapManager.isPlayerOnDoorway(Player.getInstance().getHitBox());
         if (doorwayPlayerIsOn != null) {
             if (!doorwayJustPassed) {
-                mapManager.changeMap(doorwayPlayerIsOn.getDoorwayConnectedTo());
+                if (doorwayPlayerIsOn.isEndGameDoorway()) {
+                    setGameStateToEnd();
+                } else {
+                    mapManager.changeMap(doorwayPlayerIsOn.getDoorwayConnectedTo(), game);
+                }
+
             }
         } else {
             doorwayJustPassed = false;
@@ -349,7 +355,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
     public void setGameStateToEnd() {
         //Leaderboard.getInstance().addPlayerRecord(player.sumbitScore());
-        game.getEnd().addPlayerRecord(Player.getInstance().sumbitScore());
+        Leaderboard.getInstance().addPlayerRecord(Player.getInstance().sumbitScore());
         game.setCurrentGameState(Game.GameState.END);
     }
 

@@ -36,7 +36,6 @@ public class End extends BaseState implements GameStateInterFace {
         viewModel.getCurrentScore().observe((LifecycleOwner) context, new Observer<Score>() {
             @Override
             public void onChanged(Score score) {
-                currentScore = score;
                 Leaderboard.getInstance().addPlayerRecord(score);
             }
         });
@@ -60,7 +59,7 @@ public class End extends BaseState implements GameStateInterFace {
     public void render(Canvas c) {
         //c.drawText("End", 800, 200, paint);
         drawBtn(c);
-        Leaderboard.getInstance().drawLeaderBoard(c, currentScore);
+        Leaderboard.getInstance().drawLeaderBoard(c);
     }
     private void drawBtn(Canvas c) {
         c.drawBitmap(
