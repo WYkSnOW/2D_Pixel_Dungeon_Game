@@ -210,6 +210,9 @@ public class PlayingUI {
         }
     }
 
+    public void setMapChoice(int mapChoice) {
+        this.mapChoice = mapChoice;
+    }
 
     private void resetJoystickButton() {
         touchDown = false; //松开光标即操作消失

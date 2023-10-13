@@ -355,8 +355,11 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
     public void setGameStateToEnd() {
         //Leaderboard.getInstance().addPlayerRecord(player.sumbitScore());
+        playingUI.setMapChoice(0);
+        movePlayer = false;
         Leaderboard.getInstance().addPlayerRecord(Player.getInstance().sumbitScore());
         game.setCurrentGameState(Game.GameState.END);
+        mapManager.resetMap();
     }
 
     public void setPlayerMoveTrue(PointF lastTouchDiff) { //查看是否应该移动角色（触发移动后没有松开光标）
