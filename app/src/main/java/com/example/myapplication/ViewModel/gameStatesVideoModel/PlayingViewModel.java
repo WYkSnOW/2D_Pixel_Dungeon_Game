@@ -20,6 +20,7 @@ public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
     private MutableLiveData<Float> cameraX = new MutableLiveData<>();
     private MutableLiveData<Float> cameraY = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isPlayerAbleMove = new MutableLiveData<>();
     private PlayingLogic playingLogic = new PlayingLogic();
 
     public LiveData<PointF> getLastTouchDiff() {
@@ -29,6 +30,10 @@ public class PlayingViewModel extends ViewModel {
     public LiveData<Boolean> getIsAttacking() {
         return isAttacking;
     }
+    public LiveData<Boolean> getIsPlayerAbleMove() {
+        return isPlayerAbleMove;
+    }
+
     public LiveData<Float> getCameraX() {
         return cameraX;
     }
@@ -38,7 +43,9 @@ public class PlayingViewModel extends ViewModel {
     public void setAttacking(boolean attacking) {
         isAttacking.setValue(attacking);
     }
-
+    public void setIsPlayerAbleMove(boolean playerAbleMove) {
+        isPlayerAbleMove.postValue(playerAbleMove);
+    }
     public void setLastTouchDiff(PointF lastTouchDiff) {
         this.lastTouchDiff.setValue(lastTouchDiff);
     }

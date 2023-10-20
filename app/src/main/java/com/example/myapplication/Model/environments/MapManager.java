@@ -137,7 +137,9 @@ public class MapManager {
                 HelpMethods.createHitboxForDoorway(3, 0, DoorwayType.DOORWAY_Three)
         );
 
-        Doorway endGameDoorway = new Doorway(HelpMethods.createHitboxForDoorway(14, 29, DoorwayType.END_GAME_DOORWAY), mapThree);
+        Doorway endGameDoorway =
+                new Doorway(HelpMethods.createHitboxForDoorway(
+                                14, 29, DoorwayType.END_GAME_DOORWAY), mapThree);
         endGameDoorway.setEndGameDoorway(true);
 
         currentMap = mapOne;

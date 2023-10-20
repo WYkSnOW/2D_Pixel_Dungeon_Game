@@ -4,6 +4,7 @@ import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.helper.GameConstants;
+import com.example.myapplication.Model.helper.HelpMethods;
 
 public class PlayerRun implements PlayerMoveStrategy {
     @Override
@@ -32,9 +33,6 @@ public class PlayerRun implements PlayerMoveStrategy {
 
     @Override
     public PointF playerMovement(float xSpeed, float ySpeed, float baseSpeed) {
-        float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
-        float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
-
-        return new PointF(deltaX, deltaY);
+        return HelpMethods.playerMovementRun(xSpeed, ySpeed, baseSpeed);
     }
 }

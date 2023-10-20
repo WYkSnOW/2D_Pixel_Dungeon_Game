@@ -15,11 +15,11 @@ import com.example.myapplication.Model.helper.interfaces.GameStateInterFace;
 import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.ui.ButtonImage;
 import com.example.myapplication.Model.ui.CustomButton;
+import com.example.myapplication.Model.ui.GameImages;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.EndViewModel;
 
 public class End extends BaseState implements GameStateInterFace {
     private final CustomButton btnRestart;
-    private Score currentScore;
     private final EndViewModel viewModel;
 
     public End(Game game, Context context) {
@@ -58,6 +58,7 @@ public class End extends BaseState implements GameStateInterFace {
     @Override
     public void render(Canvas c) {
         //c.drawText("End", 800, 200, paint);
+        drawBackground(c);
         drawBtn(c);
         Leaderboard.getInstance().drawLeaderBoard(c);
     }
@@ -66,6 +67,14 @@ public class End extends BaseState implements GameStateInterFace {
                 ButtonImage.MENU_START.getBtnImg(btnRestart.isPushed()),
                 btnRestart.getHitbox().left,
                 btnRestart.getHitbox().top,
+                null
+        );
+    }
+    private void drawBackground(Canvas c) {
+        c.drawBitmap(
+                GameImages.END_SCREEN_CLOUD_BACKGROUND.getImage(),
+                0,
+                -500,
                 null
         );
     }

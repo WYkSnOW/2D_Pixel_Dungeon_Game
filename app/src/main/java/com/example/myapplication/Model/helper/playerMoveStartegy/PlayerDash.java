@@ -5,7 +5,6 @@ import android.graphics.PointF;
 public class PlayerDash implements PlayerMoveStrategy {
     @Override
     public void setPlayerAnim(float xSpeed, float ySpeed, PointF lastTouchDiff) {
-
     }
 
     @Override

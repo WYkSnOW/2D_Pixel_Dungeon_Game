@@ -39,6 +39,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     private float cameraX;
     private float cameraY;
     private boolean movePlayer;
+    private boolean playerAbleMove;
     private PointF lastTouchDiff;
 
     //private Zombie zombie;
@@ -68,6 +69,7 @@ public class Playing extends BaseState implements GameStateInterFace {
 
 
 
+
     public Playing(Game game, Context context) {
         super(game);
         paint = new Paint();
@@ -78,12 +80,12 @@ public class Playing extends BaseState implements GameStateInterFace {
         hitBoxPaint.setStyle(Paint.Style.STROKE);
         hitBoxPaint.setColor(Color.RED);
 
+        playerAbleMove = false;
         playerIdle = new PlayerIdle();
         playerRun = new PlayerRun();
         playerDash = new PlayerDash();
         xSpeed = 0;
         ySpeed = 0;
-
 
         mapManager = new MapManager(this);
         initCameraValue();
@@ -125,6 +127,12 @@ public class Playing extends BaseState implements GameStateInterFace {
                 cameraY = y;
             }
         });
+        viewModel.getIsPlayerAbleMove().observe((LifecycleOwner) context, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean ableMove) {
+                playerAbleMove = ableMove;
+            }
+        });
     }
 
     private void initCameraValue() {
@@ -146,10 +154,12 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     @Override
     public void update(double delta) {
+        updatePlayerMoveInfo(delta);
         if (playerMoveStrategy != null) {
             playerMoveStrategy.setPlayerAnim(0, 0, lastTouchDiff);
         }
-        updatePlayerMoveInfo(delta);
+        updatePlayerPosition(delta);
+
         Player.getInstance().update(delta);
         updateAttackHitbox();
         mapManager.setCameraValues(cameraX, cameraY);
@@ -193,7 +203,6 @@ public class Playing extends BaseState implements GameStateInterFace {
             if (!doorwayJustPassed) {
                 if (doorwayPlayerIsOn.isEndGameDoorway()) {
                     setGameStateToEnd();
-
                 } else {
                     mapManager.changeMap(doorwayPlayerIsOn.getDoorwayConnectedTo(), game);
                 }
@@ -346,22 +355,36 @@ public class Playing extends BaseState implements GameStateInterFace {
         float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
 
-        if (viewModel.checkPlayerAbleMove(
+
+        viewModel.setIsPlayerAbleMove(
+                viewModel.checkPlayerAbleMove(
                 attacking,
                 mapManager,
                 pWidth,
                 pHeight,
                 new PointF(deltaX, deltaY),
                 new PointF(cameraX, cameraY)
-        )) {
-            updatePlayerPosition(delta);
-        }
+        ));
+
+//        if (viewModel.checkPlayerAbleMove(
+//                attacking,
+//                mapManager,
+//                pWidth,
+//                pHeight,
+//                new PointF(deltaX, deltaY),
+//                new PointF(cameraX, cameraY)
+//        )) {
+//            updatePlayerPosition(delta);
+//        }
 
     }
 
     private void updatePlayerPosition(double delta) {
-        cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).x;
-        cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).y;
+        if (playerAbleMove) {
+            cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).x;
+            cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).y;
+        }
+
     }
 
     public void setGameStateToMenu() {

@@ -68,4 +68,16 @@ public class HelpMethods {
         return b.getHitbox().contains(e.getX(), e.getY());
     }
 
+    public static PointF playerMovementIdle() {
+        return new PointF(0,0);
+    }
+
+    public static PointF playerMovementRun(float xSpeed, float ySpeed, float baseSpeed) {
+        float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
+        float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
+        System.out.println(deltaX < 0);
+        System.out.println(deltaY);
+        return new PointF(deltaX, deltaY);
+    }
+
 }
