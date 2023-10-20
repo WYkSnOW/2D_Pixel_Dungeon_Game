@@ -11,8 +11,6 @@ import com.example.myapplication.ViewModel.MainViewModel;
 public enum Floor implements BitmapMethods {
     OUTSIDE(R.drawable.map_resource, 13, 12);
 
-
-
     private Bitmap[] sprites;
 
     Floor(int resID, int tilesInWidth, int tilesInHeight) {

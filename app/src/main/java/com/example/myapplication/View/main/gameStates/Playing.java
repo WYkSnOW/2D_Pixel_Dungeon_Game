@@ -18,6 +18,10 @@ import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.interfaces.GameStateInterFace;
+import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerDash;
+import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerIdle;
+import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerMoveStrategy;
+import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerRun;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.loopVideo.GameAnimation;
@@ -35,6 +39,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     private float cameraX;
     private float cameraY;
     private boolean movePlayer;
+    private boolean playerAbleMove;
     private PointF lastTouchDiff;
 
     //private Zombie zombie;
@@ -53,6 +58,13 @@ public class Playing extends BaseState implements GameStateInterFace {
     private int effectAdjustTopWhenLeft;
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
+    private PlayerMoveStrategy playerMoveStrategy;
+    private PlayerMoveStrategy playerRun;
+    private PlayerMoveStrategy playerIdle;
+    private PlayerMoveStrategy playerDash;
+    private float xSpeed;
+    private float ySpeed;
+
 
 
 
@@ -67,6 +79,13 @@ public class Playing extends BaseState implements GameStateInterFace {
         hitBoxPaint.setStrokeWidth(1);
         hitBoxPaint.setStyle(Paint.Style.STROKE);
         hitBoxPaint.setColor(Color.RED);
+
+        playerAbleMove = false;
+        playerIdle = new PlayerIdle();
+        playerRun = new PlayerRun();
+        playerDash = new PlayerDash();
+        xSpeed = 0;
+        ySpeed = 0;
 
         mapManager = new MapManager(this);
         initCameraValue();
@@ -108,11 +127,21 @@ public class Playing extends BaseState implements GameStateInterFace {
                 cameraY = y;
             }
         });
+        viewModel.getIsPlayerAbleMove().observe((LifecycleOwner) context, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean ableMove) {
+                playerAbleMove = ableMove;
+            }
+        });
     }
 
     private void initCameraValue() {
         cameraX = GameConstants.UiSize.GAME_WIDTH / 2 - mapManager.getMaxWidthCurrentMap() / 2;
         cameraY = GameConstants.UiSize.GAME_HEIGHT / 2 - mapManager.getMaxHeightCurrentMap() / 2;
+    }
+
+    private void setPlayerMoveStrategy(PlayerMoveStrategy playerMoveStrategy) {
+        this.playerMoveStrategy = playerMoveStrategy;
     }
 
     public void initPlaying() {
@@ -125,7 +154,12 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     @Override
     public void update(double delta) {
-        updatePlayerMove(delta);
+        updatePlayerMoveInfo(delta);
+        if (playerMoveStrategy != null) {
+            playerMoveStrategy.setPlayerAnim(0, 0, lastTouchDiff);
+        }
+        updatePlayerPosition(delta);
+
         Player.getInstance().update(delta);
         updateAttackHitbox();
         mapManager.setCameraValues(cameraX, cameraY);
@@ -232,25 +266,6 @@ public class Playing extends BaseState implements GameStateInterFace {
         c.drawRect(attackBox, hitBoxPaint); //draw weapon's hitbox
     }
 
-    private void checkAttack() {
-        RectF attackBoxWithoutCamera = new RectF(attackBox);
-        attackBoxWithoutCamera.left -= cameraX;
-        attackBoxWithoutCamera.top -= cameraY;
-        attackBoxWithoutCamera.right -= cameraX;
-        attackBoxWithoutCamera.bottom -= cameraY;
-
-        for (Zombie zombie : mapManager.getCurrentMap().getZombieArrayList()) {
-            if (attackBoxWithoutCamera.intersects(
-                    zombie.getHitBox().left,
-                    zombie.getHitBox().top,
-                    zombie.getHitBox().right,
-                    zombie.getHitBox().bottom)
-            ) {
-                zombie.setActive(false); //remove zombie(or any mob)
-                //zombie.getGameCharType().setSprites(GameCharacters.KNIGHT.getSprites());
-            }
-        }
-    }
 
     private void updateAttackHitbox() {
         PointF pos = getEffectPos();
@@ -303,21 +318,23 @@ public class Playing extends BaseState implements GameStateInterFace {
         }
     }
 
-    private void updatePlayerMove(double delta) {
+
+
+
+    private void updatePlayerMoveInfo(double delta) {
         if (!movePlayer) {
-            if (Player.getInstance().getDrawDir() <= 1) {
-                Player.getInstance().setDrawDir(Player.getInstance().getDrawDir() + 2);
-            }
+            setPlayerMoveStrategy(playerIdle);
             return;
         }
-        float baseSpeed = (float) delta * 300;
+        setPlayerMoveStrategy(playerRun);
+
+
         float ratio = Math.abs(lastTouchDiff.y) / Math.abs(lastTouchDiff.x);
         double angle = Math.atan(ratio); //找到玩家滑动的角度
 
-        float xSpeed = (float) Math.cos(angle); //用角度与直线速度计算斜向速度
-        float ySpeed = (float) Math.sin(angle);
+        xSpeed = (float) Math.cos(angle); //用角度与直线速度计算斜向速度
+        ySpeed = (float) Math.sin(angle);
 
-        viewModel.setPlayerAnimDir(xSpeed, ySpeed, lastTouchDiff);
 
         if (lastTouchDiff.x < 0) {
             xSpeed *= -1;
@@ -334,20 +351,40 @@ public class Playing extends BaseState implements GameStateInterFace {
         //if (ySpeed <= 0) {
         //    pHeight = 0;
         //}
+        float baseSpeed = (float) delta * 300;
         float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
 
-        if (viewModel.checkPlayerAbleMove(
+
+        viewModel.setIsPlayerAbleMove(
+                viewModel.checkPlayerAbleMove(
                 attacking,
                 mapManager,
                 pWidth,
                 pHeight,
                 new PointF(deltaX, deltaY),
                 new PointF(cameraX, cameraY)
-        )) {
-            cameraX += deltaX;
-            cameraY += deltaY;
+        ));
+
+//        if (viewModel.checkPlayerAbleMove(
+//                attacking,
+//                mapManager,
+//                pWidth,
+//                pHeight,
+//                new PointF(deltaX, deltaY),
+//                new PointF(cameraX, cameraY)
+//        )) {
+//            updatePlayerPosition(delta);
+//        }
+
+    }
+
+    private void updatePlayerPosition(double delta) {
+        if (playerAbleMove) {
+            cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).x;
+            cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).y;
         }
+
     }
 
     public void setGameStateToMenu() {
@@ -356,6 +393,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     public void setGameStateToEnd() {
         //Leaderboard.getInstance().addPlayerRecord(player.sumbitScore());
         Leaderboard.getInstance().addPlayerRecord(Player.getInstance().sumbitScore());
+        movePlayer = false;
+        mapManager.resetMap();
         game.setCurrentGameState(Game.GameState.END);
     }
 

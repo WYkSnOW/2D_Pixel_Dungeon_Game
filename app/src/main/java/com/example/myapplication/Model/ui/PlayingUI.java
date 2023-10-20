@@ -191,7 +191,6 @@ public class PlayingUI {
                             playing.getMapManager().changeCurrentMap(mapChoice);
                         } else {
                             mapChoice = 0;
-                            playing.getMapManager().resetMap();
                             playing.setGameStateToEnd();
                         }
                     }
