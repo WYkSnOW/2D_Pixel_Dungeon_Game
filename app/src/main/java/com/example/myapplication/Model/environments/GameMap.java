@@ -77,11 +77,20 @@ public class GameMap { //store world and help to draw map
     }
 
 
-    public boolean canMoveHere(float x, float yTop, float yBottom) {
+    public static boolean checkEdge(float x, float yTop, float yBottom, float mapWidth, float mapHeight) {
         if (x < 0 || yTop < 0 || yBottom < 0) {
             return false;
         }
-        if (x >= getMapWidth() || yTop >= getMapHeight() || yBottom >= getMapHeight()) {
+        if (x >= mapWidth || yTop >= mapHeight || yBottom >= mapHeight) {
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean canMoveHere(float x, float yTop, float yBottom) {
+
+        if (!checkEdge(x, yTop, yBottom, getMapWidth(), getMapHeight())) {
             return false;
         }
 
@@ -95,7 +104,7 @@ public class GameMap { //store world and help to draw map
 
         return (isMoveAbleBlock(tileIdTop) && isMoveAbleBlock(tileIdBottom));
     }
-    public boolean isMoveAbleBlock(int tiledId) {
+    public static boolean isMoveAbleBlock(int tiledId) {
         return tiledId == 15
                 || tiledId == 123
                 || tiledId == 124

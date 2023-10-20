@@ -77,6 +77,10 @@ public class PlayingLogic {
         return hitBox;
     }
 
+    public boolean checkPlayerAbleMoveWithAttacking(boolean attacking) {
+        return !attacking;
+    }
+
 
     public boolean checkPlayerAbleMove(
             boolean attacking,
@@ -93,7 +97,8 @@ public class PlayingLogic {
         float yBottom
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1 + pHeight;
 
-        return mapManager.getCurrentMap().canMoveHere(x, yTop, yBottom) && !attacking;
+        return mapManager.getCurrentMap().canMoveHere(x, yTop, yBottom)
+                && checkPlayerAbleMoveWithAttacking(attacking);
     }
 
     public float getEffectRote() {

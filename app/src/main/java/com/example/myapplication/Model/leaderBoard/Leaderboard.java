@@ -3,6 +3,8 @@ package com.example.myapplication.Model.leaderBoard;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
+import com.example.myapplication.Model.leaderBoard.Score.DifficultyComparator;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.leaderBoard.Score.ScoreComparator;
 import java.util.ArrayList;
@@ -72,6 +74,7 @@ public class Leaderboard {
     }
 
     public void updateLeaderBoard() {
+        playerRecords.sort(new DifficultyComparator());
         playerRecords.sort(new ScoreComparator());
         if (playerRecords.size() > 6) {
             playerRecords.subList(6, playerRecords.size()).clear();

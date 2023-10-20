@@ -80,4 +80,15 @@ public class HelpMethods {
         return new PointF(deltaX, deltaY);
     }
 
+
+    public static double getScaleRatio(double width, double height, double gWidth, double gHeight) {
+        double ratioX = gWidth / width;
+        double ratioY = gHeight / height;
+        return Math.max(ratioX, ratioY);
+    }
+
+    public static int getIdleAnimation(int currentDir) {
+        return currentDir + 2;
+    }
+
 }

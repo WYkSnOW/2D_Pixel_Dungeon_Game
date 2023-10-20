@@ -14,11 +14,8 @@ public class CameraMovementWhenPlayerLdleUnitTest {
     public void cameraMovementWhenPlayerIdle() {
         //When character is in idle condition, no movement will happen when function get call.
 
-
-        PointF moveVector = HelpMethods.playerMovementIdle();
-
-        int xVector = (int) moveVector.x;
-        int yVector = (int) moveVector.y;
+        int xVector = (int) HelpMethods.playerMovementIdle().x;
+        int yVector = (int) HelpMethods.playerMovementIdle().y;
 
         assertEquals(0, xVector);
         assertEquals(0, yVector);

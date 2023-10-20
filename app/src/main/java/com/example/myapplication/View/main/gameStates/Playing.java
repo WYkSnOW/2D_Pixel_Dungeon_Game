@@ -59,8 +59,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
     private PlayerMoveStrategy playerMoveStrategy;
-    private PlayerMoveStrategy playerIdle;
     private PlayerMoveStrategy playerRun;
+    private PlayerMoveStrategy playerIdle;
     private PlayerMoveStrategy playerDash;
     private float xSpeed;
     private float ySpeed;

@@ -45,8 +45,7 @@ public class MainViewModel extends ViewModel  {
         return gameHeight;
     }
     public static double getScaleRatio(double width, double height) {
-        double ratioX = gameWidth / width;
-        double ratioY = gameHeight / height;
-        return Math.max(ratioX, ratioY);
+        return HelpMethods.getScaleRatio(width, height, gameWidth, gameHeight);
     }
+
 }
