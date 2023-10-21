@@ -17,14 +17,24 @@ public class ChangeBackgroundSizeBaseOnScreenUnitTest {
 
         double backgroundXOne = 1080;
         double backgroundYOne = 1980;
-        double ratioOne = HelpMethods.getScaleRatio(backgroundXOne, backgroundYOne, gameWidth, gameHeight);
+        double ratioOne = HelpMethods.getScaleRatio(
+                backgroundXOne,
+                backgroundYOne,
+                gameWidth,
+                gameHeight
+        );
         //after rescale, size of background will be >= game size.
         assertTrue(backgroundXOne * ratioOne >= gameWidth);
         assertTrue(backgroundYOne * ratioOne >= gameHeight);
 
         double backgroundXTwo = 370;
         double backgroundYTwo = 330;
-        double ratioTwo = HelpMethods.getScaleRatio(backgroundXTwo, backgroundYTwo, gameWidth, gameHeight);
+        double ratioTwo = HelpMethods.getScaleRatio(
+                backgroundXTwo,
+                backgroundYTwo,
+                gameWidth,
+                gameHeight
+        );
         //when size the background is different, they get different rescale ratio
         assertNotSame(ratioOne, ratioTwo);
     }

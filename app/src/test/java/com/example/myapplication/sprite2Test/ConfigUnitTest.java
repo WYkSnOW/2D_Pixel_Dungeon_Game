@@ -5,8 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import com.example.myapplication.Model.gameStatesLogic.ConfigLogic;
-import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerMoveStrategy;
-import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerRun;
 
 import org.junit.Test;
 //Authored by Anisa Wellington

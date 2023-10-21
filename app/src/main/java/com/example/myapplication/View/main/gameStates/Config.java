@@ -412,13 +412,13 @@ public class Config extends BaseState implements GameStateInterFace {
                 // 在这里处理用户输入的文字
                 userInput = editText.getText().toString();
                 if (viewModel.isNameValid(userInput)) {
-                    if (userInput.length() <= 20) {
+                    if (userInput.length() <= 15) {
                         //currentNameText = userInput;
                         viewModel.setPlayerName(userInput);
                         validName = true;
                     } else {
                         setTimeCounter(); //show hint for 10 second
-                        hintText = "Maximum 20 Characters";
+                        hintText = "Maximum 15 Characters";
                     }
 
                 } else {

@@ -22,6 +22,7 @@ public class IdleDirMatchRunDirUnitTest {
         int standingDirTwo = GameConstants.DrawDir.IDLE_LEFT;
         assertEquals(standingDirTwo, HelpMethods.getIdleAnimation(lastMoveDirTwo));
 
-        assertNotSame(HelpMethods.getIdleAnimation(lastMoveDirOne), HelpMethods.getIdleAnimation(lastMoveDirTwo));
+        assertNotSame(HelpMethods.getIdleAnimation(lastMoveDirOne),
+                HelpMethods.getIdleAnimation(lastMoveDirTwo));
     }
 }

@@ -10,9 +10,8 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-import com.example.myapplication.Model.entities.GameCharacters;
-import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.View.main.GamePanel;
+
+
 
 /**
  * Instrumented test, which will execute on an Android device.

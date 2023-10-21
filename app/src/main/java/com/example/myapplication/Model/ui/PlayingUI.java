@@ -31,9 +31,7 @@ public class PlayingUI {
 
     private CustomButton btnMenu;
     private final Playing playing;
-    private CustomButton btnConfig;
-    private  int configStartX = GAME_WIDTH - ButtonImage.MENU_START.getWidth();
-    private int configStartY = GAME_HEIGHT - ButtonImage.MENU_START.getHeight();
+
 
     private int mapChoice;
 
@@ -51,12 +49,7 @@ public class PlayingUI {
                 ButtonImage.PLAYING_MENU.getWidth(),
                 ButtonImage.PLAYING_MENU.getHeight()
         );
-        btnConfig = new CustomButton(
-                configStartX,
-                configStartY,
-                ButtonImage.MENU_START.getWidth(),
-                ButtonImage.PLAYING_MENU.getHeight()
-        );
+
 
 
         mapChoice = 0;
@@ -88,12 +81,7 @@ public class PlayingUI {
                 null
         );
 
-        c.drawBitmap(
-                ButtonImage.MENU_START.getBtnImg(btnConfig.isPushed(btnConfig.getPointerId())),
-                btnConfig.getHitbox().left,
-                btnConfig.getHitbox().top,
-                null
-        );
+
         //if(touchDown) { //初始点击点在圆环内且并未松开鼠标触发，松开光标被刷新掉
         //    c.drawLine(xCenter, yCenter, xTouch, yTouch, yellowPaint); //画出光标与圆形的三角形
         //    c.drawLine(xCenter, yCenter, xTouch, yCenter, yellowPaint);
@@ -147,9 +135,6 @@ public class PlayingUI {
                 if (isIn(eventPos, btnMenu)) {
                     btnMenu.setPushed(true, pointerId);
                 }
-                if (isIn(eventPos, btnConfig)) {
-                    btnConfig.setPushed(true, pointerId);
-                }
                 //game.setCurrentGameState(Game.GameState.END);
             }
         } else if (action == MotionEvent.ACTION_MOVE) { //点击后移动光标
@@ -183,7 +168,7 @@ public class PlayingUI {
                     }
                 }
 
-                if (isIn(eventPos, btnConfig)) {
+                /*if (isIn(eventPos, btnConfig)) {
                     if (btnConfig.isPushed(pointerId)) {
                         resetJoystickButton();
                         if (mapChoice < 2) {
@@ -194,12 +179,12 @@ public class PlayingUI {
                             playing.setGameStateToEnd();
                         }
                     }
-                }
+                }*/
             }
 
 
 
-            btnConfig.unPush(pointerId);
+            //btnConfig.unPush(pointerId);
             btnMenu.unPush(pointerId);
 
             if (pointerId == attackBtnPointerId) {

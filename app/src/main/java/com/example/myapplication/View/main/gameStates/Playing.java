@@ -159,8 +159,10 @@ public class Playing extends BaseState implements GameStateInterFace {
             playerMoveStrategy.setPlayerAnim(0, 0, lastTouchDiff);
         }
         updatePlayerPosition(delta);
+        if (game.getCurrentGameState() == Game.GameState.PLAYING) {
+            Player.getInstance().update(delta);
+        }
 
-        Player.getInstance().update(delta);
         updateAttackHitbox();
         mapManager.setCameraValues(cameraX, cameraY);
         checkForDoorway();
@@ -366,16 +368,6 @@ public class Playing extends BaseState implements GameStateInterFace {
                 new PointF(cameraX, cameraY)
         ));
 
-//        if (viewModel.checkPlayerAbleMove(
-//                attacking,
-//                mapManager,
-//                pWidth,
-//                pHeight,
-//                new PointF(deltaX, deltaY),
-//                new PointF(cameraX, cameraY)
-//        )) {
-//            updatePlayerPosition(delta);
-//        }
 
     }
 
