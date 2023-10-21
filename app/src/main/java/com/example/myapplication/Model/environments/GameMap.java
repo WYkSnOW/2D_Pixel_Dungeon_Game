@@ -77,7 +77,9 @@ public class GameMap { //store world and help to draw map
     }
 
 
-    public static boolean checkEdge(float x, float yTop, float yBottom, float mapWidth, float mapHeight) {
+    public static boolean checkEdge(
+            float x, float yTop, float yBottom, float mapWidth, float mapHeight
+    ) {
         if (x < 0 || yTop < 0 || yBottom < 0) {
             return false;
         }

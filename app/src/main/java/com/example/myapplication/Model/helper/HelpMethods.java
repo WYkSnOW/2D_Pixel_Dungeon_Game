@@ -69,7 +69,7 @@ public class HelpMethods {
     }
 
     public static PointF playerMovementIdle() {
-        return new PointF(0,0);
+        return new PointF(0, 0);
     }
 
     public static PointF playerMovementRun(float xSpeed, float ySpeed, float baseSpeed) {

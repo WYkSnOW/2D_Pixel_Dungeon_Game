@@ -15,6 +15,7 @@ public class Leaderboard {
     private Score newestScore;
     private Paint paint1 = new Paint();
     private Paint paint2 = new Paint();
+    private Paint timePaint = new Paint();
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
@@ -40,37 +41,55 @@ public class Leaderboard {
     }
 
     public void drawLeaderBoard(Canvas c) {
-        paint1 = new Paint();
-        paint1.setTextSize(50);
+        paint1.setTextSize(35);
         paint1.setColor(Color.WHITE);
 
-        paint2 = new Paint();
-        paint2.setTextSize(50);
+        paint2.setTextSize(35);
         paint2.setColor(Color.RED);
-        c.drawText("Score of this game: " + newestScore.getScore()
-                + "   Player name: " + newestScore.getPlayerName()
-                + "   Date: " + newestScore.getDate(),
-                500, 950,
+
+        timePaint.setTextSize(20);
+        timePaint.setColor(Color.BLACK);
+
+        c.drawText(
+                "Name: " + newestScore.getPlayerName(),
+                1910,
+                540,
                 paint2);
+        c.drawText(
+                "Score: " + newestScore.getScore(),
+                1910,
+                580,
+                paint2);
+        c.drawText(newestScore.getDate(),
+                1910,
+                620,
+                paint2);
+
         for (int i = 0; i < playerRecords.size(); i++) {
             if (playerRecords.get(i).getIsNew()) {
-                c.drawText(
-                        "Score: " + playerRecords.get(i).getScore()
-                                + "   Player name: " + playerRecords.get(i).getPlayerName()
-                                + "   Date: " + playerRecords.get(i).getDate(),
-                        600, 200 + (i * 50),
-                        paint2
-                );
+                drawRankInfo(c, i, paint2, timePaint);
             } else {
-                c.drawText(
-                        "Score: " + playerRecords.get(i).getScore()
-                                + "   Player name: " + playerRecords.get(i).getPlayerName()
-                                + "   Date: " + playerRecords.get(i).getDate(),
-                        600, 200 + (i * 50),
-                        paint1
-                );
+                drawRankInfo(c, i, paint1, timePaint);
             }
         }
+    }
+
+    private void drawRankInfo(Canvas c, int i, Paint textpaint, Paint timePaint) {
+        int addSpace = 105;
+        c.drawText(
+                playerRecords.get(i).getPlayerName(),
+                220,
+                410 + (i * addSpace),
+                textpaint);
+        c.drawText(
+                "" + playerRecords.get(i).getScore(),
+                565,
+                420 + (i * addSpace) + 50,
+                textpaint);
+        c.drawText(playerRecords.get(i).getDate(),
+                280,
+                405 + (i * addSpace) + 20,
+                timePaint);
     }
 
     public void updateLeaderBoard() {

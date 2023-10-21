@@ -9,7 +9,8 @@ public class PlayerIdle implements PlayerMoveStrategy {
     @Override
     public void setPlayerAnim(float xSpeed, float ySpeed, PointF lastTouchDiff) {
         if (Player.getInstance().getDrawDir() <= 1) {
-            Player.getInstance().setDrawDir(HelpMethods.getIdleAnimation(Player.getInstance().getDrawDir()));
+            Player.getInstance().setDrawDir(HelpMethods
+                    .getIdleAnimation(Player.getInstance().getDrawDir()));
         }
     }
 
