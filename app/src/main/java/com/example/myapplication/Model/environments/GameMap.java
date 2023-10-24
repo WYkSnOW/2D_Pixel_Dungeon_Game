@@ -1,7 +1,7 @@
 package com.example.myapplication.Model.environments;
 
 import com.example.myapplication.Model.entities.Items.Item;
-import com.example.myapplication.Model.entities.enemies.Zombie;
+import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.helper.GameConstants;
 
@@ -12,7 +12,7 @@ public class GameMap { //store world and help to draw map
     private Floor floorType;
     private ArrayList<Item> itemArrayList;
     private ArrayList<Doorway> doorwayArrayList;
-    private ArrayList<Zombie> zombieArrayList;
+    private ArrayList<AbstractEnemy> mobArrayList;
 
 
 
@@ -21,7 +21,7 @@ public class GameMap { //store world and help to draw map
         this.floorType = floorType;
         this.itemArrayList = itemArrayList;
         this.doorwayArrayList = new ArrayList<>();
-        this.zombieArrayList = new ArrayList<>();
+        this.mobArrayList = new ArrayList<>();
     }
 
     public void addDoorway(Doorway doorway) {
@@ -54,8 +54,8 @@ public class GameMap { //store world and help to draw map
         return spriteIds.length;
     }
 
-    public ArrayList<Zombie> getZombieArrayList() {
-        return zombieArrayList;
+    public ArrayList<AbstractEnemy> getMobArrayList() {
+        return mobArrayList;
     }
 
     public int getMapWidth() {
@@ -65,14 +65,14 @@ public class GameMap { //store world and help to draw map
         return getArrayHeight() * GameConstants.Sprite.SIZE;
     }
 
-    public void addZombiesToList(ArrayList<Zombie> zombies) {
+    public void addMobsToList(ArrayList<AbstractEnemy> zombies) {
         if (zombies != null) {
-            zombieArrayList.addAll(zombies);
+            mobArrayList.addAll(zombies);
         }
     }
-    public void replaceZombiesToList(ArrayList<Zombie> zombies) {
+    public void replaceZombiesToList(ArrayList<AbstractEnemy> zombies) {
         if (zombies != null) {
-            zombieArrayList = zombies;
+            mobArrayList = zombies;
         }
     }
 

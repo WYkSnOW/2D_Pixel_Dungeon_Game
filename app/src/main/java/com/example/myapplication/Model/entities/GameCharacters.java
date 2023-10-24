@@ -54,12 +54,39 @@ public enum GameCharacters implements BitmapMethods {
             6,
             2,
             4
+    ),
 
+    CHEST_MOB(
+            R.drawable.chest_mob_list,
+            new PointF(26, 34),
+            4,
+            4,
+            6,
+            6,
+            8
+    ),
+    CROW_MAN(
+            R.drawable.crow_mob_list,
+            new PointF(22, 30),
+            4,
+            4,
+            6,
+            4,
+            7
+    ),
+    STEEL_GOLEM(
+            R.drawable.steel_golem_mob_list,
+            new PointF(32, 40),
+            13,
+            4,
+            6,
+            13,
+            15
     );
 
 
     private Bitmap spriteSheet;
-    private Bitmap[][] sprites; //
+    private Bitmap[][] sprites;
     // 素材一共Y行 * X列格，即[Y][X]
     private int characterWidth;
     private int characterHeight;

@@ -5,7 +5,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.enemies.Zombie;
+import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
 
@@ -129,7 +129,7 @@ public class PlayingLogic {
             attackBoxWithoutCamera.right -= cameraX;
             attackBoxWithoutCamera.bottom -= cameraY;
 
-            for (Zombie zombie : mapManager.getCurrentMap().getZombieArrayList()) {
+            for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
                 if (attackBoxWithoutCamera.intersects(
                         zombie.getHitBox().left,
                         zombie.getHitBox().top,
@@ -143,7 +143,7 @@ public class PlayingLogic {
     }
 
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
-        for (Zombie zombie : mapManager.getCurrentMap().getZombieArrayList()) {
+        for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
             if (zombie.isActive()) {
                 zombie.update(delta, mapManager, new PointF(
                         Player.getInstance().getHitBox().centerX() - cameraX,

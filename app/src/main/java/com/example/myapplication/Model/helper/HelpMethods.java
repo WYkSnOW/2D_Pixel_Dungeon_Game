@@ -7,7 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.myapplication.Model.entities.GameCharacters;
-import com.example.myapplication.Model.entities.enemies.Zombie;
+import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.EnemyFactory;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.Doorways.DoorwayType;
 import com.example.myapplication.Model.environments.GameMap;
@@ -36,17 +37,18 @@ public class HelpMethods {
                 x + doorwayType.getDoorwayWidth(),
                 y + doorwayType.getDoorwayHeight() - doorwayType.getOffsetY());
     }
-    public static ArrayList<Zombie> getZombieRandomized(int amount, GameMap gameMap) {
+    public static ArrayList<AbstractEnemy> getMobRandomized(int amount, GameMap gameMap, GameCharacters enemyType) {
         int width = (gameMap.getArrayWidth() - 1) * GameConstants.Sprite.SIZE;
         int height = (gameMap.getMapHeight() - 1) * GameConstants.Sprite.SIZE;
 
-        ArrayList<Zombie> zombieArrayList = new ArrayList<>();
+        ArrayList<AbstractEnemy> zombieArrayList = new ArrayList<>();
         int i = 0;
         while (i < amount) {
             float x = (float) Math.random() * width;
             float y = (float) Math.random() * height;
-            if (gameMap.canMoveHere(x, y, y + (GameCharacters.ZOMBIE.getCharacterHeight()))) {
-                zombieArrayList.add(new Zombie(new PointF(x, y)));
+            if (gameMap.canMoveHere(x, y, y + (enemyType.getCharacterHeight()))) {
+                zombieArrayList.add(EnemyFactory.createEnemy(enemyType, new PointF(x, y)));
+                //zombieArrayList.add(new Zombie(new PointF(x, y)));
                 i++;
             }
         }
