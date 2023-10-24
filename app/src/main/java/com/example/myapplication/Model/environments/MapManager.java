@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.example.myapplication.Model.coreLogic.Game;
+import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
@@ -118,9 +119,13 @@ public class MapManager {
         mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE, null);
         mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE, null);
 
-        mapOne.addZombiesToList(HelpMethods.getZombieRandomized(3, mapOne));
-        mapTwo.addZombiesToList(HelpMethods.getZombieRandomized(3, mapTwo));
-        mapThree.addZombiesToList(HelpMethods.getZombieRandomized(4, mapThree));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.ZOMBIE));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CHEST_MOB));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CROW_MAN));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.STEEL_GOLEM));
+
+        mapTwo.addMobsToList(HelpMethods.getMobRandomized(3, mapTwo, GameCharacters.ZOMBIE));
+        mapThree.addMobsToList(HelpMethods.getMobRandomized(4, mapThree, GameCharacters.ZOMBIE));
 
         //HelpMethods.AddDoorwayToGameMap(mapOne, mapTwo, Doorways.DOORWAY_ONE);
         HelpMethods.connectTwoDoorways(

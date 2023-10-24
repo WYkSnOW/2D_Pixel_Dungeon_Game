@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.enemies.Zombie;
+import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -154,14 +154,17 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     @Override
     public void update(double delta) {
+        if (game.getCurrentGameState() != Game.GameState.PLAYING) {
+            return;
+        }
+
         updatePlayerMoveInfo(delta);
         if (playerMoveStrategy != null) {
             playerMoveStrategy.setPlayerAnim(0, 0, lastTouchDiff);
         }
         updatePlayerPosition(delta);
-        if (game.getCurrentGameState() == Game.GameState.PLAYING) {
-            Player.getInstance().update(delta);
-        }
+
+        Player.getInstance().update(delta);
 
         updateAttackHitbox();
         mapManager.setCameraValues(cameraX, cameraY);
@@ -185,7 +188,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         //itemManager.draw(c);
         drawPlayer(c);
 
-        for (Zombie zombie : mapManager.getCurrentMap().getZombieArrayList()) {
+        for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
             if (zombie.isActive()) {
                 drawCharacter(c, zombie);
             }
@@ -238,12 +241,16 @@ public class Playing extends BaseState implements GameStateInterFace {
         c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 250, paint);
     }
     public void drawCharacter(Canvas canvas, Character character) {
+        int offsetX = character.getHitBoxOffsetX();
+        if (character.getDrawDir() == GameConstants.DrawDir.RIGHT) {
+            offsetX = 0;
+        }
         canvas.drawBitmap(
                 character.getGameCharType().getSprite(
                         character.getDrawDir(),
                         character.getAniIndex()
                 ),
-                character.getHitBox().left + cameraX - character.getHitBoxOffsetX(),
+                character.getHitBox().left + cameraX - offsetX,
                 character.getHitBox().top + cameraY - character.getHitBoxOffSetY(),
                 null
         );
