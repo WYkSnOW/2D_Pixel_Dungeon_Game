@@ -24,6 +24,7 @@ public class Player extends Character {
     public Player(GameCharacters characterChoice) {
         super(new PointF(GAME_WIDTH / 2, GAME_HEIGHT / 2), characterChoice);
         initializeGameTime();
+        winTheGame = false;
     }
 
     private void resetPlayer() {
