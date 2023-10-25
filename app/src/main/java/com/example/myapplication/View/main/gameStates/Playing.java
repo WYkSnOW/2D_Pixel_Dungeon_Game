@@ -92,7 +92,6 @@ public class Playing extends BaseState implements GameStateInterFace {
         //itemManager = new ItemManager();
         //mob1Pos = new PointF(rand.nextInt(GAME_WIDTH), rand.nextInt(GAME_HEIGHT));
 
-
         playingUI = new PlayingUI(this);
 
         updateAttackHitbox();
@@ -131,6 +130,12 @@ public class Playing extends BaseState implements GameStateInterFace {
             @Override
             public void onChanged(Boolean ableMove) {
                 playerAbleMove = ableMove;
+            }
+        });
+        viewModel.getCheckingPlayerEnemyCollision().observe((LifecycleOwner) context, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean checking) {
+                viewModel.checkAttackByEnemies(Player.getInstance().getHitBox(), mapManager, cameraX, cameraY);
             }
         });
     }
@@ -173,9 +178,14 @@ public class Playing extends BaseState implements GameStateInterFace {
         attackAffect.update(delta);
 
         viewModel.checkAttack(attacking, attackBox, mapManager, cameraX, cameraY);
-
+        //viewModel.checkAttackByEnemies(Player.getInstance().getHitBox(), mapManager, cameraX, cameraY);
+        viewModel.checkingPlayerEnemyCollision();
         viewModel.updateZombies(mapManager, delta, cameraX, cameraY);
 
+
+        if (Player.getInstance().getCurrentHealth() <= 0) {
+            setGameStateToEnd();
+        }
     }
 
     @Override
@@ -238,7 +248,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     private void drawUi(Canvas c) {
         c.drawText("PlayerName: " + Player.getInstance().getPlayerName(), 200, 100, paint);
         c.drawText("Difficulty: " + Player.getInstance().getDifficulty(), 200, 150, paint);
-        c.drawText("Starting Health: " + Player.getInstance().getCurrentHealth(), 200, 200, paint);
+        c.drawText("Health: " + Player.getInstance().getCurrentHealth(), 200, 200, paint);
         c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 250, paint);
     }
     public void drawCharacter(Canvas canvas, Character character) {
@@ -392,9 +402,10 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
     public void setGameStateToEnd() {
         //Leaderboard.getInstance().addPlayerRecord(player.sumbitScore());
-        if (Player.getInstance().isWinTheGame()) {
-            Leaderboard.getInstance().addPlayerRecord(Player.getInstance().sumbitScore());
-        }
+        Leaderboard.getInstance().addPlayerRecord(
+                Player.getInstance().sumbitScore(),
+                Player.getInstance().isWinTheGame()
+        );
 
         movePlayer = false;
         mapManager.resetMap();

@@ -36,11 +36,14 @@ public class Leaderboard {
         return playerRecords;
     }
 
-    public void addPlayerRecord(Score score) {
-        this.newestScore = score;
-        updatePlayerState();
-        playerRecords.add(score);
-        updateLeaderBoard();
+    public void addPlayerRecord(Score score, boolean finishGame) {
+        if (finishGame) {
+            this.newestScore = score;
+            updatePlayerState();
+            playerRecords.add(score);
+            updateLeaderBoard();
+        }
+
     }
 
     public void drawLeaderBoard(Canvas c) {

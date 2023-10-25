@@ -111,8 +111,12 @@ public class Player extends Character {
         }
     }
 
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
+    public int calculateHealthByAtk(int enemiesAtk) {
+        return currentHealth -= enemiesAtk;
+    }
+
+    public void setCurrentHealth(int health) {
+        this.currentHealth = health;
     }
 
     public String getPlayerName() {

@@ -115,6 +115,50 @@ public class PlayingLogic {
         return 0;
     }
 
+    public boolean checkHitBoxCollision(RectF hitBoxOne, RectF hitBoxTwo) {
+        return hitBoxOne.intersects(
+                hitBoxTwo.left,
+                hitBoxTwo.top,
+                hitBoxTwo.right,
+                hitBoxTwo.bottom);
+    }
+
+    public void checkAttackByEnemies(
+            RectF playerHitBox,
+            MapManager mapManager,
+            float cameraX, float cameraY
+    ) {
+        RectF attackBoxWithoutCamera = new RectF(playerHitBox);
+        attackBoxWithoutCamera.left -= cameraX;
+        attackBoxWithoutCamera.top -= cameraY;
+        attackBoxWithoutCamera.right -= cameraX;
+        attackBoxWithoutCamera.bottom -= cameraY;
+
+        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
+            if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getHitBox())) {
+                if (enemy.isAbleAttackPlayer()) {
+                    enemy.setAbleAttackPlayer(false);
+                    if (Player.getInstance().getCurrentHealth() > 0) {
+                        int newHealth = Player.getInstance().calculateHealthByAtk(
+                                calculateDamage(
+                                        enemy.getAtk(),
+                                        Player.getInstance().getDifficulty()
+                                )
+                        );
+                        if (newHealth < 0) {
+                            newHealth = 0;
+                        }
+                        Player.getInstance().setCurrentHealth(newHealth);
+                    }
+                }
+
+            }
+        }
+    }
+
+    public int calculateDamage(int enemyAtk, int difficulty) {
+        return enemyAtk * difficulty;
+    }
 
 
     public void checkAttack(
@@ -129,14 +173,14 @@ public class PlayingLogic {
             attackBoxWithoutCamera.right -= cameraX;
             attackBoxWithoutCamera.bottom -= cameraY;
 
-            for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
+            for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
                 if (attackBoxWithoutCamera.intersects(
-                        zombie.getHitBox().left,
-                        zombie.getHitBox().top,
-                        zombie.getHitBox().right,
-                        zombie.getHitBox().bottom)
+                        enemy.getHitBox().left,
+                        enemy.getHitBox().top,
+                        enemy.getHitBox().right,
+                        enemy.getHitBox().bottom)
                 ) {
-                    zombie.setActive(false); //remove zombie(or any mob)
+                    enemy.setActive(false); //remove enemy(or any mob)
                 }
             }
         }

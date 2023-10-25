@@ -19,9 +19,9 @@ public class LeaderboardVerifyPlayerNameUnitTest {
         Score score1 = new Score(20, 1, "nikhil", true);
         Score score2 = new Score(15, 1, "batman", true);
         Score score3 = new Score(10, 1, "superman", true);
-        Leaderboard.getInstance().addPlayerRecord(score1);
-        Leaderboard.getInstance().addPlayerRecord(score2);
-        Leaderboard.getInstance().addPlayerRecord(score3);
+        Leaderboard.getInstance().addPlayerRecord(score1, true);
+        Leaderboard.getInstance().addPlayerRecord(score2, true);
+        Leaderboard.getInstance().addPlayerRecord(score3, true);
         assertEquals(Leaderboard.getInstance().getPlayerRecords()
                 .get(0).getPlayerName(), score1.getPlayerName());
         assertEquals(Leaderboard.getInstance().getPlayerRecords()

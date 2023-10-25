@@ -90,6 +90,9 @@ public class Menu extends BaseState implements GameStateInterFace {
 
     @Override
     public void update(double delta) {
+        if (game.getCurrentGameState() != Game.GameState.MENU) {
+            return;
+        }
         menuBackground.update(delta);
         runningZombie.update(delta);
     }

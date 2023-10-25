@@ -61,7 +61,10 @@ public class End extends BaseState implements GameStateInterFace {
         viewModel.getCurrentScore().observe((LifecycleOwner) context, new Observer<Score>() {
             @Override
             public void onChanged(Score score) {
-                Leaderboard.getInstance().addPlayerRecord(score);
+                Leaderboard.getInstance().addPlayerRecord(
+                        score,
+                        Player.getInstance().isWinTheGame()
+                );
             }
         });
         viewModel.getRestartButtonClicked().observe((LifecycleOwner) context,
@@ -87,6 +90,7 @@ public class End extends BaseState implements GameStateInterFace {
     }
     @Override
     public void touchEvents(MotionEvent event) {
+
         btnRestartAction(event);
     }
     @Override

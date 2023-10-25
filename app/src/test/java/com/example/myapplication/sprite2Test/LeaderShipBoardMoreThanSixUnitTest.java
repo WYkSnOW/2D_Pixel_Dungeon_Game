@@ -21,13 +21,13 @@ public class LeaderShipBoardMoreThanSixUnitTest {
         Score scoreSix = new Score(19, 2, "vibha", true);
         Score scoreSeven = new Score(20, 2, "vibha", true);
 
-        Leaderboard.getInstance().addPlayerRecord(scoreOne);
-        Leaderboard.getInstance().addPlayerRecord(scoreTwo);
-        Leaderboard.getInstance().addPlayerRecord(scoreThree);
-        Leaderboard.getInstance().addPlayerRecord(scoreFour);
-        Leaderboard.getInstance().addPlayerRecord(scoreFive);
-        Leaderboard.getInstance().addPlayerRecord(scoreSix);
-        Leaderboard.getInstance().addPlayerRecord(scoreSeven);
+        Leaderboard.getInstance().addPlayerRecord(scoreOne, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreTwo, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreThree, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreFour, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreFive, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreSix, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreSeven, true);
 
         //expect that score 7 is at top of playerRecords (index 0)
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(0).getScore(),

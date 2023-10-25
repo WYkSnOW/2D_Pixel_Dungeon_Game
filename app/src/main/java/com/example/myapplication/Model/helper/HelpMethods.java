@@ -77,8 +77,8 @@ public class HelpMethods {
     public static PointF playerMovementRun(float xSpeed, float ySpeed, float baseSpeed) {
         float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
-        System.out.println(deltaX < 0);
-        System.out.println(deltaY);
+        //System.out.println(deltaX < 0);
+        //System.out.println(deltaY);
         return new PointF(deltaX, deltaY);
     }
 

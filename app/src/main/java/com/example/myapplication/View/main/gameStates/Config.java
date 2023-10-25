@@ -193,6 +193,9 @@ public class Config extends BaseState implements GameStateInterFace {
 
     @Override
     public void update(double delta) {
+        if (game.getCurrentGameState() != Game.GameState.CONFIG) {
+            return;
+        }
         configBackground.update(delta);
         teresa.update(delta);
         witch.update(delta);
@@ -201,6 +204,9 @@ public class Config extends BaseState implements GameStateInterFace {
 
     @Override
     public void touchEvents(MotionEvent event) {
+        if (game.getCurrentGameState() != Game.GameState.CONFIG) {
+            return;
+        }
         btnConfigAction(event);
         pickTeresa(event);
         pickWitch(event);
@@ -211,6 +217,9 @@ public class Config extends BaseState implements GameStateInterFace {
 
     @Override
     public void render(Canvas c) {
+        if (game.getCurrentGameState() != Game.GameState.CONFIG) {
+            return;
+        }
         drawBackground(c);
         drawBtn(c);
         drawCharacter(c);

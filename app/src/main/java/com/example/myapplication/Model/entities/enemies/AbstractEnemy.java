@@ -12,6 +12,8 @@ import com.example.myapplication.Model.helper.GameConstants;
 import java.util.Random;
 public abstract class AbstractEnemy extends Character {
     private long lastDirChange = System.currentTimeMillis();
+    private long lastAttackPlayer;
+    private boolean ableAttackPlayer;
     private Random rand = new Random();
     private float baseSpeed;
     private int atk;
@@ -20,11 +22,14 @@ public abstract class AbstractEnemy extends Character {
         super(pos, characterType);
         this.baseSpeed = baseSpeed;
         this.atk = atk;
+        this.ableAttackPlayer = true;
+        this.lastAttackPlayer = System.currentTimeMillis();
     }
 
     public void update(double delta, MapManager mapManager, PointF playerPos) {
         updateMove(delta, mapManager, playerPos);
         updateAnimation();
+        updateLastAttackPlayer();
     }
 
     private void updateMove(double delta, MapManager mapManager, PointF playerPos) {
@@ -138,4 +143,35 @@ public abstract class AbstractEnemy extends Character {
     public void setBaseSpeed(float baseSpeed) {
         this.baseSpeed = baseSpeed;
     }
+
+    public long getLastAttackPlayer() {
+        return lastAttackPlayer;
+    }
+
+    public boolean isAbleAttackPlayer() {
+        return ableAttackPlayer;
+    }
+
+    public void setLastAttackPlayer(long lastAttackPlayer) {
+        this.lastAttackPlayer = lastAttackPlayer;
+    }
+
+    public void setAbleAttackPlayer(boolean ableAttackPlayer) {
+        this.ableAttackPlayer = ableAttackPlayer;
+    }
+    private void updateLastAttackPlayer() {
+        if (!ableAttackPlayer) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastAttackPlayer >= 1000) {
+                ableAttackPlayer = true;
+                lastAttackPlayer = currentTime;
+            }
+        }
+    }
+
+    public int getAtk() {
+        return atk;
+    }
+
+
 }

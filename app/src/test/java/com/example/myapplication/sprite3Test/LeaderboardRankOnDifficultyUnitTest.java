@@ -18,8 +18,8 @@ public class LeaderboardRankOnDifficultyUnitTest {
         Score scoreOne = new Score(10, 1, "Diya", true);
         Score scoreTwo = new Score(10, 2, "Diya", true);
 
-        Leaderboard.getInstance().addPlayerRecord(scoreOne);
-        Leaderboard.getInstance().addPlayerRecord(scoreTwo);
+        Leaderboard.getInstance().addPlayerRecord(scoreOne, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreTwo, true);
 
 
         //ScoreTwo become the 1st record because it have higher difficulty

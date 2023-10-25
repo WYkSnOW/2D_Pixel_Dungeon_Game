@@ -17,9 +17,9 @@ public class LeaderboardUpdatesDescendingTest {
 
 
         // I have added these to the leaderboard here
-        Leaderboard.getInstance().addPlayerRecord(score1);
-        Leaderboard.getInstance().addPlayerRecord(score2);
-        Leaderboard.getInstance().addPlayerRecord(score3);
+        Leaderboard.getInstance().addPlayerRecord(score1, true);
+        Leaderboard.getInstance().addPlayerRecord(score2, true);
+        Leaderboard.getInstance().addPlayerRecord(score3, true);
 
         // This for-loop checks if the previous number is greater or equal to the one after it.
         // This helps to ensure it is in decending order

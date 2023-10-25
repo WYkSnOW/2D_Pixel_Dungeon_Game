@@ -21,6 +21,7 @@ public class PlayingViewModel extends ViewModel {
     private MutableLiveData<Float> cameraX = new MutableLiveData<>();
     private MutableLiveData<Float> cameraY = new MutableLiveData<>();
     private MutableLiveData<Boolean> isPlayerAbleMove = new MutableLiveData<>();
+    private MutableLiveData<Boolean> checkingPlayerEnemyCollision = new MutableLiveData<>();
     private PlayingLogic playingLogic = new PlayingLogic();
 
     public LiveData<PointF> getLastTouchDiff() {
@@ -49,6 +50,11 @@ public class PlayingViewModel extends ViewModel {
     public void setLastTouchDiff(PointF lastTouchDiff) {
         this.lastTouchDiff.setValue(lastTouchDiff);
     }
+
+    public void checkingPlayerEnemyCollision() {
+        this.checkingPlayerEnemyCollision.postValue(true);
+    }
+
     public void setCameraX(float cameraX) {
         this.cameraX.setValue(cameraX);
     }
@@ -73,6 +79,11 @@ public class PlayingViewModel extends ViewModel {
     public RectF getPlayerHitbox() {
         return playingLogic.getPlayerHitbox();
     }
+
+    public MutableLiveData<Boolean> getCheckingPlayerEnemyCollision() {
+        return checkingPlayerEnemyCollision;
+    }
+
     public PointF getEffectPos() {
         return playingLogic.getEffectPos();
     }
@@ -96,6 +107,13 @@ public class PlayingViewModel extends ViewModel {
                             float cameraX, float cameraY) {
         playingLogic.checkAttack(attacking, attackBox, mapManager, cameraX, cameraY);
     }
+
+    public void checkAttackByEnemies(RectF playerHitBox,
+                            MapManager mapManager,
+                            float cameraX, float cameraY) {
+        playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
+    }
+
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         playingLogic.updateZombies(mapManager, delta, cameraX, cameraY);
     }
