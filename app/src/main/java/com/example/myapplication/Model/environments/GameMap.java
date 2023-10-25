@@ -127,4 +127,8 @@ public class GameMap { //store world and help to draw map
                 || tiledId == 141;
     }
 
+    public void clearMobList() {
+        mobArrayList.clear();
+    }
+
 }

@@ -18,15 +18,18 @@ public class Player extends Character {
     private int startingHealth;
     private int currentHealth;
     private int currentScore;
+    private boolean winTheGame;
     private static Player instance;
 
     public Player(GameCharacters characterChoice) {
         super(new PointF(GAME_WIDTH / 2, GAME_HEIGHT / 2), characterChoice);
         initializeGameTime();
+        winTheGame = false;
     }
 
     private void resetPlayer() {
         initializeGameTime();
+        winTheGame = false;
     }
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         this.gameCharType = characterChoice;
@@ -128,4 +131,11 @@ public class Player extends Character {
         return new Score(currentScore, difficulty, playerName, true);
     }
 
+    public boolean isWinTheGame() {
+        return winTheGame;
+    }
+
+    public void setWinTheGame(boolean winTheGame) {
+        this.winTheGame = winTheGame;
+    }
 }

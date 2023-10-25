@@ -164,7 +164,7 @@ public class PlayingUI {
                 if (isIn(eventPos, btnMenu)) {
                     if (btnMenu.isPushed(pointerId)) {
                         resetJoystickButton();
-                        playing.setGameStateToMenu();
+                        playing.setGameStateToEnd();
                     }
                 }
 

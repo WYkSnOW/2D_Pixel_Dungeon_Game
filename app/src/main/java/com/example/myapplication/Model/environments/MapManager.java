@@ -119,6 +119,14 @@ public class MapManager {
         mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE, null);
         mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE, null);
 
+        initMobList();
+
+        initDoorway();
+
+        currentMap = mapOne;
+    }
+
+    private void initMobList() {
         mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.ZOMBIE));
         mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CHEST_MOB));
         mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CROW_MAN));
@@ -126,7 +134,9 @@ public class MapManager {
 
         mapTwo.addMobsToList(HelpMethods.getMobRandomized(3, mapTwo, GameCharacters.ZOMBIE));
         mapThree.addMobsToList(HelpMethods.getMobRandomized(4, mapThree, GameCharacters.ZOMBIE));
+    }
 
+    private void initDoorway() {
         //HelpMethods.AddDoorwayToGameMap(mapOne, mapTwo, Doorways.DOORWAY_ONE);
         HelpMethods.connectTwoDoorways(
                 mapOne,
@@ -144,11 +154,8 @@ public class MapManager {
 
         Doorway endGameDoorway =
                 new Doorway(HelpMethods.createHitboxForDoorway(
-                                14, 29, DoorwayType.END_GAME_DOORWAY), mapThree);
+                        14, 29, DoorwayType.END_GAME_DOORWAY), mapThree);
         endGameDoorway.setEndGameDoorway(true);
-
-        currentMap = mapOne;
-
     }
 
     private int[][] initMapTwo() {
@@ -262,6 +269,10 @@ public class MapManager {
     }
     public void resetMap() {
         currentMap = mapOne;
+        mapOne.clearMobList();
+        mapTwo.clearMobList();
+        mapThree.clearMobList();
+        initMobList();
     }
     public GameMap getCurrentMap() {
         return currentMap;

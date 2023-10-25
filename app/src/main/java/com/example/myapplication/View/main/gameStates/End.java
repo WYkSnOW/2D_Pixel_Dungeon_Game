@@ -1,5 +1,9 @@
 package com.example.myapplication.View.main.gameStates;
+import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_HEIGHT;
+import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
@@ -25,6 +29,7 @@ public class End extends BaseState implements GameStateInterFace {
     private final CustomButton btnRestart;
     private final EndViewModel viewModel;
     private final GameAnimation endBackground;
+    private final GameAnimation loseScreenBack;
 
     public End(Game game, Context context) {
         super(game);
@@ -32,9 +37,17 @@ public class End extends BaseState implements GameStateInterFace {
         endBackground = new GameAnimation(
                 0,
                 0,
-                GameConstants.UiSize.GAME_WIDTH,
-                GameConstants.UiSize.GAME_HEIGHT,
+                GAME_WIDTH,
+                GAME_HEIGHT,
                 GameVideos.END_BACK_VIDEO
+        );
+
+        loseScreenBack = new GameAnimation(
+                GAME_WIDTH * -1 / 2,
+                GAME_HEIGHT * -1 / 2,
+                GAME_WIDTH,
+                GAME_HEIGHT,
+                GameVideos.LOSE_SCREEN_VIDEO
         );
 
         btnRestart = new CustomButton(
@@ -63,10 +76,14 @@ public class End extends BaseState implements GameStateInterFace {
     }
     @Override
     public void update(double delta) {
-        endBackground.update(delta);
-        if (game.getCurrentGameState() == Game.GameState.END) {
-            Player.getInstance().update(delta);
+        if (game.getCurrentGameState() != Game.GameState.END) {
+            return;
         }
+        endBackground.update(delta);
+        loseScreenBack.update(delta);
+
+        Player.getInstance().update(delta);
+
     }
     @Override
     public void touchEvents(MotionEvent event) {
@@ -74,6 +91,9 @@ public class End extends BaseState implements GameStateInterFace {
     }
     @Override
     public void render(Canvas c) {
+        if (game.getCurrentGameState() != Game.GameState.END) {
+            return;
+        }
         //c.drawText("End", 800, 200, paint);
         drawBackground(c);
         drawUi(c);
@@ -83,18 +103,34 @@ public class End extends BaseState implements GameStateInterFace {
     }
 
     public void drawBackground(Canvas c) {
-        c.drawBitmap(
-                endBackground.getGameVideoType().getSprite(0, endBackground.getAniIndex()),
-                endBackground.getHitBox().left,
-                endBackground.getHitBox().top - 150,
-                null
-        );
+        if (Player.getInstance().isWinTheGame()) {
+            c.drawBitmap(
+                    endBackground.getGameVideoType().getSprite(0, endBackground.getAniIndex()),
+                    endBackground.getHitBox().left,
+                    endBackground.getHitBox().top - 150,
+                    null
+            );
+
+        } else {
+            c.drawBitmap(
+                    loseScreenBack.getGameVideoType().getSprite(0, loseScreenBack.getAniIndex()),
+                    loseScreenBack.getHitBox().left,
+                    loseScreenBack.getHitBox().top - 150,
+                    null
+            );
+        }
+
     }
 
     public void drawUi(Canvas c) {
+        Bitmap resultBar = GameImages.PLAYER_LOSE_BAR.getImage();
+        if (Player.getInstance().isWinTheGame()) {
+            resultBar = GameImages.PLAYER_WIN_BAR.getImage();
+        }
+
         c.drawBitmap(
-                GameImages.PLAYER_WIN_BAR.getImage(),
-                (int) ((GameConstants.UiSize.GAME_WIDTH / 2)
+                resultBar,
+                (int) ((GAME_WIDTH / 2)
                         - (GameImages.PLAYER_WIN_BAR.getWidth() / 2) + 40),
                 30,
                 null

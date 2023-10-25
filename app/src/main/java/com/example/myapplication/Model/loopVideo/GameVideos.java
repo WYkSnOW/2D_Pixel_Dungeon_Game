@@ -87,7 +87,17 @@ public enum GameVideos implements BitmapMethods {
             1,
             GameConstants.VideosDefault.BACKGROUND_SCALE,
             8
-            );
+            ),
+
+    LOSE_SCREEN_VIDEO(
+            R.drawable.lose_screen_video,
+            GameConstants.VideosDefault.BACKGROUND_WIDTH,
+            GameConstants.VideosDefault.BACKGROUND_HEIGHT,
+            11,
+            1,
+            GameConstants.VideosDefault.BACKGROUND_SCALE * 2,
+            8
+    );
 
     private final Bitmap spriteSheet;
     private final Bitmap[][] sprites;
