@@ -29,6 +29,12 @@ public enum GameImages implements BitmapMethods {
             96,
             2),
 
+    PLAYER_LOSE_BAR(
+            R.drawable.you_lose_bar,
+            416,
+            96,
+            2),
+
     LEADERBOARD(
             R.drawable.leaderboard,
             224,

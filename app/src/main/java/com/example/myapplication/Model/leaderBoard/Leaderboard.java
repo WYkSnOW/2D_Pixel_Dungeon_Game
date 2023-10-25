@@ -3,7 +3,9 @@ package com.example.myapplication.Model.leaderBoard;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
+import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.leaderBoard.Score.DifficultyComparator;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.leaderBoard.Score.ScoreComparator;
@@ -15,7 +17,8 @@ public class Leaderboard {
     private Score newestScore;
     private Paint paint1 = new Paint();
     private Paint paint2 = new Paint();
-    private Paint timePaint = new Paint();
+    private Paint blackPaint = new Paint();
+    private Paint boldPaint = new Paint();
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
@@ -44,52 +47,87 @@ public class Leaderboard {
         paint1.setTextSize(35);
         paint1.setColor(Color.WHITE);
 
-        paint2.setTextSize(35);
-        paint2.setColor(Color.RED);
+        boldPaint.setTextSize(35);
+        boldPaint.setColor(Color.BLACK);
+        Typeface boldTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
+        boldPaint.setTypeface(boldTypeface);
 
-        timePaint.setTextSize(20);
-        timePaint.setColor(Color.BLACK);
+        blackPaint.setTextSize(20);
+        blackPaint.setColor(Color.BLACK);
+
+        if (Player.getInstance().isWinTheGame()) {
+            drawYouWin(c);
+        } else {
+            drawYouLose(c);
+        }
+
 
         c.drawText(
                 "Name: " + newestScore.getPlayerName(),
-                1910,
-                540,
-                paint2);
+                1905,
+                580,
+                boldPaint);
         c.drawText(
                 "Score: " + newestScore.getScore(),
-                1910,
-                580,
-                paint2);
-        c.drawText(newestScore.getDate(),
-                1910,
+                1905,
                 620,
-                paint2);
+                boldPaint);
+        c.drawText(newestScore.getDate(),
+                1905,
+                660,
+                boldPaint);
 
         for (int i = 0; i < playerRecords.size(); i++) {
             if (playerRecords.get(i).getIsNew()) {
-                drawRankInfo(c, i, paint2, timePaint);
+                paint1.setColor(Color.WHITE);
+                drawRankInfo(c, i);
             } else {
-                drawRankInfo(c, i, paint1, timePaint);
+                paint1.setColor(Color.RED);
+                drawRankInfo(c, i);
             }
         }
     }
+    private void drawYouWin(Canvas c) {
+        c.drawText(
+                "You Win!",
+                1980,
+                540,
+                boldPaint);
+    }
+    private void drawYouLose(Canvas c) {
+        c.drawText(
+                "You Lose",
+                1980,
+                540,
+                boldPaint);
+        c.drawText(
+                "score wouldn't get recorded",
+                1905,
+                690,
+                blackPaint
+        );
+    }
 
-    private void drawRankInfo(Canvas c, int i, Paint textpaint, Paint timePaint) {
+    private void drawRankInfo(Canvas c, int i) {
         int addSpace = 105;
+        int offSetX = 0;
+        if (Integer.toString(playerRecords.get(i).getScore()).length() == 1) {
+            offSetX = 10;
+        }
         c.drawText(
                 playerRecords.get(i).getPlayerName(),
                 220,
                 410 + (i * addSpace),
-                textpaint);
+                paint1);
         c.drawText(
                 "" + playerRecords.get(i).getScore(),
-                565,
-                420 + (i * addSpace) + 50,
-                textpaint);
+                566 + offSetX,
+                419 + (i * addSpace) + 50,
+                paint1);
         c.drawText(playerRecords.get(i).getDate(),
                 280,
                 405 + (i * addSpace) + 20,
-                timePaint);
+                blackPaint);
     }
 
     public void updateLeaderBoard() {

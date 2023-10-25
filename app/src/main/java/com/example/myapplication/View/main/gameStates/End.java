@@ -1,5 +1,6 @@
 package com.example.myapplication.View.main.gameStates;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
@@ -92,8 +93,13 @@ public class End extends BaseState implements GameStateInterFace {
     }
 
     public void drawUi(Canvas c) {
+        Bitmap resultBar = GameImages.PLAYER_LOSE_BAR.getImage();
+        if (Player.getInstance().isWinTheGame()) {
+            resultBar = GameImages.PLAYER_WIN_BAR.getImage();
+        }
+
         c.drawBitmap(
-                GameImages.PLAYER_WIN_BAR.getImage(),
+                resultBar,
                 (int) ((GameConstants.UiSize.GAME_WIDTH / 2)
                         - (GameImages.PLAYER_WIN_BAR.getWidth() / 2) + 40),
                 30,

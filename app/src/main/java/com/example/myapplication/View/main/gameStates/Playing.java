@@ -207,6 +207,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (doorwayPlayerIsOn != null) {
             if (!doorwayJustPassed) {
                 if (doorwayPlayerIsOn.isEndGameDoorway()) {
+                    Player.getInstance().setWinTheGame(true);
                     setGameStateToEnd();
                 } else {
                     mapManager.changeMap(doorwayPlayerIsOn.getDoorwayConnectedTo(), game);
@@ -391,7 +392,10 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
     public void setGameStateToEnd() {
         //Leaderboard.getInstance().addPlayerRecord(player.sumbitScore());
-        Leaderboard.getInstance().addPlayerRecord(Player.getInstance().sumbitScore());
+        if (Player.getInstance().isWinTheGame()) {
+            Leaderboard.getInstance().addPlayerRecord(Player.getInstance().sumbitScore());
+        }
+
         movePlayer = false;
         mapManager.resetMap();
         game.setCurrentGameState(Game.GameState.END);
