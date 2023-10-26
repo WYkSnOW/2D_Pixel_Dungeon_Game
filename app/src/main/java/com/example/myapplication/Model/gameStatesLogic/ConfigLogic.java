@@ -4,6 +4,9 @@ import android.view.MotionEvent;
 
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
 import com.example.myapplication.Model.loopVideo.VideoFrame;
 
 public class ConfigLogic {
@@ -26,6 +29,9 @@ public class ConfigLogic {
         }
         return r;
     }
+    public boolean nameLengthBelowLimit(String name) {
+        return name.length() <= 15;
+    }
     public boolean ableStart(int characterChoice, int difficultyChoice, boolean validName) {
         return characterChoice > 0 && difficultyChoice > 0 && validName;
     }
@@ -35,13 +41,16 @@ public class ConfigLogic {
     public void initPlayerCharacter(int characterChoice) {
         if (characterChoice == 1) {
             //game.getPlaying().setPlayer(new Player(GameCharacters.TERESA));
-            Player.getInstance().setCharacterChoice(GameCharacters.TERESA);
+            //Player.getInstance().setCharacterChoice(GameCharacters.TERESA);
+            Player.getInstance().setCharStrategy(new CharOne());
         } else if (characterChoice == 2) {
             //game.getPlaying().setPlayer(new Player(GameCharacters.WITCH));
-            Player.getInstance().setCharacterChoice(GameCharacters.WITCH);
+            //Player.getInstance().setCharacterChoice(GameCharacters.WITCH);
+            Player.getInstance().setCharStrategy(new CharTwo());
         } else if (characterChoice == 3) {
             //game.getPlaying().setPlayer(new Player(GameCharacters.WARRIOR));
-            Player.getInstance().setCharacterChoice(GameCharacters.WARRIOR);
+            //Player.getInstance().setCharacterChoice(GameCharacters.WARRIOR);
+            Player.getInstance().setCharStrategy(new CharThree());
         }
     }
     public int loopDifficultyChoice(int difficultyChoice) {

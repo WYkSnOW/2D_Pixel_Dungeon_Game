@@ -9,6 +9,11 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.example.myapplication.Model.entities.GameCharacters;
+import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
@@ -126,7 +131,10 @@ public class PlayingUI {
                 touchDown = true; //初始点击点在圆环内部
             } else if (checkInsideAttackBtn(eventPos)) {
                 if (attackBtnPointerId < 0) {
-                    playing.setAttacking(true);
+                    if (!Player.getInstance().isAttacking()) {
+                        System.out.println("setToAttack");
+                    }
+                    Player.getInstance().setAttacking(true);
                     attackBtnPointerId = pointerId;
                 }
                 //System.out.println("INSIDE attack");
@@ -164,7 +172,15 @@ public class PlayingUI {
                 if (isIn(eventPos, btnMenu)) {
                     if (btnMenu.isPushed(pointerId)) {
                         resetJoystickButton();
-                        playing.setGameStateToEnd();
+                        //playing.setGameStateToEnd();
+                        if (Player.getInstance().getGameCharType() == GameCharacters.TERESA) {
+                            Player.getInstance().setCharStrategy(new CharTwo());
+                        } else if (Player.getInstance().getGameCharType() == GameCharacters.WITCH) {
+                            Player.getInstance().setCharStrategy(new CharThree());
+                        } else {
+                            Player.getInstance().setCharStrategy(new CharOne());
+                        }
+
                     }
                 }
 
@@ -188,7 +204,7 @@ public class PlayingUI {
             btnMenu.unPush(pointerId);
 
             if (pointerId == attackBtnPointerId) {
-                playing.setAttacking(false);
+                Player.getInstance().setAttacking(false);
                 attackBtnPointerId = -1;
             }
         }

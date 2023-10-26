@@ -8,6 +8,7 @@ import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
+import com.example.myapplication.Model.helper.HelpMethods;
 
 import java.util.Random;
 public abstract class AbstractEnemy extends Character {
@@ -22,7 +23,7 @@ public abstract class AbstractEnemy extends Character {
         super(pos, characterType);
         this.baseSpeed = baseSpeed;
         this.atk = atk;
-        this.ableAttackPlayer = true;
+        this.ableAttackPlayer = false;
         this.lastAttackPlayer = System.currentTimeMillis();
     }
 
@@ -158,13 +159,17 @@ public abstract class AbstractEnemy extends Character {
 
     public void setAbleAttackPlayer(boolean ableAttackPlayer) {
         this.ableAttackPlayer = ableAttackPlayer;
+        if (!ableAttackPlayer) {
+            lastAttackPlayer = System.currentTimeMillis();
+        }
     }
+
     private void updateLastAttackPlayer() {
         if (!ableAttackPlayer) {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastAttackPlayer >= 1000) {
+
+            if (HelpMethods.checkTimePass(lastAttackPlayer, 1)) { //unit of time is second
                 ableAttackPlayer = true;
-                lastAttackPlayer = currentTime;
+                //lastAttackPlayer = currentTime;
             }
         }
     }

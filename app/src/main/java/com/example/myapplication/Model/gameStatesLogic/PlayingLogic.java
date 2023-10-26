@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -41,6 +42,7 @@ public class PlayingLogic {
             Player.getInstance().setDrawDir(GameConstants.DrawDir.LEFT);
             Player.getInstance().setFaceDir(GameConstants.FaceDir.LEFT);
         }
+        Player.getInstance().setPlayerStates(PlayerStates.RUNNING);
     }
 
     public Bitmap getPlayerSprite(boolean attacking) {
@@ -93,7 +95,7 @@ public class PlayingLogic {
 
         float yTop
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1;
-
+ 
         float yBottom
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1 + pHeight;
 
@@ -138,22 +140,47 @@ public class PlayingLogic {
             if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getHitBox())) {
                 if (enemy.isAbleAttackPlayer()) {
                     enemy.setAbleAttackPlayer(false);
+
                     if (Player.getInstance().getCurrentHealth() > 0) {
-                        int newHealth = Player.getInstance().calculateHealthByAtk(
-                                calculateDamage(
+
+//                        int newHealth = calculateHealthByAtk(
+//
+//                                Player.getInstance().getCurrentHealth(),
+//                                calculateDamage(
+//                                        enemy.getAtk(),
+//                                        Player.getInstance().getDifficulty()
+//                                )
+//                        );
+//
+//                        if (newHealth < 0) {
+//                            newHealth = 0;
+//                        }
+                        Player.getInstance().setCurrentHealth(
+                                calculateNewHealthForPlayer(
+                                        Player.getInstance().getCurrentHealth(),
                                         enemy.getAtk(),
                                         Player.getInstance().getDifficulty()
-                                )
-                        );
-                        if (newHealth < 0) {
-                            newHealth = 0;
-                        }
-                        Player.getInstance().setCurrentHealth(newHealth);
+                                ));
                     }
                 }
 
             }
         }
+    }
+
+    public int calculateNewHealthForPlayer(int currentHealth, int enemyAtk, int difficulty) {
+        int newHealth = calculateHealthByAtk(
+                currentHealth,
+                calculateDamage(
+                        enemyAtk,
+                        difficulty
+                )
+        );
+        return Math.max(newHealth, 0);
+    }
+
+    public int calculateHealthByAtk(int currentHealth, int enemyAtk) {
+        return currentHealth - enemyAtk;
     }
 
     public int calculateDamage(int enemyAtk, int difficulty) {

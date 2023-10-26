@@ -82,8 +82,8 @@ public class End extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.END) {
             return;
         }
-        endBackground.update(delta);
-        loseScreenBack.update(delta);
+        endBackground.update();
+        loseScreenBack.update();
 
         Player.getInstance().update(delta);
 

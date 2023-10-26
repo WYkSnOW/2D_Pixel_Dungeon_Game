@@ -3,6 +3,7 @@ package com.example.myapplication.Model.helper.playerMoveStartegy;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.HelpMethods;
 
@@ -29,6 +30,7 @@ public class PlayerRun implements PlayerMoveStrategy {
             Player.getInstance().setDrawDir(GameConstants.DrawDir.LEFT);
             Player.getInstance().setFaceDir(GameConstants.FaceDir.LEFT);
         }
+        Player.getInstance().setPlayerStates(PlayerStates.RUNNING);
     }
 
     @Override

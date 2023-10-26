@@ -36,7 +36,6 @@ public abstract class  Character extends Entity {
 
 
     protected void updateAnimation() {
-
         aniTick++;
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;

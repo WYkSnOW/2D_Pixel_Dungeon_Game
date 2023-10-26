@@ -10,7 +10,7 @@ public class GameAnimation extends VideoFrame {
 
     }
 
-    public void update(double delta) {
+    public void update() {
         updateAnimation();
     }
 

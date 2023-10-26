@@ -196,10 +196,10 @@ public class Config extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.CONFIG) {
             return;
         }
-        configBackground.update(delta);
-        teresa.update(delta);
-        witch.update(delta);
-        warrior.update(delta);
+        configBackground.update();
+        teresa.update();
+        witch.update();
+        warrior.update();
     }
 
     @Override
@@ -421,7 +421,7 @@ public class Config extends BaseState implements GameStateInterFace {
                 // 在这里处理用户输入的文字
                 userInput = editText.getText().toString();
                 if (viewModel.isNameValid(userInput)) {
-                    if (userInput.length() <= 15) {
+                    if (viewModel.nameLengthBelowLimit(userInput)) {
                         //currentNameText = userInput;
                         viewModel.setPlayerName(userInput);
                         validName = true;

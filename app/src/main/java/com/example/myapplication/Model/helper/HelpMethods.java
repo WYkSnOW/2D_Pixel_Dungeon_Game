@@ -44,16 +44,22 @@ public class HelpMethods {
         ArrayList<AbstractEnemy> zombieArrayList = new ArrayList<>();
         int i = 0;
         while (i < amount) {
-            float x = (float) Math.random() * width;
-            float y = (float) Math.random() * height;
-            if (gameMap.canMoveHere(x, y, y + (enemyType.getCharacterHeight()))) {
-                zombieArrayList.add(EnemyFactory.createEnemy(enemyType, new PointF(x, y)));
+            PointF pos = generateRandomPos(width, height);
+            if (gameMap.canMoveHere(pos.x, pos.y, pos.y + (enemyType.getCharacterHeight()))) {
+                zombieArrayList.add(EnemyFactory.createEnemy(enemyType, pos));
                 //zombieArrayList.add(new Zombie(new PointF(x, y)));
                 i++;
             }
         }
         return zombieArrayList;
     }
+
+    public static PointF generateRandomPos(int width, int height) {
+        float x = (float) Math.random() * width;
+        float y = (float) Math.random() * height;
+        return new PointF(x, y);
+    }
+
     public static void cleanUi(Activity activity) {
         if (activity != null) {
             activity.getWindow().getDecorView().setSystemUiVisibility(
@@ -91,6 +97,11 @@ public class HelpMethods {
 
     public static int getIdleAnimation(int currentDir) {
         return currentDir + 2;
+    }
+
+    public static boolean checkTimePass(long lastTime, int timeRangeInSec) { //unit of time is second
+        long currentTime = System.currentTimeMillis();
+        return currentTime - lastTime >= timeRangeInSec * 1000L;
     }
 
 }

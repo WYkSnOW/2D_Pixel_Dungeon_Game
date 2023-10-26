@@ -35,27 +35,14 @@ public class Playing extends BaseState implements GameStateInterFace {
     private Random rand = new Random();
     private Paint paint = new Paint();
     private MapManager mapManager;
-    //private ItemManager itemManager;
     private float cameraX;
     private float cameraY;
     private boolean movePlayer;
     private boolean playerAbleMove;
     private PointF lastTouchDiff;
 
-    //private Zombie zombie;
-    //private ArrayList<RndSquare> squares = new ArrayList<>();
     private final PlayingUI playingUI;
     private final Paint hitBoxPaint;
-    private RectF attackBox = null; //hitBox for weapon
-    private boolean attacking;
-    private int characterAttackWidth;
-    private int characterAttackHeight;
-    private GameAnimation attackAffect;
-    private boolean haveEffect = false;
-    private int effectAdjustLeftWhenRight;
-    private int effectAdjustLeftWhenLeft;
-    private int effectAdjustTopWhenRight;
-    private int effectAdjustTopWhenLeft;
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
     private PlayerMoveStrategy playerMoveStrategy;
@@ -94,20 +81,13 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         playingUI = new PlayingUI(this);
 
-        updateAttackHitbox();
-        attackAffect = new GameAnimation(1, 1, 1, 1, GameVideos.WITCH_ATTACK_EFFECT);
+        //updateAttackHitbox();
 
         initPlaying();
 
         viewModel = new ViewModelProvider((ViewModelStoreOwner) context)
                 .get(PlayingViewModel.class);
 
-        viewModel.getIsAttacking().observe((LifecycleOwner) context, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isAttacking) {
-                attacking = isAttacking;
-            }
-        });
         viewModel.getLastTouchDiff().observe((LifecycleOwner) context, new Observer<PointF>() {
             @Override
             public void onChanged(PointF touchDiff) {
@@ -171,13 +151,13 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         Player.getInstance().update(delta);
 
-        updateAttackHitbox();
+        //updateAttackHitbox();
         mapManager.setCameraValues(cameraX, cameraY);
         checkForDoorway();
         //itemManager.setCameraValues(cameraX, cameraY);
-        attackAffect.update(delta);
 
-        viewModel.checkAttack(attacking, attackBox, mapManager, cameraX, cameraY);
+
+        viewModel.checkAttack(Player.getInstance().isAttacking(), Player.getInstance().getAttackBox(), mapManager, cameraX, cameraY);
         //viewModel.checkAttackByEnemies(Player.getInstance().getHitBox(), mapManager, cameraX, cameraY);
         viewModel.checkingPlayerEnemyCollision();
         viewModel.updateZombies(mapManager, delta, cameraX, cameraY);
@@ -196,8 +176,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     public void render(Canvas c) {
         mapManager.draw(c);
         //itemManager.draw(c);
-        drawPlayer(c);
-
+        Player.getInstance().drawPlayer(c);
         for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
             if (zombie.isActive()) {
                 drawCharacter(c, zombie);
@@ -232,18 +211,18 @@ public class Playing extends BaseState implements GameStateInterFace {
         this.doorwayJustPassed = doorwayJustPassed;
     }
 
-    private void drawPlayer(Canvas c) {
-        c.drawBitmap(//在本游戏中，行数Y是不同形态，而列数X是该姿势中的不同帧。根据不同输入需要调换，其他怪物同理
-                viewModel.getPlayerSprite(attacking),
-                viewModel.getPlayerLeft(),
-                viewModel.getPlayerTop(),
-                null
-        );
-        c.drawRect(viewModel.getPlayerHitbox(), hitBoxPaint);
-        if (attacking) {
-            drawAttackBox(c);
-        }
-    }
+//    private void drawPlayer(Canvas c) {
+//        c.drawBitmap(//在本游戏中，行数Y是不同形态，而列数X是该姿势中的不同帧。根据不同输入需要调换，其他怪物同理
+//                viewModel.getPlayerSprite(Player.getInstance().isAttacking()),
+//                viewModel.getPlayerLeft(),
+//                viewModel.getPlayerTop(),
+//                null
+//        );
+//        c.drawRect(viewModel.getPlayerHitbox(), hitBoxPaint);
+//        if (Player.getInstance().isAttacking()) {
+//            Player.getInstance().drawAtk(c);
+//        }
+//    }
 
     private void drawUi(Canvas c) {
         c.drawText("PlayerName: " + Player.getInstance().getPlayerName(), 200, 100, paint);
@@ -272,72 +251,6 @@ public class Playing extends BaseState implements GameStateInterFace {
                 character.getHitBox().bottom + cameraY,
                 hitBoxPaint); //draw mob's hitBox
     }
-    private void drawAttackBox(Canvas c) {
-        if (haveEffect) { //use rotate to change direction of attackEffect
-            c.rotate(viewModel.getEffectRote(), attackBox.left, attackBox.top);
-            c.drawBitmap(
-                    attackAffect.getGameVideoType().getSprite(0, attackAffect.getAniIndex()),
-                    attackBox.left + attackEffectAdjustLeft(),
-                    attackBox.top + attackEffectAdjustTop(),
-                    null
-            );
-            c.rotate(viewModel.getEffectRote() * -1, attackBox.left, attackBox.top); //rotate back
-        }
-        c.drawRect(attackBox, hitBoxPaint); //draw weapon's hitbox
-    }
-
-
-    private void updateAttackHitbox() {
-        PointF pos = getEffectPos();
-        float w = characterAttackWidth;
-        float h = characterAttackHeight;
-        float bottom = pos.y + GameConstants.Sprite.SIZE; //(SIZE = 6 * 16 = 96)
-        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
-            attackBox = new RectF(pos.x, bottom - h, pos.x + w, bottom);
-        } else {
-            attackBox = new RectF(pos.x - w, bottom - h, pos.x, bottom);
-        }
-    }
-
-    private PointF getEffectPos() {
-        PointF hitBox;
-        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
-            hitBox = new PointF(
-                    Player.getInstance().getHitBox().left,
-                    Player.getInstance().getHitBox().top
-            );
-        } else if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
-            hitBox = new PointF(
-                    Player.getInstance().getHitBox().right,
-                    Player.getInstance().getHitBox().top
-            );
-        } else {
-            throw new IllegalStateException(
-                    "Unexpected value: " + Player.getInstance().getFaceDir()
-            );
-        }
-        return hitBox;
-    }
-
-
-
-
-    //adjust make base on that default direction of weapon is facing downward
-    private float attackEffectAdjustTop() {
-        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
-            return effectAdjustTopWhenRight;
-        } else {
-            return effectAdjustTopWhenLeft;
-        }
-    }
-    private float attackEffectAdjustLeft() {
-        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
-            return effectAdjustLeftWhenRight;
-        } else {
-            return effectAdjustLeftWhenLeft;
-        }
-    }
-
 
 
 
@@ -378,13 +291,13 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         viewModel.setIsPlayerAbleMove(
                 viewModel.checkPlayerAbleMove(
-                attacking,
-                mapManager,
-                pWidth,
-                pHeight,
-                new PointF(deltaX, deltaY),
-                new PointF(cameraX, cameraY)
-        ));
+                        Player.getInstance().isAttacking(),
+                        mapManager,
+                        pWidth,
+                        pHeight,
+                        new PointF(deltaX, deltaY),
+                        new PointF(cameraX, cameraY)
+                ));
 
 
     }
@@ -418,38 +331,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
     public void setPlayerMoveFalse() {
         movePlayer = false; //在操作板class中，松开光标/键盘后将角色移动设置为false，即停止角色移动
+        Player.getInstance().backToIdleState();
         Player.getInstance().resetAnimation();
-    }
-
-    public void setAttacking(boolean attacking) {
-        this.attacking = attacking;
-        viewModel.setAttacking(attacking);
-    }
-
-    public void initializeAttackBox(int choice) {
-        if (choice == 1) {
-            characterAttackWidth = (int) (0.8 * GameConstants.Sprite.SIZE);
-            characterAttackHeight = 2 * GameConstants.Sprite.SIZE;
-        } else if (choice == 2) {
-            characterAttackWidth = GameVideos.WITCH_ATTACK_EFFECT.getWidth();
-            characterAttackHeight = GameConstants.Sprite.SIZE;
-        } else {
-            characterAttackWidth = (int) (1.2 * GameConstants.Sprite.SIZE);
-            characterAttackHeight = 2 * GameConstants.Sprite.SIZE;
-        }
-        initializeEffectAdjust(choice);
-    }
-
-    public void initializeEffectAdjust(int choice) {
-        if (choice == 2) {
-            effectAdjustTopWhenRight = -30;
-            effectAdjustTopWhenLeft = -115;
-            effectAdjustLeftWhenRight = 20;
-            effectAdjustLeftWhenLeft = -240;
-            haveEffect = true;
-        } else {
-            haveEffect = false;
-        }
     }
 
 

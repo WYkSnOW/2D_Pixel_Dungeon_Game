@@ -93,7 +93,7 @@ public class Menu extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.MENU) {
             return;
         }
-        menuBackground.update(delta);
+        menuBackground.update();
         runningZombie.update(delta);
     }
 

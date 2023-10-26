@@ -1,5 +1,6 @@
 package com.example.myapplication.sprite4Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
@@ -11,11 +12,11 @@ import org.junit.Test;
 public class EnemyAbleMoveUnitTest {
     @Test
     public void enemyAbleMoveUnitTest() {
-        //Here are the id of block that allow monster to move
-        int[] moveAbleBlock = {15, 123, 124, 124, 136, 148, 149, 112, 125, 113, 126, 114, 127, 140};
+        //Here are the id of block that doesn't allow monster to move
+        int[] notMoveAbleBlock = {59, 60, 150, 0};
 
-        for (int i : moveAbleBlock) {
-            assertTrue(GameMap.isMoveAbleBlock(i));
+        for (int i : notMoveAbleBlock) {
+            assertFalse(GameMap.isMoveAbleBlock(i));
         }
     }
 }

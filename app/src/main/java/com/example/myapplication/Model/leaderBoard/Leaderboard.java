@@ -113,10 +113,6 @@ public class Leaderboard {
 
     private void drawRankInfo(Canvas c, int i) {
         int addSpace = 105;
-        int offSetX = 0;
-        if (Integer.toString(playerRecords.get(i).getScore()).length() == 1) {
-            offSetX = 10;
-        }
         c.drawText(
                 playerRecords.get(i).getPlayerName(),
                 220,
@@ -124,13 +120,20 @@ public class Leaderboard {
                 paint1);
         c.drawText(
                 "" + playerRecords.get(i).getScore(),
-                566 + offSetX,
+                566 + calScoreOffset(Integer.toString(playerRecords.get(i).getScore()).length()),
                 419 + (i * addSpace) + 50,
                 paint1);
         c.drawText(playerRecords.get(i).getDate(),
                 280,
                 405 + (i * addSpace) + 20,
                 blackPaint);
+    }
+
+    public int calScoreOffset(int length) {
+        if (length == 1) {
+            return 10;
+        }
+        return 0;
     }
 
     public void updateLeaderBoard() {
@@ -146,6 +149,7 @@ public class Leaderboard {
             p.setIsNew(false);
         }
     }
+
 
 
     // 其他需要的方法...
