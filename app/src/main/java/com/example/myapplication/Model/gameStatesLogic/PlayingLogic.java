@@ -1,21 +1,18 @@
 package com.example.myapplication.Model.gameStatesLogic;
 
-import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
-import com.example.myapplication.Model.helper.GameConstants;
 
 public class PlayingLogic {
 
     public boolean checkPlayerAbleMoveWithAttacking(boolean attacking) {
         return !attacking;
     }
-    public boolean checkPlayerAbleMove(
+    public boolean checkPlayerAbleMoveX(
             boolean attacking,
             MapManager mapManager,
             int pWidth, int pHeight,
@@ -24,26 +21,55 @@ public class PlayingLogic {
         if (attacking || Player.getInstance().isOnSkill()) {
             return false;
         }
-        return checkAbleMove(mapManager, pWidth, pHeight, delta, camera);
+        return checkAbleMoveX(mapManager, pWidth, pHeight, delta, camera);
+
+    }
+    public boolean checkPlayerAbleMoveY(
+            boolean attacking,
+            MapManager mapManager,
+            int pWidth, int pHeight,
+            PointF delta, PointF camera
+    ) {
+        if (attacking || Player.getInstance().isOnSkill()) {
+            return false;
+        }
+        return checkAbleMoveY(mapManager, pWidth, pHeight, delta, camera);
 
     }
 
 
-    public boolean checkAbleMove(
+    public boolean checkAbleMoveY(
             MapManager mapManager,
             int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
         float x
-                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x * -1 + pWidth;
+                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x + pWidth;
 
         float yTop
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1;
- 
+
         float yBottom
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1 + pHeight;
 
         return mapManager.getCurrentMap().canMoveHere(x, yTop, yBottom);
+    }
+
+    public boolean checkAbleMoveX(
+            MapManager mapManager,
+            int pWidth, int pHeight,
+            PointF delta, PointF camera
+    ) {
+        float currX
+                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x * -1 + pWidth;
+
+        float currYTop
+                = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y;
+
+        float currYBottom
+                = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y + pHeight;
+
+        return mapManager.getCurrentMap().canMoveHere(currX, currYTop, currYBottom);
     }
 
     public boolean checkHitBoxCollision(RectF hitBoxOne, RectF hitBoxTwo) {

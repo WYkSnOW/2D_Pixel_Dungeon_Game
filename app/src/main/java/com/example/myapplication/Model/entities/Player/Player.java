@@ -78,7 +78,7 @@ public class Player extends Character {
         //attackAffect.update(delta);
     }
 
-    protected void updatePlayerAnim() {
+    public void updatePlayerAnim() {
         aniTick++;
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;

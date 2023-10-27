@@ -1,7 +1,6 @@
 package com.example.myapplication.Model.entities.enemies;
 
 import android.graphics.PointF;
-import android.graphics.RectF;
 
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Character;
@@ -177,6 +176,5 @@ public abstract class AbstractEnemy extends Character {
     public int getAtk() {
         return atk;
     }
-
 
 }

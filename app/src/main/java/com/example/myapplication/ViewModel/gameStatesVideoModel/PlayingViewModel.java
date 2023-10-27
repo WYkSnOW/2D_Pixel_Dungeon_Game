@@ -1,7 +1,6 @@
 package com.example.myapplication.ViewModel.gameStatesVideoModel;
 
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -16,11 +15,11 @@ import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
 import com.example.myapplication.Model.ui.PlayingUI;
 
 public class PlayingViewModel extends ViewModel {
-    private MutableLiveData<Boolean> isAttacking = new MutableLiveData<>();
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
     private MutableLiveData<Float> cameraX = new MutableLiveData<>();
     private MutableLiveData<Float> cameraY = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isPlayerAbleMove = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isPlayerAbleMoveX = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isPlayerAbleMoveY = new MutableLiveData<>();
     private MutableLiveData<Boolean> checkingPlayerEnemyCollision = new MutableLiveData<>();
     private PlayingLogic playingLogic = new PlayingLogic();
 
@@ -28,8 +27,11 @@ public class PlayingViewModel extends ViewModel {
         return lastTouchDiff;
     }
 
-    public LiveData<Boolean> getIsPlayerAbleMove() {
-        return isPlayerAbleMove;
+    public LiveData<Boolean> getIsPlayerAbleMoveX() {
+        return isPlayerAbleMoveX;
+    }
+    public LiveData<Boolean> getIsPlayerAbleMoveY() {
+        return isPlayerAbleMoveY;
     }
 
     public LiveData<Float> getCameraX() {
@@ -39,8 +41,11 @@ public class PlayingViewModel extends ViewModel {
         return cameraY;
     }
 
-    public void setIsPlayerAbleMove(boolean playerAbleMove) {
-        isPlayerAbleMove.postValue(playerAbleMove);
+    public void setIsPlayerAbleMoveX(boolean playerAbleMove) {
+        isPlayerAbleMoveX.postValue(playerAbleMove);
+    }
+    public void setIsPlayerAbleMoveY(boolean playerAbleMove) {
+        isPlayerAbleMoveY.postValue(playerAbleMove);
     }
     public void setLastTouchDiff(PointF lastTouchDiff) {
         this.lastTouchDiff.setValue(lastTouchDiff);
@@ -55,12 +60,21 @@ public class PlayingViewModel extends ViewModel {
         return checkingPlayerEnemyCollision;
     }
 
-    public boolean checkPlayerAbleMove(
+    public boolean checkPlayerAbleMoveX(
             boolean attacking, MapManager mapManager,
             int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
-        return playingLogic.checkPlayerAbleMove(
+        return playingLogic.checkPlayerAbleMoveX(
+                attacking, mapManager, pWidth, pHeight, delta, camera
+        );
+    }
+    public boolean checkPlayerAbleMoveY(
+            boolean attacking, MapManager mapManager,
+            int pWidth, int pHeight,
+            PointF delta, PointF camera
+    ) {
+        return playingLogic.checkPlayerAbleMoveY(
                 attacking, mapManager, pWidth, pHeight, delta, camera
         );
     }

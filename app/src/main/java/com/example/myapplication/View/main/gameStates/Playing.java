@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.view.MotionEvent;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
@@ -24,8 +22,6 @@ import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerIdle;
 import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerMoveStrategy;
 import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerRun;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
-import com.example.myapplication.Model.loopVideo.GameVideos;
-import com.example.myapplication.Model.loopVideo.GameAnimation;
 import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.ui.PlayingUI;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
@@ -39,7 +35,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     private float cameraX;
     private float cameraY;
     private boolean movePlayer;
-    private boolean playerAbleMove;
+    private boolean playerAbleMoveX;
+    private boolean playerAbleMoveY;
     private PointF lastTouchDiff;
 
     private final PlayingUI playingUI;
@@ -68,7 +65,8 @@ public class Playing extends BaseState implements GameStateInterFace {
         hitBoxPaint.setStyle(Paint.Style.STROKE);
         hitBoxPaint.setColor(Color.RED);
 
-        playerAbleMove = false;
+        playerAbleMoveX = false;
+        playerAbleMoveY = false;
         playerIdle = new PlayerIdle();
         playerRun = new PlayerRun();
         playerDash = new PlayerDash();
@@ -107,10 +105,16 @@ public class Playing extends BaseState implements GameStateInterFace {
                 cameraY = y;
             }
         });
-        viewModel.getIsPlayerAbleMove().observe((LifecycleOwner) context, new Observer<Boolean>() {
+        viewModel.getIsPlayerAbleMoveX().observe((LifecycleOwner) context, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean ableMove) {
-                playerAbleMove = ableMove;
+                playerAbleMoveX = ableMove;
+            }
+        });
+        viewModel.getIsPlayerAbleMoveY().observe((LifecycleOwner) context, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean ableMove) {
+                playerAbleMoveY = ableMove;
             }
         });
         viewModel.getCheckingPlayerEnemyCollision().observe((LifecycleOwner) context, new Observer<Boolean>() {
@@ -290,8 +294,17 @@ public class Playing extends BaseState implements GameStateInterFace {
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
 
 
-        viewModel.setIsPlayerAbleMove(
-                viewModel.checkPlayerAbleMove(
+        viewModel.setIsPlayerAbleMoveX(
+                viewModel.checkPlayerAbleMoveX(
+                        Player.getInstance().isAttacking(),
+                        mapManager,
+                        pWidth,
+                        pHeight,
+                        new PointF(deltaX, deltaY),
+                        new PointF(cameraX, cameraY)
+                ));
+        viewModel.setIsPlayerAbleMoveY(
+                viewModel.checkPlayerAbleMoveY(
                         Player.getInstance().isAttacking(),
                         mapManager,
                         pWidth,
@@ -301,12 +314,19 @@ public class Playing extends BaseState implements GameStateInterFace {
                 ));
 
 
+
     }
 
     private void updatePlayerPosition(double delta) {
-        if (playerAbleMove) {
+        System.out.println(""+playerAbleMoveY);
+        if (playerAbleMoveX) {
             float speed = Player.getInstance().getCurrentSpeed();
             cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).x;
+            //cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).y;
+
+        }
+        if (playerAbleMoveY) {
+            float speed = Player.getInstance().getCurrentSpeed();
             cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).y;
         }
 

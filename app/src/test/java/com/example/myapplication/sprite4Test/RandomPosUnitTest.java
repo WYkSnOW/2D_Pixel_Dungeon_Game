@@ -29,7 +29,7 @@ public class RandomPosUnitTest {
             if (pos2 == pos3) {
                 sameCount++;
             } else {
-                differentCount ++;
+                differentCount += 1;
             }
         }
         assertTrue(differentCount > sameCount);

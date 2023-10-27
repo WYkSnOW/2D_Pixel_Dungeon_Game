@@ -85,7 +85,6 @@ public class End extends BaseState implements GameStateInterFace {
         endBackground.update();
         loseScreenBack.update();
 
-        Player.getInstance().update(delta);
 
     }
     @Override
@@ -100,9 +99,7 @@ public class End extends BaseState implements GameStateInterFace {
         }
         //c.drawText("End", 800, 200, paint);
         drawBackground(c);
-        drawUi(c);
         drawBtn(c);
-        drawPlayer(c);
         Leaderboard.getInstance().drawLeaderBoard(c);
     }
 
@@ -126,40 +123,14 @@ public class End extends BaseState implements GameStateInterFace {
 
     }
 
-    public void drawUi(Canvas c) {
-        Bitmap resultBar = GameImages.PLAYER_LOSE_BAR.getImage();
-        if (Player.getInstance().isWinTheGame()) {
-            resultBar = GameImages.PLAYER_WIN_BAR.getImage();
-        }
 
-        c.drawBitmap(
-                resultBar,
-                (int) ((GAME_WIDTH / 2)
-                        - (GameImages.PLAYER_WIN_BAR.getWidth() / 2) + 40),
-                30,
-                null
-        );
-        c.drawBitmap(
-                GameImages.LEADERBOARD.getImage(),
-                100,
-                180,
-                null
-        );
-        c.drawBitmap(
-                GameImages.CURRENT_BOARD.getImage(),
-                1880,
-                390,
-                null
-        );
-    }
-
-    private void drawPlayer(Canvas c) {
-        c.drawBitmap(Player.getInstance().getGameCharType()
-                        .getSprite(2, Player.getInstance().getAniIndex()),
-                1880 + 50,
-                390 + 300,
-                null);
-    }
+//    private void drawPlayer(Canvas c) {
+//        c.drawBitmap(Player.getInstance().getGameCharType()
+//                        .getSprite(2, Player.getInstance().getAniIndex()),
+//                1880 + 50,
+//                390 + 300 - Player.getInstance().getHitBoxOffSetY() / 2f,
+//                null);
+//    }
 
     private void drawBtn(Canvas c) {
         c.drawBitmap(

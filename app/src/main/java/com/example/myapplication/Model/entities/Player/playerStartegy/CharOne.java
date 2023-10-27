@@ -67,10 +67,15 @@ public class CharOne implements PlayerCharStrategy {
         int idx = Player.getInstance().getAniIndex();
         Player.getInstance().setAbleMakeDamage(true);
 
-        if (5 <= idx && idx <= 9) {
+        if (6 <= idx && idx <= 8) {
             return new PointF(
-                    (float) (1.1 * GameConstants.Sprite.SIZE),
-                    (float) (1.1 * GameConstants.Sprite.SIZE)
+                    (float) (0.7 * GameConstants.Sprite.SIZE),
+                    (float) (1.5 * GameConstants.Sprite.SIZE)
+            );
+        } else if (10 <= idx && idx <= 11) {
+            return new PointF(
+                    (float) (0.7 * GameConstants.Sprite.SIZE),
+                    (float) (0.9 * GameConstants.Sprite.SIZE)
             );
         }
 
@@ -80,9 +85,24 @@ public class CharOne implements PlayerCharStrategy {
 
     private PointF getAtkBoxPosWhenAttacking() {
         float top = Player.getInstance().getHitBox().top;
-
         int idx = Player.getInstance().getAniIndex();
-        if (5 <= idx && idx <= 9) {
+
+
+        if (6 <= idx && idx <= 8) {
+            top -= Player.getInstance().getHitBoxOffSetY() / 2f;
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                return new PointF(
+                        Player.getInstance().getHitBox().left,
+                        top
+                );
+            } else {
+                return new PointF(
+                        Player.getInstance().getHitBox().right,
+                        top
+                );
+            }
+        } else if (10 <= idx && idx <= 11) {
+            top += Player.getInstance().getHitBoxOffSetY() / 2.6f;
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
@@ -116,8 +136,8 @@ public class CharOne implements PlayerCharStrategy {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
         } else if (state == PlayerStates.ATTACK) {
-            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
-            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.5;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.5;
         }
 
         if (dir == GameConstants.FaceDir.LEFT) {
