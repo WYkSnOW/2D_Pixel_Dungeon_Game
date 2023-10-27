@@ -14,6 +14,7 @@ import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
@@ -155,7 +156,16 @@ public class PlayingUI {
                         float xDiff = event.getX(i) - joystickCenterPos.x;
                         float yDiff = event.getY(i) - joystickCenterPos.y;
                         //传输进入控制板中决定玩家是否移动的function
-                        playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
+                        if (!(Player.getInstance().isAttacking() || Player.getInstance().isOnSkill())) {
+                            playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
+                            if (checkInsideJoyStick(new PointF(event.getX(), event.getY()), event.getPointerId(i))) {
+                                Player.getInstance().setCurrentStates(PlayerStates.WALK);
+                            } else {
+                                Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
+                            }
+                        }
+
+
                     }
                 }
 
@@ -173,9 +183,9 @@ public class PlayingUI {
                     if (btnMenu.isPushed(pointerId)) {
                         resetJoystickButton();
                         //playing.setGameStateToEnd();
-                        if (Player.getInstance().getGameCharType() == GameCharacters.TERESA) {
+                        if (Player.getInstance().getGameCharType() == GameCharacters.CENTAUR) {
                             Player.getInstance().setCharStrategy(new CharTwo());
-                        } else if (Player.getInstance().getGameCharType() == GameCharacters.WITCH) {
+                        } else if (Player.getInstance().getGameCharType() == GameCharacters.WITCH2) {
                             Player.getInstance().setCharStrategy(new CharThree());
                         } else {
                             Player.getInstance().setCharStrategy(new CharOne());

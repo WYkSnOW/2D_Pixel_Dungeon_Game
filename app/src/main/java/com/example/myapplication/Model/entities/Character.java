@@ -46,8 +46,8 @@ public abstract class  Character extends Entity {
         }
     }
     public void resetAnimation() {
-        aniTick = 0;
         aniIndex = 0;
+        aniTick = 0;
     }
 
     public int getAniIndex() {

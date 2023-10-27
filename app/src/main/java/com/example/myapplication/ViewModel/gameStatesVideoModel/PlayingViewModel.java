@@ -28,9 +28,6 @@ public class PlayingViewModel extends ViewModel {
         return lastTouchDiff;
     }
 
-    public LiveData<Boolean> getIsAttacking() {
-        return isAttacking;
-    }
     public LiveData<Boolean> getIsPlayerAbleMove() {
         return isPlayerAbleMove;
     }
@@ -41,9 +38,7 @@ public class PlayingViewModel extends ViewModel {
     public LiveData<Float> getCameraY() {
         return cameraY;
     }
-    public void setAttacking(boolean attacking) {
-        isAttacking.setValue(attacking);
-    }
+
     public void setIsPlayerAbleMove(boolean playerAbleMove) {
         isPlayerAbleMove.postValue(playerAbleMove);
     }
@@ -55,38 +50,11 @@ public class PlayingViewModel extends ViewModel {
         this.checkingPlayerEnemyCollision.postValue(true);
     }
 
-    public void setCameraX(float cameraX) {
-        this.cameraX.setValue(cameraX);
-    }
-    public void setCameraY(float cameraY) {
-        this.cameraY.setValue(cameraY);
-    }
-    public int getPlayerDrawDir(boolean attacking) {
-        return playingLogic.getPlayerDrawDir(attacking);
-    }
-    public void setPlayerAnimDir(float xSpeed, float ySpeed, PointF lastTouchDiff) {
-        playingLogic.setPlayerAnimDir(xSpeed, ySpeed, lastTouchDiff);
-    }
-    public Bitmap getPlayerSprite(boolean attacking) {
-        return playingLogic.getPlayerSprite(attacking);
-    }
-    public float getPlayerLeft() {
-        return playingLogic.getPlayerLeft();
-    }
-    public float getPlayerTop() {
-        return playingLogic.getPlayerTop();
-    }
-    public RectF getPlayerHitbox() {
-        return playingLogic.getPlayerHitbox();
-    }
 
     public MutableLiveData<Boolean> getCheckingPlayerEnemyCollision() {
         return checkingPlayerEnemyCollision;
     }
 
-    public PointF getEffectPos() {
-        return playingLogic.getEffectPos();
-    }
     public boolean checkPlayerAbleMove(
             boolean attacking, MapManager mapManager,
             int pWidth, int pHeight,
@@ -96,12 +64,7 @@ public class PlayingViewModel extends ViewModel {
                 attacking, mapManager, pWidth, pHeight, delta, camera
         );
     }
-    public float getEffectRote() {
-        return playingLogic.getEffectRote();
-    }
-    public int offSetX() {
-        return playingLogic.offSetX();
-    }
+
     public void checkAttack(boolean attacking, RectF attackBox,
                             MapManager mapManager,
                             float cameraX, float cameraY) {

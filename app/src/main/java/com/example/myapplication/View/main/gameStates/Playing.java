@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
@@ -145,7 +146,7 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         updatePlayerMoveInfo(delta);
         if (playerMoveStrategy != null) {
-            playerMoveStrategy.setPlayerAnim(0, 0, lastTouchDiff);
+            playerMoveStrategy.setPlayerAnim(xSpeed, ySpeed, lastTouchDiff);
         }
         updatePlayerPosition(delta);
 
@@ -284,7 +285,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         //if (ySpeed <= 0) {
         //    pHeight = 0;
         //}
-        float baseSpeed = (float) delta * 300;
+        float baseSpeed = (float) delta * Player.getInstance().getCurrentSpeed();
         float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
 
@@ -304,8 +305,9 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     private void updatePlayerPosition(double delta) {
         if (playerAbleMove) {
-            cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).x;
-            cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * 300).y;
+            float speed = Player.getInstance().getCurrentSpeed();
+            cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).x;
+            cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).y;
         }
 
     }

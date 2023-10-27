@@ -12,13 +12,11 @@ import android.graphics.RectF;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
-import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.PlayerCharStrategy;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.loopVideo.GameAnimation;
-import com.example.myapplication.R;
 
 public class Player extends Character {
 
@@ -35,10 +33,12 @@ public class Player extends Character {
     private int attackWidth;
     private int attackHeight;
     private Paint hitBoxPaint = new Paint();
-    private GameAnimation attackAffect;
     private PlayerCharStrategy playerCharStrategy;
     private boolean attacking;
-    private PlayerStates playerStates;
+    private PlayerStates currentStates;
+    private boolean onSkill;
+    private float baseSpeed;
+    private boolean ableMakeDamage;
 
 
 
@@ -46,8 +46,6 @@ public class Player extends Character {
 
     public Player(GameCharacters characterChoice) {
         super(new PointF(GAME_WIDTH / 2, GAME_HEIGHT / 2), characterChoice);
-        initializeGameTime();
-        winTheGame = false;
         attackBox = new RectF(0, 0, 0, 0);
 
         hitBoxPaint.setStrokeWidth(1);
@@ -55,8 +53,10 @@ public class Player extends Character {
         hitBoxPaint.setColor(Color.RED);
 
         playerCharStrategy = new CharOne();
-        attacking = false;
-        playerStates = PlayerStates.IDLE;
+
+
+
+        resetPlayer();
     }
 
     public void setCharStrategy(PlayerCharStrategy playerCharStrategy) {
@@ -65,9 +65,7 @@ public class Player extends Character {
     }
 
     public void update(double delta) {
-        if (attackAffect != null) {
-            attackAffect.update();
-        }
+
 
         //if (movePlayer) {
         updatePlayerAnim();
@@ -85,7 +83,7 @@ public class Player extends Character {
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= playerCharStrategy.getAnimMaxIndex(playerStates)) {
+            if (aniIndex >= playerCharStrategy.getAnimMaxIndex(currentStates)) {
                 aniIndex = 0;
             }
         }
@@ -95,7 +93,7 @@ public class Player extends Character {
         playerCharStrategy.drawPlayer(c);
     }
     public void updateAtkBox() {
-        playerCharStrategy.updateCharAtkBox();
+        playerCharStrategy.updateAtkBox();
     }
     public void drawAtk(Canvas c) {
         playerCharStrategy.drawAttackBox(c);
@@ -103,8 +101,13 @@ public class Player extends Character {
 
     private void resetPlayer() {
         initializeGameTime();
-        setDifficulty(difficulty);
+        setDifficulty(1);
         winTheGame = false;
+        baseSpeed = 300;
+        attacking = false;
+        currentStates = PlayerStates.IDLE;
+        onSkill = false;
+        ableMakeDamage = false;
     }
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         changeAnim(characterChoice);
@@ -236,24 +239,16 @@ public class Player extends Character {
         return attackBox;
     }
 
-    public void setAttackAffect(GameAnimation attackAffect) {
-        this.attackAffect = attackAffect;
-    }
-
-    public GameAnimation getAttackAffect() {
-        return attackAffect;
-    }
-
-    public PlayerCharStrategy getCurrentCharStrategy() {
-        return playerCharStrategy;
-    }
 
     public void setAttacking(boolean attacking) {
-        this.attacking = attacking;
-        if (attacking) {
-            setPlayerStates(PlayerStates.ATTACK);
-        } else {
-            backToIdleState();
+        if (!onSkill) {
+            this.attacking = attacking;
+            if (attacking) {
+                setCurrentStates(PlayerStates.ATTACK);
+            } else {
+                ableMakeDamage = false;
+                backToIdleState();
+            }
         }
     }
 
@@ -261,17 +256,45 @@ public class Player extends Character {
         return attacking;
     }
 
-    public PlayerStates getPlayerStates() {
-        return playerStates;
+    public PlayerStates getCurrentStates() {
+        return currentStates;
     }
 
-    public void setPlayerStates(PlayerStates playerStates) {
-        if (this.playerStates != playerStates) {
-            this.playerStates = playerStates;
+    public void setCurrentStates(PlayerStates currentStates) {
+        if (this.currentStates != currentStates) {
+            aniIndex = 0;
+            this.currentStates = currentStates;
         }
     }
 
-    public void backToIdleState() {
-        playerStates = PlayerStates.IDLE;
+    public boolean isOnSkill() {
+        return onSkill;
     }
+    public void backToIdleState() {
+        ableMakeDamage = false;
+        attacking = false;
+        onSkill = false;
+        currentStates = PlayerStates.IDLE;
+    }
+
+    public void setBaseSpeed(float baseSpeed) {
+        this.baseSpeed = baseSpeed;
+    }
+
+    public void setAbleMakeDamage(boolean ableMakeDamage) {
+        this.ableMakeDamage = ableMakeDamage;
+    }
+
+    public boolean isAbleMakeDamage() {
+        return ableMakeDamage;
+    }
+
+    public float getBaseSpeed() {
+        return baseSpeed;
+    }
+    public float getCurrentSpeed() {
+        return playerCharStrategy.getCurrentSpeed(baseSpeed, currentStates);
+    }
+
+
 }
