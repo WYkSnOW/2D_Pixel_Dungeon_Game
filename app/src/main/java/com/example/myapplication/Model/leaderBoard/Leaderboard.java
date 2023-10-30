@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Typeface;
 
 import com.example.myapplication.Model.entities.Player.Player;
@@ -26,6 +27,15 @@ public class Leaderboard {
     private Paint paint2 = new Paint();
     private Paint blackPaint = new Paint();
     private Paint boldPaint = new Paint();
+    private final PointF recordBoardPos = new PointF(100, 180);
+    private final PointF resultBarPos = new PointF(
+            (int) ((GAME_WIDTH / 2.0) - (GameImages.PLAYER_WIN_BAR.getWidth() / 2.0) + 40.0),
+            30
+    );
+    private final PointF currentBoardPos = new PointF(
+            GAME_WIDTH - GameImages.CURRENT_BOARD.getWidth(),
+            390
+    );
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
@@ -55,9 +65,9 @@ public class Leaderboard {
     private void drawPlayer(Canvas c) {
         Player.getInstance().setCurrentStates(PlayerStates.WALK);
         c.drawBitmap(Player.getInstance().getGameCharType()
-                        .getSprite(2, Player.getInstance().getAniIndex()),
-                1880 + 50,
-                390 + 300 - Player.getInstance().getHitBoxOffSetY() / 2f,
+                        .getSprite(PlayerStates.WALK.getAnimRow(), Player.getInstance().getAniIndex()),
+                currentBoardPos.x,
+                currentBoardPos.y + GameImages.CURRENT_BOARD.getHeight() - Player.getInstance().getCharacterHeight() - 20,
                 null);
         Player.getInstance().updatePlayerAnim();
     }
@@ -70,21 +80,20 @@ public class Leaderboard {
 
         c.drawBitmap(
                 resultBar,
-                (int) ((GAME_WIDTH / 2)
-                        - (GameImages.PLAYER_WIN_BAR.getWidth() / 2) + 40),
-                30,
+                resultBarPos.x,
+                resultBarPos.y,
                 null
         );
         c.drawBitmap(
                 GameImages.LEADERBOARD.getImage(),
-                100,
-                180,
+                recordBoardPos.x,
+                recordBoardPos.y,
                 null
         );
         c.drawBitmap(
                 GameImages.CURRENT_BOARD.getImage(),
-                GAME_WIDTH - 340,
-                390,
+                currentBoardPos.x,
+                currentBoardPos.y,
                 null
         );
     }
@@ -116,17 +125,17 @@ public class Leaderboard {
         blackPaint.setColor(Color.BLACK);
         c.drawText(
                 "Name: " + newestScore.getPlayerName(),
-                1905,
-                580,
+                currentBoardPos.x + 20,
+                currentBoardPos.y + 200,
                 boldPaint);
         c.drawText(
                 "Score: " + newestScore.getScore(),
-                1905,
-                620,
+                currentBoardPos.x + 20,
+                currentBoardPos.y + 240,
                 boldPaint);
         c.drawText(newestScore.getDate(),
-                1905,
-                660,
+                currentBoardPos.x + 20,
+                currentBoardPos.y + 280,
                 boldPaint);
 
         for (int i = 0; i < playerRecords.size(); i++) {
@@ -142,20 +151,20 @@ public class Leaderboard {
     private void drawYouWin(Canvas c) {
         c.drawText(
                 "You Win!",
-                GameConstants.UiSize.GAME_WIDTH - 240,
-                390 + 150,
+                currentBoardPos.x + (int) (GameImages.CURRENT_BOARD.getWidth() / 4.0) + 20,
+                currentBoardPos.y + 150,
                 boldPaint);
     }
     private void drawYouLose(Canvas c) {
         c.drawText(
                 "You Lose",
-                GameConstants.UiSize.GAME_WIDTH - 240,
-                390 + 150,
+                currentBoardPos.x + (int) (GameImages.CURRENT_BOARD.getWidth() / 4.0) + 20,
+                currentBoardPos.y + 150,
                 boldPaint);
         c.drawText(
                 "score wouldn't get recorded",
-                GameConstants.UiSize.GAME_WIDTH - 315,
-                390 + 300,
+                currentBoardPos.x + 40,
+                currentBoardPos.y + 300,
                 blackPaint
         );
     }
@@ -164,17 +173,17 @@ public class Leaderboard {
         int addSpace = 105;
         c.drawText(
                 playerRecords.get(i).getPlayerName(),
-                220,
-                410 + (i * addSpace),
+                recordBoardPos.x + 120,
+                recordBoardPos.y + 230 + (i * addSpace),
                 paint1);
         c.drawText(
                 "" + playerRecords.get(i).getScore(),
-                566 + calScoreOffset(Integer.toString(playerRecords.get(i).getScore()).length()),
-                419 + (i * addSpace) + 50,
+                recordBoardPos.x + 466 + calScoreOffset(Integer.toString(playerRecords.get(i).getScore()).length()),
+                recordBoardPos.y + 239 + (i * addSpace) + 50,
                 paint1);
         c.drawText(playerRecords.get(i).getDate(),
-                280,
-                405 + (i * addSpace) + 20,
+                recordBoardPos.x + 180,
+                recordBoardPos.y + 225 + (i * addSpace) + 20,
                 blackPaint);
     }
 
