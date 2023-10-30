@@ -17,11 +17,11 @@ public class LeaderBoardLessThanSixUnitTest {
         Score scoreFour = new Score(9, 2, "vibha", true);
         Score scoreFive = new Score(13, 2, "vibha", true);
 
-        Leaderboard.getInstance().addPlayerRecord(scoreOne);
-        Leaderboard.getInstance().addPlayerRecord(scoreTwo);
-        Leaderboard.getInstance().addPlayerRecord(scoreThree);
-        Leaderboard.getInstance().addPlayerRecord(scoreFour);
-        Leaderboard.getInstance().addPlayerRecord(scoreFive);
+        Leaderboard.getInstance().addPlayerRecord(scoreOne, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreTwo, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreThree, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreFour, true);
+        Leaderboard.getInstance().addPlayerRecord(scoreFive, true);
 
         //expect that score 5 is at top of playerRecords (index 0)
         assertEquals(Leaderboard.getInstance().getPlayerRecords().get(0).getScore(),

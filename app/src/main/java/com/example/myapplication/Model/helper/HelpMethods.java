@@ -44,16 +44,22 @@ public class HelpMethods {
         ArrayList<AbstractEnemy> zombieArrayList = new ArrayList<>();
         int i = 0;
         while (i < amount) {
-            float x = (float) Math.random() * width;
-            float y = (float) Math.random() * height;
-            if (gameMap.canMoveHere(x, y, y + (enemyType.getCharacterHeight()))) {
-                zombieArrayList.add(EnemyFactory.createEnemy(enemyType, new PointF(x, y)));
+            PointF pos = generateRandomPos(width, height);
+            if (gameMap.canMoveHere(pos.x, pos.y, pos.y + (enemyType.getCharacterHeight()))) {
+                zombieArrayList.add(EnemyFactory.createEnemy(enemyType, pos));
                 //zombieArrayList.add(new Zombie(new PointF(x, y)));
                 i++;
             }
         }
         return zombieArrayList;
     }
+
+    public static PointF generateRandomPos(int width, int height) {
+        float x = (float) Math.random() * width;
+        float y = (float) Math.random() * height;
+        return new PointF(x, y);
+    }
+
     public static void cleanUi(Activity activity) {
         if (activity != null) {
             activity.getWindow().getDecorView().setSystemUiVisibility(
@@ -77,8 +83,8 @@ public class HelpMethods {
     public static PointF playerMovementRun(float xSpeed, float ySpeed, float baseSpeed) {
         float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
-        System.out.println(deltaX < 0);
-        System.out.println(deltaY);
+        //System.out.println(deltaX < 0);
+        //System.out.println(deltaY);
         return new PointF(deltaX, deltaY);
     }
 
@@ -91,6 +97,11 @@ public class HelpMethods {
 
     public static int getIdleAnimation(int currentDir) {
         return currentDir + 2;
+    }
+
+    public static boolean checkTimePass(long lastTime, int timeRangeInSec) { //unit of time is second
+        long currentTime = System.currentTimeMillis();
+        return currentTime - lastTime >= timeRangeInSec * 1000L;
     }
 
 }

@@ -38,6 +38,7 @@ public class MapManager {
         drawDoorway(c);
     }
 
+
     public void drawTiles(Canvas c) {
         for (int j = 0; j < currentMap.getArrayHeight(); j++) {
             for (int i = 0; i < currentMap.getArrayWidth(); i++) {
@@ -50,6 +51,7 @@ public class MapManager {
             }
         }
     }
+
     public void drawItems(Canvas c) {
         if (currentMap.getItemArrayList() != null) {
             for (Item i : currentMap.getItemArrayList()) {

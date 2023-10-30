@@ -17,9 +17,9 @@ public class LeaderboardIsNewUnitTest {
         Score score1 = new Score(10, 1, "nikhil", true);
         Score score2 = new Score(15, 1, "nikhil", true);
         Score score3 = new Score(20, 1, "nikhil", true);
-        Leaderboard.getInstance().addPlayerRecord(score1);
-        Leaderboard.getInstance().addPlayerRecord(score2);
-        Leaderboard.getInstance().addPlayerRecord(score3);
+        Leaderboard.getInstance().addPlayerRecord(score1, true);
+        Leaderboard.getInstance().addPlayerRecord(score2, true);
+        Leaderboard.getInstance().addPlayerRecord(score3, true);
         int count = 0;
         for (int i = 0; i < Leaderboard.getInstance().getPlayerRecords().size(); i++) {
             if (Leaderboard.getInstance().getPlayerRecords().get(i).getIsNew()) {
