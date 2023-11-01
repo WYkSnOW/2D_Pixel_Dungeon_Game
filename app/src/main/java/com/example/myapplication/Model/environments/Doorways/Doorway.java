@@ -10,12 +10,15 @@ public class Doorway {
     private boolean active = true;
     private final GameMap gameMapLocatedIn;
     private Doorway doorwayConnectedTo;
+    private boolean isEndGameDoorway;
 
 
     public Doorway(RectF doorwayHitBox, GameMap gameMapLocatedIn) {
         this.hitbox = doorwayHitBox;
         this.gameMapLocatedIn = gameMapLocatedIn;
         gameMapLocatedIn.addDoorway(this);
+
+        this.isEndGameDoorway = false;
     }
 
     public void connectDoorway(Doorway destinationDoorway) {
@@ -61,4 +64,11 @@ public class Doorway {
         return hitbox;
     }
 
+    public boolean isEndGameDoorway() {
+        return isEndGameDoorway;
+    }
+
+    public void setEndGameDoorway(boolean endGameDoorway) {
+        this.isEndGameDoorway = endGameDoorway;
+    }
 }

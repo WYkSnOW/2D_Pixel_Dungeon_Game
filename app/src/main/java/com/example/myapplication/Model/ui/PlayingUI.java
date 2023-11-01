@@ -9,6 +9,12 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.example.myapplication.Model.entities.GameCharacters;
+import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
@@ -31,9 +37,7 @@ public class PlayingUI {
 
     private CustomButton btnMenu;
     private final Playing playing;
-    private CustomButton btnConfig;
-    private  int configStartX = GAME_WIDTH - ButtonImage.MENU_START.getWidth();
-    private int configStartY = GAME_HEIGHT - ButtonImage.MENU_START.getHeight();
+
 
     private int mapChoice;
 
@@ -51,12 +55,7 @@ public class PlayingUI {
                 ButtonImage.PLAYING_MENU.getWidth(),
                 ButtonImage.PLAYING_MENU.getHeight()
         );
-        btnConfig = new CustomButton(
-                configStartX,
-                configStartY,
-                ButtonImage.MENU_START.getWidth(),
-                ButtonImage.PLAYING_MENU.getHeight()
-        );
+
 
 
         mapChoice = 0;
@@ -88,12 +87,7 @@ public class PlayingUI {
                 null
         );
 
-        c.drawBitmap(
-                ButtonImage.MENU_START.getBtnImg(btnConfig.isPushed(btnConfig.getPointerId())),
-                btnConfig.getHitbox().left,
-                btnConfig.getHitbox().top,
-                null
-        );
+
         //if(touchDown) { //初始点击点在圆环内且并未松开鼠标触发，松开光标被刷新掉
         //    c.drawLine(xCenter, yCenter, xTouch, yTouch, yellowPaint); //画出光标与圆形的三角形
         //    c.drawLine(xCenter, yCenter, xTouch, yCenter, yellowPaint);
@@ -138,7 +132,10 @@ public class PlayingUI {
                 touchDown = true; //初始点击点在圆环内部
             } else if (checkInsideAttackBtn(eventPos)) {
                 if (attackBtnPointerId < 0) {
-                    playing.setAttacking(true);
+                    if (!Player.getInstance().isAttacking()) {
+                        System.out.println("setToAttack");
+                    }
+                    Player.getInstance().setAttacking(true);
                     attackBtnPointerId = pointerId;
                 }
                 //System.out.println("INSIDE attack");
@@ -146,9 +143,6 @@ public class PlayingUI {
             } else {
                 if (isIn(eventPos, btnMenu)) {
                     btnMenu.setPushed(true, pointerId);
-                }
-                if (isIn(eventPos, btnConfig)) {
-                    btnConfig.setPushed(true, pointerId);
                 }
                 //game.setCurrentGameState(Game.GameState.END);
             }
@@ -162,7 +156,16 @@ public class PlayingUI {
                         float xDiff = event.getX(i) - joystickCenterPos.x;
                         float yDiff = event.getY(i) - joystickCenterPos.y;
                         //传输进入控制板中决定玩家是否移动的function
-                        playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
+                        if (!(Player.getInstance().isAttacking() || Player.getInstance().isOnSkill())) {
+                            playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
+                            if (checkInsideJoyStick(new PointF(event.getX(), event.getY()), event.getPointerId(i))) {
+                                Player.getInstance().setCurrentStates(PlayerStates.WALK);
+                            } else {
+                                Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
+                            }
+                        }
+
+
                     }
                 }
 
@@ -179,11 +182,19 @@ public class PlayingUI {
                 if (isIn(eventPos, btnMenu)) {
                     if (btnMenu.isPushed(pointerId)) {
                         resetJoystickButton();
-                        playing.setGameStateToMenu();
+                        //playing.setGameStateToEnd();
+                        if (Player.getInstance().getGameCharType() == GameCharacters.CENTAUR) {
+                            Player.getInstance().setCharStrategy(new CharTwo());
+                        } else if (Player.getInstance().getGameCharType() == GameCharacters.WITCH2) {
+                            Player.getInstance().setCharStrategy(new CharThree());
+                        } else {
+                            Player.getInstance().setCharStrategy(new CharOne());
+                        }
+
                     }
                 }
 
-                if (isIn(eventPos, btnConfig)) {
+                /*if (isIn(eventPos, btnConfig)) {
                     if (btnConfig.isPushed(pointerId)) {
                         resetJoystickButton();
                         if (mapChoice < 2) {
@@ -191,20 +202,19 @@ public class PlayingUI {
                             playing.getMapManager().changeCurrentMap(mapChoice);
                         } else {
                             mapChoice = 0;
-                            playing.getMapManager().resetMap();
                             playing.setGameStateToEnd();
                         }
                     }
-                }
+                }*/
             }
 
 
 
-            btnConfig.unPush(pointerId);
+            //btnConfig.unPush(pointerId);
             btnMenu.unPush(pointerId);
 
             if (pointerId == attackBtnPointerId) {
-                playing.setAttacking(false);
+                Player.getInstance().setAttacking(false);
                 attackBtnPointerId = -1;
             }
         }

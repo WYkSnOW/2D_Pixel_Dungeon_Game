@@ -193,14 +193,20 @@ public class Config extends BaseState implements GameStateInterFace {
 
     @Override
     public void update(double delta) {
-        configBackground.update(delta);
-        teresa.update(delta);
-        witch.update(delta);
-        warrior.update(delta);
+        if (game.getCurrentGameState() != Game.GameState.CONFIG) {
+            return;
+        }
+        configBackground.update();
+        teresa.update();
+        witch.update();
+        warrior.update();
     }
 
     @Override
     public void touchEvents(MotionEvent event) {
+        if (game.getCurrentGameState() != Game.GameState.CONFIG) {
+            return;
+        }
         btnConfigAction(event);
         pickTeresa(event);
         pickWitch(event);
@@ -211,6 +217,9 @@ public class Config extends BaseState implements GameStateInterFace {
 
     @Override
     public void render(Canvas c) {
+        if (game.getCurrentGameState() != Game.GameState.CONFIG) {
+            return;
+        }
         drawBackground(c);
         drawBtn(c);
         drawCharacter(c);
@@ -412,13 +421,13 @@ public class Config extends BaseState implements GameStateInterFace {
                 // 在这里处理用户输入的文字
                 userInput = editText.getText().toString();
                 if (viewModel.isNameValid(userInput)) {
-                    if (userInput.length() <= 20) {
+                    if (viewModel.nameLengthBelowLimit(userInput)) {
                         //currentNameText = userInput;
                         viewModel.setPlayerName(userInput);
                         validName = true;
                     } else {
                         setTimeCounter(); //show hint for 10 second
-                        hintText = "Maximum 20 Characters";
+                        hintText = "Maximum 15 Characters";
                     }
 
                 } else {

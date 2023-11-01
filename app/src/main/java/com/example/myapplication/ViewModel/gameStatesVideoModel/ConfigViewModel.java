@@ -114,7 +114,6 @@ public class ConfigViewModel extends ViewModel {
     ) {
         Player.getInstance().setPlayerName(currentNameText);
         Player.getInstance().setDifficulty(difficultyChoice);
-        game.getPlaying().initializeAttackBox(characterChoice);
         game.setCurrentGameState(Game.GameState.PLAYING);
     }
 
@@ -123,4 +122,7 @@ public class ConfigViewModel extends ViewModel {
     }
 
 
+    public boolean nameLengthBelowLimit(String name) {
+        return configLogic.nameLengthBelowLimit(name);
+    }
 }
