@@ -23,6 +23,37 @@ public enum GameCharacters implements BitmapMethods {
             GameConstants.CharacterDefault.WARRIOR_HITBOX_OFF_SET_Y
     ),
 
+    WARRIOR2(
+            R.drawable.new_warrior_anim_list,
+            new PointF(64,
+                    64),
+            30,
+            30,
+            3.5,
+            35,
+            30
+    ),
+    WITCH2(
+            R.drawable.new_witch_anim_list,
+            new PointF(64,
+                    64),
+            30,
+            30,
+            3.5,
+            40,
+            30
+    ),
+    CENTAUR(
+            R.drawable.new_centaur_anim_list,
+            new PointF(64,
+                    64),
+            30,
+            30,
+            3.5,
+            37,
+            28
+    ),
+
     WITCH(
             R.drawable.witch_character_list,
             new PointF(GameConstants.CharacterDefault.WITCH_WIDTH,
@@ -54,16 +85,43 @@ public enum GameCharacters implements BitmapMethods {
             6,
             2,
             4
+    ),
 
+    CHEST_MOB(
+            R.drawable.chest_mob_list,
+            new PointF(26, 34),
+            4,
+            4,
+            6,
+            6,
+            8
+    ),
+    CROW_MAN(
+            R.drawable.crow_mob_list,
+            new PointF(22, 30),
+            4,
+            4,
+            6,
+            4,
+            7
+    ),
+    STEEL_GOLEM(
+            R.drawable.steel_golem_mob_list,
+            new PointF(32, 40),
+            13,
+            4,
+            6,
+            13,
+            15
     );
 
 
     private Bitmap spriteSheet;
-    private Bitmap[][] sprites; //
+    private Bitmap[][] sprites;
     // 素材一共Y行 * X列格，即[Y][X]
     private int characterWidth;
     private int characterHeight;
-    private int scale;
+    private double scale;
     private int maxAnimIndex;
     private int hitBoxOffSetX;
     private int hitBoxOffSetY;
@@ -74,7 +132,7 @@ public enum GameCharacters implements BitmapMethods {
             int resID,
             PointF size,
             int animationX, int animationY,
-            int scale,
+            double scale,
             int hitBoxOffSetX, int hitBoxOffSetY
     ) {
 
@@ -102,7 +160,7 @@ public enum GameCharacters implements BitmapMethods {
                 );
                 sprites[j][i]
                         = Bitmap.createScaledBitmap(
-                                temp, (width * scale), (height * scale), false
+                                temp, (int) (width * scale), (int) (height * scale), false
                 );
             }
         }
@@ -115,11 +173,11 @@ public enum GameCharacters implements BitmapMethods {
 
 
     public int getHitBoxOffSetX() {
-        return hitBoxOffSetX * scale;
+        return (int) (hitBoxOffSetX * scale);
     }
 
     public int getHitBoxOffSetY() {
-        return hitBoxOffSetY * scale;
+        return (int) (hitBoxOffSetY * scale);
     }
 
 
@@ -128,14 +186,14 @@ public enum GameCharacters implements BitmapMethods {
     } //y素材行数，x//列数
 
     public int getCharacterWidth() {
-        return characterWidth * scale;
+        return (int) (characterWidth * scale);
     }
 
     public int getCharacterHeight() {
-        return characterHeight * scale;
+        return (int) (characterHeight * scale);
     }
 
-    public int getScale() {
+    public double getScale() {
         return scale;
     }
 

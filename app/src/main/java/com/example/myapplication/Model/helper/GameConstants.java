@@ -62,10 +62,18 @@ public final class GameConstants {
         public static final int TERESA_HITBOX_OFF_SET_Y = 13;
     }
 
+    public static final class ImageDefault {
+        public static final int CLOUD_BACKGROUND_WIDTH = 370;
+        public static final int CLOUD_BACKGROUND_HEIGHT = 330;
+        public static final double CLOUD_BACKGROUND_SCALE
+                = MainViewModel.getScaleRatio(CLOUD_BACKGROUND_WIDTH, CLOUD_BACKGROUND_HEIGHT);
+    }
+
     public static final class VideosDefault {
         public static final int BACKGROUND_WIDTH = 1920;
         public static final int BACKGROUND_HEIGHT = 1080;
-        public static final double BACKGROUND_SCALE = MainViewModel.getScaleRatio();
+        public static final double BACKGROUND_SCALE
+                = MainViewModel.getScaleRatio(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 
 
         public static final int MAIN_BACKGROUND_ANIMATIONX = 9;
@@ -131,7 +139,6 @@ public final class GameConstants {
 
     public static final class UiLocation {
 
-        public static final double BACKGROUND_RATIO = MainViewModel.getScaleRatio();
 
         //in Menu
         //for start btn

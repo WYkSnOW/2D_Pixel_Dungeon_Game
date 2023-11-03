@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.example.myapplication.Model.coreLogic.Game;
+import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
@@ -36,6 +38,7 @@ public class MapManager {
         drawDoorway(c);
     }
 
+
     public void drawTiles(Canvas c) {
         for (int j = 0; j < currentMap.getArrayHeight(); j++) {
             for (int i = 0; i < currentMap.getArrayWidth(); i++) {
@@ -48,6 +51,7 @@ public class MapManager {
             }
         }
     }
+
     public void drawItems(Canvas c) {
         if (currentMap.getItemArrayList() != null) {
             for (Item i : currentMap.getItemArrayList()) {
@@ -77,7 +81,8 @@ public class MapManager {
         }
     }
 
-    public void changeMap(Doorway doorwayTarget) {
+    public void changeMap(Doorway doorwayTarget, Game game) {
+
         this.currentMap = doorwayTarget.getGameMapLocatedIn();
 
         float cX = GameConstants.UiSize.GAME_WIDTH / 2 - doorwayTarget.getPosOfDoorway().x;
@@ -116,10 +121,24 @@ public class MapManager {
         mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE, null);
         mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE, null);
 
-        mapOne.addZombiesToList(HelpMethods.getZombieRandomized(3, mapOne));
-        mapTwo.addZombiesToList(HelpMethods.getZombieRandomized(3, mapTwo));
-        mapThree.addZombiesToList(HelpMethods.getZombieRandomized(4, mapThree));
+        initMobList();
 
+        initDoorway();
+
+        currentMap = mapOne;
+    }
+
+    private void initMobList() {
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.ZOMBIE));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CHEST_MOB));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CROW_MAN));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.STEEL_GOLEM));
+
+        mapTwo.addMobsToList(HelpMethods.getMobRandomized(3, mapTwo, GameCharacters.ZOMBIE));
+        mapThree.addMobsToList(HelpMethods.getMobRandomized(4, mapThree, GameCharacters.ZOMBIE));
+    }
+
+    private void initDoorway() {
         //HelpMethods.AddDoorwayToGameMap(mapOne, mapTwo, Doorways.DOORWAY_ONE);
         HelpMethods.connectTwoDoorways(
                 mapOne,
@@ -135,8 +154,10 @@ public class MapManager {
                 HelpMethods.createHitboxForDoorway(3, 0, DoorwayType.DOORWAY_Three)
         );
 
-        currentMap = mapOne;
-
+        Doorway endGameDoorway =
+                new Doorway(HelpMethods.createHitboxForDoorway(
+                        14, 29, DoorwayType.END_GAME_DOORWAY), mapThree);
+        endGameDoorway.setEndGameDoorway(true);
     }
 
     private int[][] initMapTwo() {
@@ -250,6 +271,10 @@ public class MapManager {
     }
     public void resetMap() {
         currentMap = mapOne;
+        mapOne.clearMobList();
+        mapTwo.clearMobList();
+        mapThree.clearMobList();
+        initMobList();
     }
     public GameMap getCurrentMap() {
         return currentMap;

@@ -1,7 +1,6 @@
 package com.example.myapplication.ViewModel.gameStatesVideoModel;
 
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -16,79 +15,82 @@ import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
 import com.example.myapplication.Model.ui.PlayingUI;
 
 public class PlayingViewModel extends ViewModel {
-    private MutableLiveData<Boolean> isAttacking = new MutableLiveData<>();
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
     private MutableLiveData<Float> cameraX = new MutableLiveData<>();
     private MutableLiveData<Float> cameraY = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isPlayerAbleMoveX = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isPlayerAbleMoveY = new MutableLiveData<>();
+    private MutableLiveData<Boolean> checkingPlayerEnemyCollision = new MutableLiveData<>();
     private PlayingLogic playingLogic = new PlayingLogic();
 
     public LiveData<PointF> getLastTouchDiff() {
         return lastTouchDiff;
     }
 
-    public LiveData<Boolean> getIsAttacking() {
-        return isAttacking;
+    public LiveData<Boolean> getIsPlayerAbleMoveX() {
+        return isPlayerAbleMoveX;
     }
+    public LiveData<Boolean> getIsPlayerAbleMoveY() {
+        return isPlayerAbleMoveY;
+    }
+
     public LiveData<Float> getCameraX() {
         return cameraX;
     }
     public LiveData<Float> getCameraY() {
         return cameraY;
     }
-    public void setAttacking(boolean attacking) {
-        isAttacking.setValue(attacking);
-    }
 
+    public void setIsPlayerAbleMoveX(boolean playerAbleMove) {
+        isPlayerAbleMoveX.postValue(playerAbleMove);
+    }
+    public void setIsPlayerAbleMoveY(boolean playerAbleMove) {
+        isPlayerAbleMoveY.postValue(playerAbleMove);
+    }
     public void setLastTouchDiff(PointF lastTouchDiff) {
         this.lastTouchDiff.setValue(lastTouchDiff);
     }
-    public void setCameraX(float cameraX) {
-        this.cameraX.setValue(cameraX);
+
+    public void checkingPlayerEnemyCollision() {
+        this.checkingPlayerEnemyCollision.postValue(true);
     }
-    public void setCameraY(float cameraY) {
-        this.cameraY.setValue(cameraY);
+
+
+    public MutableLiveData<Boolean> getCheckingPlayerEnemyCollision() {
+        return checkingPlayerEnemyCollision;
     }
-    public int getPlayerDrawDir(boolean attacking) {
-        return playingLogic.getPlayerDrawDir(attacking);
-    }
-    public void setPlayerAnimDir(float xSpeed, float ySpeed, PointF lastTouchDiff) {
-        playingLogic.setPlayerAnimDir(xSpeed, ySpeed, lastTouchDiff);
-    }
-    public Bitmap getPlayerSprite(boolean attacking) {
-        return playingLogic.getPlayerSprite(attacking);
-    }
-    public float getPlayerLeft() {
-        return playingLogic.getPlayerLeft();
-    }
-    public float getPlayerTop() {
-        return playingLogic.getPlayerTop();
-    }
-    public RectF getPlayerHitbox() {
-        return playingLogic.getPlayerHitbox();
-    }
-    public PointF getEffectPos() {
-        return playingLogic.getEffectPos();
-    }
-    public boolean checkPlayerAbleMove(
+
+    public boolean checkPlayerAbleMoveX(
             boolean attacking, MapManager mapManager,
             int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
-        return playingLogic.checkPlayerAbleMove(
+        return playingLogic.checkPlayerAbleMoveX(
                 attacking, mapManager, pWidth, pHeight, delta, camera
         );
     }
-    public float getEffectRote() {
-        return playingLogic.getEffectRote();
+    public boolean checkPlayerAbleMoveY(
+            boolean attacking, MapManager mapManager,
+            int pWidth, int pHeight,
+            PointF delta, PointF camera
+    ) {
+        return playingLogic.checkPlayerAbleMoveY(
+                attacking, mapManager, pWidth, pHeight, delta, camera
+        );
     }
-    public int offSetX() {
-        return playingLogic.offSetX();
-    }
+
     public void checkAttack(boolean attacking, RectF attackBox,
                             MapManager mapManager,
                             float cameraX, float cameraY) {
         playingLogic.checkAttack(attacking, attackBox, mapManager, cameraX, cameraY);
     }
+
+    public void checkAttackByEnemies(RectF playerHitBox,
+                            MapManager mapManager,
+                            float cameraX, float cameraY) {
+        playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
+    }
+
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         playingLogic.updateZombies(mapManager, delta, cameraX, cameraY);
     }
