@@ -36,7 +36,6 @@ public abstract class  Character extends Entity {
 
 
     protected void updateAnimation() {
-
         aniTick++;
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;
@@ -47,8 +46,8 @@ public abstract class  Character extends Entity {
         }
     }
     public void resetAnimation() {
-        aniTick = 0;
         aniIndex = 0;
+        aniTick = 0;
     }
 
     public int getAniIndex() {
