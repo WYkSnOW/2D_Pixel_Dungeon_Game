@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.Model.coreLogic.Game;
-import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.gameStatesLogic.ConfigLogic;
 import com.example.myapplication.Model.helper.HelpMethods;
 import com.example.myapplication.Model.loopVideo.VideoFrame;
@@ -89,8 +88,8 @@ public class ConfigViewModel extends ViewModel {
     public boolean isNameValid(String name) {
         return configLogic.isNameValid(name);
     }
-    public boolean ableStart(int characterChoice, int difficultyChoice, boolean validName) {
-        return configLogic.ableStart(characterChoice, difficultyChoice, validName);
+    public boolean ableStart(boolean selectCharacter, int difficultyChoice, boolean validName) {
+        return configLogic.ableStart(selectCharacter, difficultyChoice, validName);
     }
     public boolean isInBtn(MotionEvent e, CustomButton b) {
         return HelpMethods.isInBtn(e, b);
@@ -109,13 +108,9 @@ public class ConfigViewModel extends ViewModel {
     public void btnConfigRespond(
             Game game,
             String currentNameText,
-            int difficultyChoice,
-            int characterChoice
+            int difficultyChoice
     ) {
-        Player.getInstance().setPlayerName(currentNameText);
-        Player.getInstance().setDifficulty(difficultyChoice);
-        game.getPlaying().initializeAttackBox(characterChoice);
-        game.setCurrentGameState(Game.GameState.PLAYING);
+        configLogic.btnConfigRespond(game, currentNameText, difficultyChoice);
     }
 
     public void loopDifficulty(int difficultyChoice) {
@@ -123,4 +118,7 @@ public class ConfigViewModel extends ViewModel {
     }
 
 
+    public boolean nameLengthBelowLimit(String name) {
+        return configLogic.nameLengthBelowLimit(name);
+    }
 }

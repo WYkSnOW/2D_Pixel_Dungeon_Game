@@ -1,4 +1,7 @@
 package com.example.myapplication.View.main.gameStates;
+import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_HEIGHT;
+import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
@@ -8,22 +11,42 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.helper.interfaces.GameStateInterFace;
 import com.example.myapplication.Model.coreLogic.Game;
+import com.example.myapplication.Model.loopVideo.GameAnimation;
+import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.ui.ButtonImage;
 import com.example.myapplication.Model.ui.CustomButton;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.EndViewModel;
 
 public class End extends BaseState implements GameStateInterFace {
     private final CustomButton btnRestart;
-    private Score currentScore;
     private final EndViewModel viewModel;
+    private final GameAnimation endBackground;
+    private final GameAnimation loseScreenBack;
 
     public End(Game game, Context context) {
         super(game);
+
+        endBackground = new GameAnimation(
+                0,
+                0,
+                GAME_WIDTH,
+                GAME_HEIGHT,
+                GameVideos.END_BACK_VIDEO
+        );
+
+        loseScreenBack = new GameAnimation(
+                GAME_WIDTH * -1 / 2,
+                GAME_HEIGHT * -1 / 2,
+                GAME_WIDTH,
+                GAME_HEIGHT,
+                GameVideos.LOSE_SCREEN_VIDEO
+        );
 
         btnRestart = new CustomButton(
                 GameConstants.UiLocation.END_RESTART_BTN_POS_X,
@@ -36,7 +59,10 @@ public class End extends BaseState implements GameStateInterFace {
         viewModel.getCurrentScore().observe((LifecycleOwner) context, new Observer<Score>() {
             @Override
             public void onChanged(Score score) {
-                Leaderboard.getInstance().addPlayerRecord(score);
+                Leaderboard.getInstance().addPlayerRecord(
+                        score,
+                        Player.getInstance().isWinTheGame()
+                );
             }
         });
         viewModel.getRestartButtonClicked().observe((LifecycleOwner) context,
@@ -50,17 +76,53 @@ public class End extends BaseState implements GameStateInterFace {
             });
     }
     @Override
-    public void update(double delta) { }
+    public void update(double delta) {
+        if (game.getCurrentGameState() != Game.GameState.END) {
+            return;
+        }
+        endBackground.update();
+        loseScreenBack.update();
+
+
+    }
     @Override
     public void touchEvents(MotionEvent event) {
+
         btnRestartAction(event);
     }
     @Override
     public void render(Canvas c) {
+        if (game.getCurrentGameState() != Game.GameState.END) {
+            return;
+        }
         //c.drawText("End", 800, 200, paint);
+        drawBackground(c);
         drawBtn(c);
         Leaderboard.getInstance().drawLeaderBoard(c);
     }
+
+    public void drawBackground(Canvas c) {
+        if (Player.getInstance().isWinTheGame()) {
+            c.drawBitmap(
+                    endBackground.getGameVideoType().getSprite(0, endBackground.getAniIndex()),
+                    endBackground.getHitBox().left,
+                    endBackground.getHitBox().top - 150,
+                    null
+            );
+
+        } else {
+            c.drawBitmap(
+                    loseScreenBack.getGameVideoType().getSprite(0, loseScreenBack.getAniIndex()),
+                    loseScreenBack.getHitBox().left,
+                    loseScreenBack.getHitBox().top - 150,
+                    null
+            );
+        }
+
+    }
+
+
+
     private void drawBtn(Canvas c) {
         c.drawBitmap(
                 ButtonImage.MENU_START.getBtnImg(btnRestart.isPushed()),
@@ -69,6 +131,7 @@ public class End extends BaseState implements GameStateInterFace {
                 null
         );
     }
+
     private void btnRestartAction(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (viewModel.isInBtn(event, btnRestart)) { //when pressed button

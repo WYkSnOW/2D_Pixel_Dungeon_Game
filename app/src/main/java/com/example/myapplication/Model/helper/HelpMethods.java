@@ -1,13 +1,15 @@
 package com.example.myapplication.Model.helper;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.myapplication.Model.entities.GameCharacters;
-import com.example.myapplication.Model.entities.enemies.Zombie;
+import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.EnemyFactory;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.Doorways.DoorwayType;
 import com.example.myapplication.Model.environments.GameMap;
@@ -16,6 +18,17 @@ import com.example.myapplication.Model.ui.CustomButton;
 import java.util.ArrayList;
 
 public class HelpMethods {
+
+
+    public static Bitmap getScaledBitmap(double scale, Bitmap bitmap) {
+        return Bitmap.createScaledBitmap(
+                bitmap,
+                (int) (bitmap.getWidth() * scale),
+                (int) (bitmap.getHeight() * scale),
+                false
+        ); //将图片放大六倍（后期更换constant）
+    }
+
 
     public static void connectTwoDoorways(
             GameMap gameMapOne, RectF hitboxOne, GameMap gameMapTwo, RectF hitboxTwo
@@ -36,22 +49,35 @@ public class HelpMethods {
                 x + doorwayType.getDoorwayWidth(),
                 y + doorwayType.getDoorwayHeight() - doorwayType.getOffsetY());
     }
-    public static ArrayList<Zombie> getZombieRandomized(int amount, GameMap gameMap) {
+    public static ArrayList<AbstractEnemy> getMobRandomized(
+            int amount, GameMap gameMap, GameCharacters enemyType) {
+
         int width = (gameMap.getArrayWidth() - 1) * GameConstants.Sprite.SIZE;
         int height = (gameMap.getMapHeight() - 1) * GameConstants.Sprite.SIZE;
 
-        ArrayList<Zombie> zombieArrayList = new ArrayList<>();
+        ArrayList<AbstractEnemy> zombieArrayList = new ArrayList<>();
         int i = 0;
         while (i < amount) {
-            float x = (float) Math.random() * width;
-            float y = (float) Math.random() * height;
-            if (gameMap.canMoveHere(x, y, y + (GameCharacters.ZOMBIE.getCharacterHeight()))) {
-                zombieArrayList.add(new Zombie(new PointF(x, y)));
+            PointF pos = generateRandomPos(width, height);
+            if (
+                    gameMap.canMoveHere(pos.x, pos.y, pos.y + (enemyType.getCharacterHeight()))
+                    && gameMap.canMoveHere(pos.x + (enemyType.getCharacterWidth()),
+                            pos.y, pos.y + (enemyType.getCharacterHeight()))
+            ) {
+                zombieArrayList.add(EnemyFactory.createEnemy(enemyType, pos));
+                //zombieArrayList.add(new Zombie(new PointF(x, y)));
                 i++;
             }
         }
         return zombieArrayList;
     }
+
+    public static PointF generateRandomPos(int width, int height) {
+        float x = (float) Math.random() * width;
+        float y = (float) Math.random() * height;
+        return new PointF(x, y);
+    }
+
     public static void cleanUi(Activity activity) {
         if (activity != null) {
             activity.getWindow().getDecorView().setSystemUiVisibility(
@@ -66,6 +92,33 @@ public class HelpMethods {
     }
     public static boolean isInBtn(MotionEvent e, CustomButton b) {
         return b.getHitbox().contains(e.getX(), e.getY());
+    }
+
+    public static PointF playerMovementIdle() {
+        return new PointF(0, 0);
+    }
+
+    public static PointF playerMovementRun(float xSpeed, float ySpeed, float baseSpeed) {
+        float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
+        float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
+        return new PointF(deltaX, deltaY);
+    }
+
+
+    public static double getScaleRatio(double width, double height, double gWidth, double gHeight) {
+        double ratioX = gWidth / width;
+        double ratioY = gHeight / height;
+        return Math.max(ratioX, ratioY);
+    }
+
+    public static int getIdleAnimation(int currentDir) {
+        return currentDir + 2;
+    }
+
+    public static boolean checkTimePass(long lastTime, int timeRangeInSec) {
+        //unit of time is second
+        long currentTime = System.currentTimeMillis();
+        return currentTime - lastTime >= timeRangeInSec * 1000L;
     }
 
 }

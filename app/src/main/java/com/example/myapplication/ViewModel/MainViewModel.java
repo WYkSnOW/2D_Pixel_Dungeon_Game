@@ -26,9 +26,6 @@ public class MainViewModel extends ViewModel  {
         gameWidth = dm.widthPixels;
         gameHeight = dm.heightPixels;
 
-        double ratioX = gameWidth / 1920.0;
-        double ratioY = gameHeight / 1080.0;
-        scaleRatio = Math.max(ratioX, ratioY);
 
         HelpMethods.cleanUi((Activity) context);
 
@@ -47,7 +44,8 @@ public class MainViewModel extends ViewModel  {
     public static int getGameHeight() {
         return gameHeight;
     }
-    public static double getScaleRatio() {
-        return scaleRatio;
+    public static double getScaleRatio(double width, double height) {
+        return HelpMethods.getScaleRatio(width, height, gameWidth, gameHeight);
     }
+
 }

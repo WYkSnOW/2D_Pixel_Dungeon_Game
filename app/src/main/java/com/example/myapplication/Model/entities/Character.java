@@ -11,7 +11,6 @@ public abstract class  Character extends Entity {
     protected int drawDir = GameConstants.DrawDir.RIGHT;
     protected int faceDir = GameConstants.FaceDir.RIGHT;
     protected GameCharacters gameCharType;
-
     protected int characterWidth;
     protected int characterHeight;
     protected int hitBoxOffsetX;
@@ -36,7 +35,6 @@ public abstract class  Character extends Entity {
 
 
     protected void updateAnimation() {
-
         aniTick++;
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;
@@ -47,8 +45,8 @@ public abstract class  Character extends Entity {
         }
     }
     public void resetAnimation() {
-        aniTick = 0;
         aniIndex = 0;
+        aniTick = 0;
     }
 
     public int getAniIndex() {
@@ -81,6 +79,13 @@ public abstract class  Character extends Entity {
         return gameCharType;
     }
 
+    public int getHitBoxWidth() {
+        return Math.abs((int) (hitBox.right - hitBox.left));
+    }
+    public int getHitBoxHeight() {
+        return Math.abs((int) (hitBox.bottom - hitBox.top));
+    }
+
     public int getCharacterWidth() {
         return characterWidth;
     }
@@ -92,7 +97,7 @@ public abstract class  Character extends Entity {
         return hitBoxOffsetX;
     }
 
-    public int getHitBoxOffSetY() {
+    public int getHitBoxOffsetY() {
         return hitBoxOffSetY;
     }
 

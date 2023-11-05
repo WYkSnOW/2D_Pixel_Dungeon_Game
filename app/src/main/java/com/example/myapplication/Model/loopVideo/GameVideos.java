@@ -27,7 +27,18 @@ public enum GameVideos implements BitmapMethods {
             GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONX,
             GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONY,
             GameConstants.VideosDefault.DIFFICULTY_BOX_SCALE,
-            GameConstants.VideosDefault.DIFFICULTY_BOX_ANIM_RATE
+            60
+
+    ),
+
+    START_DATA(
+            R.drawable.character_start_date,
+            144,
+            118,
+            3,
+            1,
+            3,
+            60
 
     ),
     WITCH(
@@ -77,6 +88,26 @@ public enum GameVideos implements BitmapMethods {
             GameConstants.VideosDefault.CONFIG_BACKGROUND_ANIMATIONY,
             GameConstants.VideosDefault.BACKGROUND_SCALE,
             GameConstants.VideosDefault.CONFIG_BACKGROUND_ANIM_RATE
+    ),
+
+    END_BACK_VIDEO(
+            R.drawable.end_screen_back_video,
+            GameConstants.VideosDefault.BACKGROUND_WIDTH,
+            GameConstants.VideosDefault.BACKGROUND_HEIGHT,
+            22,
+            1,
+            GameConstants.VideosDefault.BACKGROUND_SCALE,
+            8
+            ),
+
+    LOSE_SCREEN_VIDEO(
+            R.drawable.lose_screen_video,
+            GameConstants.VideosDefault.BACKGROUND_WIDTH,
+            GameConstants.VideosDefault.BACKGROUND_HEIGHT,
+            11,
+            1,
+            GameConstants.VideosDefault.BACKGROUND_SCALE * 2,
+            8
     );
 
     private final Bitmap spriteSheet;
