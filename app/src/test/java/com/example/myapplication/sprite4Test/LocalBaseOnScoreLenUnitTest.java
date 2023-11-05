@@ -10,7 +10,6 @@ import com.example.myapplication.Model.leaderBoard.Score.Score;
 import org.junit.Test;
 
 public class LocalBaseOnScoreLenUnitTest {
-
     @Test
     public void localBaseOnScoreLen() {
         Score s1 = new Score(20, 1, "Nikhil", true);
