@@ -11,7 +11,6 @@ import android.graphics.Typeface;
 
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
-import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.leaderBoard.Score.DifficultyComparator;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 import com.example.myapplication.Model.leaderBoard.Score.ScoreComparator;
@@ -65,9 +64,11 @@ public class Leaderboard {
     private void drawPlayer(Canvas c) {
         Player.getInstance().setCurrentStates(PlayerStates.WALK);
         c.drawBitmap(Player.getInstance().getGameCharType()
-                        .getSprite(PlayerStates.WALK.getAnimRow(), Player.getInstance().getAniIndex()),
+                        .getSprite(PlayerStates.WALK.getAnimRow(),
+                                Player.getInstance().getAniIndex()),
                 currentBoardPos.x,
-                currentBoardPos.y + GameImages.CURRENT_BOARD.getHeight() - Player.getInstance().getCharacterHeight() - 20,
+                currentBoardPos.y + GameImages.CURRENT_BOARD.getHeight()
+                        - Player.getInstance().getCharacterHeight() - 20,
                 null);
         Player.getInstance().updatePlayerAnim();
     }
@@ -178,7 +179,10 @@ public class Leaderboard {
                 paint1);
         c.drawText(
                 "" + playerRecords.get(i).getScore(),
-                recordBoardPos.x + 466 + calScoreOffset(Integer.toString(playerRecords.get(i).getScore()).length()),
+                recordBoardPos.x + 466
+                        + calScoreOffset(
+                                Integer.toString(playerRecords.get(i).getScore()).length()
+                ),
                 recordBoardPos.y + 239 + (i * addSpace) + 50,
                 paint1);
         c.drawText(playerRecords.get(i).getDate(),
