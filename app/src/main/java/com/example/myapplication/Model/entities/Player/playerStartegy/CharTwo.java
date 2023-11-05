@@ -7,8 +7,8 @@ import android.graphics.RectF;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.helper.GameConstants;
-import com.example.myapplication.Model.loopVideo.GameAnimation;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 
 public class CharTwo implements PlayerCharStrategy {
@@ -37,7 +37,13 @@ public class CharTwo implements PlayerCharStrategy {
         } else if (state == PlayerStates.RUNNING) {
             return 5;
         } else if (state == PlayerStates.ATTACK) {
+            return 18;
+        } else if (state == PlayerStates.PROJECTILE) {
             return 10;
+        } else  if (state == PlayerStates.DASH) {
+            return 18;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            return 30;
         }
         return 1;
     }
@@ -64,26 +70,72 @@ public class CharTwo implements PlayerCharStrategy {
         }
     }
 
-    private PointF getAtkBoxSizeWhenAttacking() {
+    @Override
+    public float getSpeedDuringDash(float baseSpeed) {
         int idx = Player.getInstance().getAniIndex();
-        Player.getInstance().setAbleMakeDamage(true);
-
-        if (5 <= idx && idx <= 9) {
-            return new PointF(
-                    (float) (1.1 * GameConstants.Sprite.SIZE),
-                    (float) (1.1 * GameConstants.Sprite.SIZE)
-            );
+        if (1 <= idx && idx <= 3) {
+            return baseSpeed * 1.5f;
+        } else if (4 <= idx && idx <= 7) {
+            return baseSpeed * 4;
+        } else if (8 <= idx && idx <= 11) {
+            return baseSpeed * 5;
+        } else if (12 <= idx && idx <= 13) {
+            return baseSpeed * 2;
+        } else if (14 <= idx && idx <= 17) {
+            return baseSpeed;
+        } else if (idx == 18) {
+            return baseSpeed * 0.5f;
         }
+        return 0;
 
-        Player.getInstance().setAbleMakeDamage(false);
-        return new PointF(0, 0);
+    }
+
+    @Override
+    public void skillOne() {
+
+    }
+
+    private PointF getAtkBoxSizeWhenAttacking() {
+        //int idx = Player.getInstance().getAniIndex();
+        return new PointF(
+                (float) (0.7 * GameConstants.Sprite.SIZE), //width
+                (float) (1.1 * GameConstants.Sprite.SIZE) //height
+        );
+
     }
 
     private PointF getAtkBoxPosWhenAttacking() {
         float top = Player.getInstance().getHitBox().top;
+        Player.getInstance().setMakingDamage(true);
 
         int idx = Player.getInstance().getAniIndex();
-        if (5 <= idx && idx <= 9) {
+        if (9 == idx) {
+
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                return new PointF(
+                        Player.getInstance().getHitBox().left,
+                        top
+                );
+            } else {
+                return new PointF(
+                        Player.getInstance().getHitBox().right,
+                        top
+                );
+            }
+
+        } else if (11 == idx) {
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                return new PointF(
+                        Player.getInstance().getHitBox().left,
+                        top
+                );
+            } else {
+                return new PointF(
+                        Player.getInstance().getHitBox().right,
+                        top
+                );
+            }
+        }  else if (13 == idx) {
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
@@ -96,12 +148,13 @@ public class CharTwo implements PlayerCharStrategy {
                 );
             }
         }
-
+        resetEnemyAbleTakeDamage();
+        Player.getInstance().setMakingDamage(false);
         return new PointF(0, 0);
     }
 
     @Override
-    public int offSetX() { //画出动画时会减去这个值
+    public int offSetX() { //画出动画时会减去这个值, 朝左时数字越大越往左
         PlayerStates state = Player.getInstance().getCurrentStates();
         int dir = Player.getInstance().getFaceDir();
         int offsetXRight = Player.getInstance().getHitBoxOffsetX();
@@ -117,6 +170,15 @@ public class CharTwo implements PlayerCharStrategy {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
         } else if (state == PlayerStates.ATTACK) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 2;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 2;
+        } else if (state == PlayerStates.PROJECTILE) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.6;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.6;
+        } else if (state == PlayerStates.DASH) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
+        } else if (state == PlayerStates.SKILL_ONE) {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
         }
@@ -128,7 +190,61 @@ public class CharTwo implements PlayerCharStrategy {
     }
 
     @Override
-    public int offSetY() {
-        return Player.getInstance().getHitBoxOffSetY();
+    public int offSetY() { //画出动画时会减去这个值, 数字越大越往上
+        int offsetYTop = Player.getInstance().getHitBoxOffsetY();
+        PlayerStates state = Player.getInstance().getCurrentStates();
+        if (state == PlayerStates.ATTACK) {
+            offsetYTop -= Player.getInstance().getHitBoxOffsetY() / 4.5;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            offsetYTop -= Player.getInstance().getHitBoxOffsetY() / 6;
+        }
+        return offsetYTop;
+    }
+
+    @Override
+    public float getProjectSpeed() {
+        PlayerStates states = Player.getInstance().getCurrentStates();
+        if (states == PlayerStates.PROJECTILE) {
+            return 700;
+        }
+        return 100;
+    }
+
+    @Override
+    public void makeProjectile() {
+        if (Player.getInstance().getAniIndex() == 6) {
+            if (Player.getInstance().isAbleProjectile()) {
+                Player.getInstance().setAbleProjectile(false);
+                ProjectileHolder.getInstance().addProjectile(
+                        getProjectileStartPos(),
+                        getProjectileSize(),
+                        Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
+                        getProjectSpeed());
+            }
+        } else {
+            Player.getInstance().setAbleProjectile(true);
+        }
+    }
+
+
+    @Override
+    public PointF getProjectileStartPos() {
+        float top = Player.getInstance().getHitBox().top;
+        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+            return new PointF(
+                    Player.getInstance().getHitBox().left - getProjectileSize().x,
+                    top
+            );
+        } else {
+            return new PointF(
+                    Player.getInstance().getHitBox().right,
+                    top
+            );
+        }
+    }
+    @Override
+    public PointF getProjectileSize() {
+        return new PointF(GameConstants.Sprite.SIZE,
+                GameConstants.Sprite.SIZE);
     }
 }

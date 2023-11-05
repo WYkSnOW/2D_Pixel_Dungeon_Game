@@ -1,6 +1,7 @@
 package com.example.myapplication.Model.helper;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.view.MotionEvent;
@@ -17,6 +18,17 @@ import com.example.myapplication.Model.ui.CustomButton;
 import java.util.ArrayList;
 
 public class HelpMethods {
+
+
+    public static Bitmap getScaledBitmap(double scale, Bitmap bitmap) {
+        return Bitmap.createScaledBitmap(
+                bitmap,
+                (int) (bitmap.getWidth() * scale),
+                (int) (bitmap.getHeight() * scale),
+                false
+        ); //将图片放大六倍（后期更换constant）
+    }
+
 
     public static void connectTwoDoorways(
             GameMap gameMapOne, RectF hitboxOne, GameMap gameMapTwo, RectF hitboxTwo
@@ -37,7 +49,9 @@ public class HelpMethods {
                 x + doorwayType.getDoorwayWidth(),
                 y + doorwayType.getDoorwayHeight() - doorwayType.getOffsetY());
     }
-    public static ArrayList<AbstractEnemy> getMobRandomized(int amount, GameMap gameMap, GameCharacters enemyType) {
+    public static ArrayList<AbstractEnemy> getMobRandomized(
+            int amount, GameMap gameMap, GameCharacters enemyType) {
+
         int width = (gameMap.getArrayWidth() - 1) * GameConstants.Sprite.SIZE;
         int height = (gameMap.getMapHeight() - 1) * GameConstants.Sprite.SIZE;
 
@@ -45,7 +59,11 @@ public class HelpMethods {
         int i = 0;
         while (i < amount) {
             PointF pos = generateRandomPos(width, height);
-            if (gameMap.canMoveHere(pos.x, pos.y, pos.y + (enemyType.getCharacterHeight()))) {
+            if (
+                    gameMap.canMoveHere(pos.x, pos.y, pos.y + (enemyType.getCharacterHeight()))
+                    && gameMap.canMoveHere(pos.x + (enemyType.getCharacterWidth()),
+                            pos.y, pos.y + (enemyType.getCharacterHeight()))
+            ) {
                 zombieArrayList.add(EnemyFactory.createEnemy(enemyType, pos));
                 //zombieArrayList.add(new Zombie(new PointF(x, y)));
                 i++;
@@ -83,8 +101,6 @@ public class HelpMethods {
     public static PointF playerMovementRun(float xSpeed, float ySpeed, float baseSpeed) {
         float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
         float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
-        //System.out.println(deltaX < 0);
-        //System.out.println(deltaY);
         return new PointF(deltaX, deltaY);
     }
 
@@ -99,7 +115,8 @@ public class HelpMethods {
         return currentDir + 2;
     }
 
-    public static boolean checkTimePass(long lastTime, int timeRangeInSec) { //unit of time is second
+    public static boolean checkTimePass(long lastTime, int timeRangeInSec) {
+        //unit of time is second
         long currentTime = System.currentTimeMillis();
         return currentTime - lastTime >= timeRangeInSec * 1000L;
     }

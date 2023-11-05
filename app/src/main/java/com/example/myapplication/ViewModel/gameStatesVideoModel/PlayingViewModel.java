@@ -62,20 +62,18 @@ public class PlayingViewModel extends ViewModel {
 
     public boolean checkPlayerAbleMoveX(
             boolean attacking, MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
         return playingLogic.checkPlayerAbleMoveX(
-                attacking, mapManager, pWidth, pHeight, delta, camera
+                attacking, mapManager, delta, camera
         );
     }
     public boolean checkPlayerAbleMoveY(
             boolean attacking, MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
         return playingLogic.checkPlayerAbleMoveY(
-                attacking, mapManager, pWidth, pHeight, delta, camera
+                attacking, mapManager, delta, camera
         );
     }
 

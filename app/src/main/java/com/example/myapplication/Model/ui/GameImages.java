@@ -45,7 +45,12 @@ public enum GameImages implements BitmapMethods {
             R.drawable.current_board,
             96,
             144,
-            3.5);
+            3.5),
+    CONFIG_BOARD(
+            R.drawable.config_ui_board,
+            384,
+            288,
+            3);
 
 
     private int width;
