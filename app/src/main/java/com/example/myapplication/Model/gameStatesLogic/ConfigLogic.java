@@ -2,11 +2,13 @@ package com.example.myapplication.Model.gameStatesLogic;
 
 import android.view.MotionEvent;
 
+import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.loopVideo.VideoFrame;
 
 public class ConfigLogic {
@@ -32,8 +34,8 @@ public class ConfigLogic {
     public boolean nameLengthBelowLimit(String name) {
         return name.length() <= 15;
     }
-    public boolean ableStart(int characterChoice, int difficultyChoice, boolean validName) {
-        return characterChoice > 0 && difficultyChoice > 0 && validName;
+    public boolean ableStart(boolean selectCharacter, int difficultyChoice, boolean validName) {
+        return selectCharacter && difficultyChoice > 0 && validName;
     }
     public boolean isInCharacter(MotionEvent e, VideoFrame b) {
         return b.getHitbox().contains(e.getX(), e.getY());
@@ -58,6 +60,19 @@ public class ConfigLogic {
             return difficultyChoice + 1;
         }
         return 1;
+    }
+
+
+    public void btnConfigRespond(
+            Game game,
+            String currentNameText,
+            int difficultyChoice
+    ) {
+        Player.getInstance().setPlayerName(currentNameText);
+        Player.getInstance().setDifficulty(difficultyChoice);
+        Player.getInstance().setCurrentStates(PlayerStates.IDLE);
+        game.getPlaying().getMapManager().initEnemyHealthWithDiff();
+        game.setCurrentGameState(Game.GameState.PLAYING);
     }
 
 

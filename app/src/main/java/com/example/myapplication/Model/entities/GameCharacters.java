@@ -44,7 +44,7 @@ public enum GameCharacters implements BitmapMethods {
             30
     ),
     CENTAUR(
-            R.drawable.new_centaur_anim_list,
+            R.drawable.centaur_anim_list,
             new PointF(64,
                     64),
             30,

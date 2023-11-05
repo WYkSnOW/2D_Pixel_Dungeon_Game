@@ -37,8 +37,33 @@ public enum ButtonImage implements BitmapMethods {
             GameConstants.UiSize.UI_HOLDER1_WIDTH,
             GameConstants.UiSize.UI_HOLDER1_HEIGHT,
             false,
-            15
+            12
+    ),
+
+    CONFIG_BTN_RIGHT(
+            R.drawable.config_btn_right,
+            26,
+            30,
+            true,
+            3
+    ),
+    CONFIG_BTN_LEFT(
+            R.drawable.config_btn_left,
+            26,
+            30,
+            true,
+            3
+    ),
+
+    CONFIG_BTN_SELECT(
+            R.drawable.config_btn_select,
+            64,
+            32,
+            true,
+            3
     );
+
+
 
     private int width;
     private int height;

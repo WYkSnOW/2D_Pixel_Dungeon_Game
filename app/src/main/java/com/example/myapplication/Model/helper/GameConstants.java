@@ -159,7 +159,7 @@ public final class GameConstants {
                 = UiSize.GAME_HEIGHT - ButtonImage.MENU_START.getHeight();
         //for nameBar
         public static final int NAME_BAR_POS_X
-                = UiSize.GAME_WIDTH / 2 - (UiSize.UI_HOLDER1_WIDTH * 15 / 2);
+                = UiSize.GAME_WIDTH / 2 - (UiSize.UI_HOLDER1_WIDTH * 12 / 2);
         public static final int NAME_BAR_POS_Y = UiSize.GAME_HEIGHT / 2;
         //for name text
         public static final int NAME_TEXT_POS_X

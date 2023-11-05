@@ -10,8 +10,11 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
-import com.example.myapplication.Model.entities.Character;
+
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.entities.Player.projectile.Projectile;
+import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
@@ -31,16 +34,16 @@ import java.util.Random;
 public class Playing extends BaseState implements GameStateInterFace {
     private Random rand = new Random();
     private Paint paint = new Paint();
+    private Paint healthPaint = new Paint();
     private MapManager mapManager;
     private float cameraX;
     private float cameraY;
-    private boolean movePlayer;
     private boolean playerAbleMoveX;
     private boolean playerAbleMoveY;
     private PointF lastTouchDiff;
 
     private final PlayingUI playingUI;
-    private final Paint hitBoxPaint;
+    private final Paint hitBoxPaint = new Paint();
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
     private PlayerMoveStrategy playerMoveStrategy;
@@ -57,10 +60,13 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     public Playing(Game game, Context context) {
         super(game);
-        paint = new Paint();
+
         paint.setTextSize(50);
         paint.setColor(Color.WHITE);
-        hitBoxPaint = new Paint();
+
+        healthPaint.setTextSize(20);
+        healthPaint.setTextSize(Color.WHITE);
+
         hitBoxPaint.setStrokeWidth(1);
         hitBoxPaint.setStyle(Paint.Style.STROKE);
         hitBoxPaint.setColor(Color.RED);
@@ -139,7 +145,8 @@ public class Playing extends BaseState implements GameStateInterFace {
         //zombie.setActive(true);
 
         initCameraValue();
-
+        lastTouchDiff = new PointF(0, 0);
+        Player.getInstance().backToIdleState();
     }
 
     @Override
@@ -148,10 +155,11 @@ public class Playing extends BaseState implements GameStateInterFace {
             return;
         }
 
-        updatePlayerMoveInfo(delta);
         if (playerMoveStrategy != null) {
             playerMoveStrategy.setPlayerAnim(xSpeed, ySpeed, lastTouchDiff);
         }
+
+        updatePlayerMoveInfo(delta);
         updatePlayerPosition(delta);
 
         Player.getInstance().update(delta);
@@ -171,26 +179,40 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (Player.getInstance().getCurrentHealth() <= 0) {
             setGameStateToEnd();
         }
+
+        ProjectileHolder.getInstance().update(delta, mapManager.getCurrentMap(), cameraX, cameraY);
+
     }
 
     @Override
     public void touchEvents(MotionEvent event) {
+        if (game.getCurrentGameState() != Game.GameState.PLAYING) {
+            return;
+        }
         viewModel.playingUiTouchEvent(event, playingUI);
     }
     @Override
     public void render(Canvas c) {
+        if (game.getCurrentGameState() != Game.GameState.PLAYING) {
+            return;
+        }
         mapManager.draw(c);
         //itemManager.draw(c);
         Player.getInstance().drawPlayer(c);
-        for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
-            if (zombie.isActive()) {
-                drawCharacter(c, zombie);
+        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
+            if (enemy.isActive()) {
+                drawEnemy(c, enemy);
+
             }
         }
+        ProjectileHolder.getInstance().draw(c);
 
         viewModel.playingUiDrawUi(c, playingUI);
         drawUi((c));
+
+
     }
+
 
     public void setCameraValues(PointF cameraPos) {
         this.cameraX = cameraPos.x;
@@ -204,7 +226,7 @@ public class Playing extends BaseState implements GameStateInterFace {
                     Player.getInstance().setWinTheGame(true);
                     setGameStateToEnd();
                 } else {
-                    mapManager.changeMap(doorwayPlayerIsOn.getDoorwayConnectedTo(), game);
+                    mapManager.changeMap(doorwayPlayerIsOn.getDoorwayConnectedTo());
                 }
 
             }
@@ -216,18 +238,6 @@ public class Playing extends BaseState implements GameStateInterFace {
         this.doorwayJustPassed = doorwayJustPassed;
     }
 
-//    private void drawPlayer(Canvas c) {
-//        c.drawBitmap(//在本游戏中，行数Y是不同形态，而列数X是该姿势中的不同帧。根据不同输入需要调换，其他怪物同理
-//                viewModel.getPlayerSprite(Player.getInstance().isAttacking()),
-//                viewModel.getPlayerLeft(),
-//                viewModel.getPlayerTop(),
-//                null
-//        );
-//        c.drawRect(viewModel.getPlayerHitbox(), hitBoxPaint);
-//        if (Player.getInstance().isAttacking()) {
-//            Player.getInstance().drawAtk(c);
-//        }
-//    }
 
     private void drawUi(Canvas c) {
         c.drawText("PlayerName: " + Player.getInstance().getPlayerName(), 200, 100, paint);
@@ -235,32 +245,50 @@ public class Playing extends BaseState implements GameStateInterFace {
         c.drawText("Health: " + Player.getInstance().getCurrentHealth(), 200, 200, paint);
         c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 250, paint);
     }
-    public void drawCharacter(Canvas canvas, Character character) {
-        int offsetX = character.getHitBoxOffsetX();
-        if (character.getDrawDir() == GameConstants.DrawDir.RIGHT) {
+    public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
+        int offsetX = enemy.getHitBoxOffsetX();
+        if (enemy.getDrawDir() == GameConstants.DrawDir.RIGHT) {
             offsetX = 0;
         }
         canvas.drawBitmap(
-                character.getGameCharType().getSprite(
-                        character.getDrawDir(),
-                        character.getAniIndex()
+                enemy.getGameCharType().getSprite(
+                        enemy.getDrawDir(),
+                        enemy.getAniIndex()
                 ),
-                character.getHitBox().left + cameraX - offsetX,
-                character.getHitBox().top + cameraY - character.getHitBoxOffSetY(),
+                enemy.getHitBox().left + cameraX - offsetX,
+                enemy.getHitBox().top + cameraY - enemy.getHitBoxOffsetY(),
                 null
         );
         canvas.drawRect(
-                character.getHitBox().left + cameraX,
-                character.getHitBox().top + cameraY,
-                character.getHitBox().right + cameraX,
-                character.getHitBox().bottom + cameraY,
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top + cameraY,
+                enemy.getHitBox().right + cameraX,
+                enemy.getHitBox().bottom + cameraY,
                 hitBoxPaint); //draw mob's hitBox
+
+        canvas.drawText(
+                "" + enemy.getCurrentHealth(),
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top - 20 + cameraY,
+                paint
+        );
+
+    }
+
+
+
+    public void drawProjectile(Canvas c, Projectile p) {
+        c.drawRect(p.getHitBox().left + cameraX,
+                p.getHitBox().top + cameraY,
+                p.getHitBox().right + cameraX,
+                p.getHitBox().bottom + cameraY,
+                hitBoxPaint);
     }
 
 
 
     private void updatePlayerMoveInfo(double delta) {
-        if (!movePlayer) {
+        if (Player.getInstance().getCurrentStates() == PlayerStates.IDLE) {
             setPlayerMoveStrategy(playerIdle);
             return;
         }
@@ -280,36 +308,23 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (lastTouchDiff.y < 0) {
             ySpeed *= -1;
         }
-        int pWidth = (int) Player.getInstance().getHitBox().width(); //计算player的实际碰撞体积
-        int pHeight = (int) Player.getInstance().getHitBox().height();
 
-        if (xSpeed <= 0) { //当角色往左边或上边移动时，判定点为左上角，则将碰撞修正设置为0
-            pWidth = 0;
-        }
-        //if (ySpeed <= 0) {
-        //    pHeight = 0;
-        //}
-        float baseSpeed = (float) delta * Player.getInstance().getCurrentSpeed();
-        float deltaX = xSpeed * baseSpeed * -1; //移动镜头而不是角色
-        float deltaY = ySpeed * baseSpeed * -1; //因镜头需与角色相反的方向移动，即乘以-1
 
+
+        PointF d = Player.getInstance().getMoveDelta(delta, xSpeed, ySpeed);
 
         viewModel.setIsPlayerAbleMoveX(
                 viewModel.checkPlayerAbleMoveX(
                         Player.getInstance().isAttacking(),
                         mapManager,
-                        pWidth,
-                        pHeight,
-                        new PointF(deltaX, deltaY),
+                        d,
                         new PointF(cameraX, cameraY)
                 ));
         viewModel.setIsPlayerAbleMoveY(
                 viewModel.checkPlayerAbleMoveY(
                         Player.getInstance().isAttacking(),
                         mapManager,
-                        pWidth,
-                        pHeight,
-                        new PointF(deltaX, deltaY),
+                        d,
                         new PointF(cameraX, cameraY)
                 ));
 
@@ -318,16 +333,15 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
 
     private void updatePlayerPosition(double delta) {
-        System.out.println(""+playerAbleMoveY);
-        if (playerAbleMoveX) {
-            float speed = Player.getInstance().getCurrentSpeed();
-            cameraX += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).x;
-            //cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).y;
 
+        float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
+
+
+        if (playerAbleMoveX) {
+            cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
         }
         if (playerAbleMoveY) {
-            float speed = Player.getInstance().getCurrentSpeed();
-            cameraY += playerMoveStrategy.playerMovement(xSpeed, ySpeed, (float) delta * speed).y;
+            cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
         }
 
     }
@@ -341,20 +355,19 @@ public class Playing extends BaseState implements GameStateInterFace {
                 Player.getInstance().sumbitScore(),
                 Player.getInstance().isWinTheGame()
         );
-
-        movePlayer = false;
-        mapManager.resetMap();
         game.setCurrentGameState(Game.GameState.END);
+
+        mapManager.resetMap();
     }
 
     public void setPlayerMoveTrue(PointF lastTouchDiff) { //查看是否应该移动角色（触发移动后没有松开光标）
-        movePlayer = true;
         viewModel.setLastTouchDiff(lastTouchDiff);
     }
     public void setPlayerMoveFalse() {
-        movePlayer = false; //在操作板class中，松开光标/键盘后将角色移动设置为false，即停止角色移动
-        Player.getInstance().backToIdleState();
-        Player.getInstance().resetAnimation();
+        if (!(Player.getInstance().isAttacking() || Player.getInstance().isOnSkill() || Player.getInstance().isProjecting())) {
+            Player.getInstance().backToIdleState();
+        }
+
     }
 
 
