@@ -11,7 +11,6 @@ public abstract class  Character extends Entity {
     protected int drawDir = GameConstants.DrawDir.RIGHT;
     protected int faceDir = GameConstants.FaceDir.RIGHT;
     protected GameCharacters gameCharType;
-
     protected int characterWidth;
     protected int characterHeight;
     protected int hitBoxOffsetX;
