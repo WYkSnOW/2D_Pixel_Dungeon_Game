@@ -49,7 +49,9 @@ public class HelpMethods {
                 x + doorwayType.getDoorwayWidth(),
                 y + doorwayType.getDoorwayHeight() - doorwayType.getOffsetY());
     }
-    public static ArrayList<AbstractEnemy> getMobRandomized(int amount, GameMap gameMap, GameCharacters enemyType) {
+    public static ArrayList<AbstractEnemy> getMobRandomized(
+            int amount, GameMap gameMap, GameCharacters enemyType) {
+
         int width = (gameMap.getArrayWidth() - 1) * GameConstants.Sprite.SIZE;
         int height = (gameMap.getMapHeight() - 1) * GameConstants.Sprite.SIZE;
 
@@ -113,7 +115,8 @@ public class HelpMethods {
         return currentDir + 2;
     }
 
-    public static boolean checkTimePass(long lastTime, int timeRangeInSec) { //unit of time is second
+    public static boolean checkTimePass(long lastTime, int timeRangeInSec) {
+        //unit of time is second
         long currentTime = System.currentTimeMillis();
         return currentTime - lastTime >= timeRangeInSec * 1000L;
     }
