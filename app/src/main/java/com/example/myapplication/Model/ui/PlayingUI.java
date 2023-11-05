@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.view.MotionEvent;
 
 import com.example.myapplication.Model.entities.GameCharacters;
@@ -16,7 +15,6 @@ import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
-import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
@@ -24,14 +22,21 @@ public class PlayingUI {
     //For UI
 
     //x和y是圆中心位置，可调整. radius即半径
+
+    /*
     private final PointF joystickCenterPos = new PointF(320, GAME_HEIGHT - 250);
     private final PointF attackBtnCenterPos = new PointF(GAME_WIDTH - 320, GAME_HEIGHT - 250);
     private final PointF projectBtnCenterPos = new PointF(GAME_WIDTH - 200, GAME_HEIGHT - 450);
     private final PointF atkModBtnCenterPos = new PointF(GAME_WIDTH - 100, GAME_HEIGHT - 350);
-    private final PointF skillOneBtnCenterPos = new PointF(GAME_WIDTH - 480, GAME_HEIGHT - 400);
+    private final PointF skillOneBtnCenterPos = new PointF(GAME_WIDTH - 480, GAME_HEIGHT - 400); */
 
 
-    private final PointF dashBtnCenterPos = new PointF(GAME_WIDTH - 350, GAME_HEIGHT - 480);
+    private final PointF joystickCenterPos = new PointF(320, GAME_HEIGHT - 250);
+    private final PointF attackBtnCenterPos = new PointF(GAME_WIDTH - 320, GAME_HEIGHT - 250);
+
+    private final PointF atkModBtnCenterPos =  new PointF(GAME_WIDTH - 100, GAME_HEIGHT - 350);
+    private final PointF skillOneBtnCenterPos = new PointF(GAME_WIDTH - 350, GAME_HEIGHT - 480);
+    private final PointF dashBtnCenterPos = new PointF(GAME_WIDTH - 200, GAME_HEIGHT - 450);
 
 
 
@@ -48,7 +53,6 @@ public class PlayingUI {
     //For Multitouch
     private int joystickPointerId = -1;
     private int attackBtnPointerId = -1;
-    private int projectBtnPointerId = -1;
     private int runLockBtnPointerId = -1;
     private int atkModBtnPointerId = -1;
     private int dashBtnPointerId = -1;
@@ -121,8 +125,6 @@ public class PlayingUI {
 
         c.drawCircle(attackBtnCenterPos.x, attackBtnCenterPos.y,
                 radius, circlePaint);
-        c.drawCircle(projectBtnCenterPos.x, projectBtnCenterPos.y,
-                smallRadius, circlePaint);
 
         c.drawCircle(dashBtnCenterPos.x, dashBtnCenterPos.y,
                 smallRadius, circlePaint);
@@ -178,9 +180,6 @@ public class PlayingUI {
     private boolean checkInsideAttackBtn(PointF eventPos) {
         return isInsideRadius(eventPos, attackBtnCenterPos);
     }
-    private boolean checkInsideProjectBtn(PointF eventPos) {
-        return isInsideSmallRadius(eventPos, projectBtnCenterPos);
-    }
     private boolean checkInsideRunLock(PointF eventPos) {
         return isInsideSmallRadius(eventPos, runLockBtnCenterPos);
     }
@@ -221,19 +220,6 @@ public class PlayingUI {
 
                     attackBtnPointerId = pointerId;
                 }
-            } else if (checkInsideProjectBtn(eventPos)) {
-                if (projectBtnPointerId < 0) {
-
-
-                    if (atkModState == 1) {
-                        Player.getInstance().setProjecting(true);
-                    } else {
-                        Player.getInstance().setAttacking(true);
-                    }
-
-
-                    projectBtnPointerId = pointerId;
-                }
             } else if (checkInsideRunLock(eventPos)) {
                 if (runLockBtnPointerId < 0) {
 
@@ -267,14 +253,19 @@ public class PlayingUI {
                         float xDiff = event.getX(i) - joystickCenterPos.x;
                         float yDiff = event.getY(i) - joystickCenterPos.y;
                         //传输进入控制板中决定玩家是否移动的function
-                        if (!(Player.getInstance().isAttacking() || Player.getInstance().isOnSkill() || Player.getInstance().isProjecting())) {
+                        if (!(Player.getInstance().isAttacking()
+                                || Player.getInstance().isOnSkill()
+                                || Player.getInstance().isProjecting())) {
                             playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
                             if (runLockState == 2) {
                                 Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
                             } else if (runLockState == 3) {
                                 Player.getInstance().setCurrentStates(PlayerStates.WALK);
                             } else {
-                                if (checkInsideJoyStick(new PointF(event.getX(), event.getY()), event.getPointerId(i))) {
+                                if (checkInsideJoyStick(
+                                        new PointF(event.getX(),
+                                                event.getY()),
+                                        event.getPointerId(i))) {
                                     Player.getInstance().setCurrentStates(PlayerStates.WALK);
                                 } else {
                                     Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
@@ -309,7 +300,8 @@ public class PlayingUI {
 
                         if (Player.getInstance().getGameCharType() == GameCharacters.CENTAUR) {
                             Player.getInstance().setCharStrategy(new CharTwo());
-                        } else if (Player.getInstance().getGameCharType() == GameCharacters.WITCH2) {
+                        } else if (Player.getInstance().getGameCharType()
+                                == GameCharacters.WITCH2) {
                             Player.getInstance().setCharStrategy(new CharThree());
                         } else {
                             Player.getInstance().setCharStrategy(new CharOne());
@@ -344,16 +336,6 @@ public class PlayingUI {
             attackBtnPointerId = -1;
         }
 
-        if (pointerId == projectBtnPointerId) {
-
-            if (atkModState == 1) {
-                Player.getInstance().setProjecting(false);
-            } else {
-                Player.getInstance().setAttacking(false);
-            }
-            projectBtnPointerId = -1;
-        }
-
         if (pointerId == runLockBtnPointerId) {
             if (runLockState < 3) {
                 runLockState += 1;
@@ -371,6 +353,8 @@ public class PlayingUI {
             } else {
                 atkModState = 1;
             }
+            Player.getInstance().setAttacking(false);
+            Player.getInstance().setProjecting(false);
             atkModBtnPointerId = -1;
         }
 
