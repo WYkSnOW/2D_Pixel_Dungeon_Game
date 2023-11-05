@@ -3,7 +3,6 @@ package com.example.myapplication.Model.gameStatesLogic;
 import android.view.MotionEvent;
 
 import com.example.myapplication.Model.coreLogic.Game;
-import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;

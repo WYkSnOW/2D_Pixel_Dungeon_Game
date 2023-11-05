@@ -8,7 +8,6 @@ import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
-import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.environments.MapManager;
 
 public class PlayingLogic {
@@ -179,7 +178,7 @@ public class PlayingLogic {
                                 enemy.getHitBox().bottom)
                         ) {
                             enemy.takePjtDamage(); //remove enemy(or any mob)
-                            p.setActive(false);
+                            Player.getInstance().projectileHitEnemy(p);
                         }
                     }
 
