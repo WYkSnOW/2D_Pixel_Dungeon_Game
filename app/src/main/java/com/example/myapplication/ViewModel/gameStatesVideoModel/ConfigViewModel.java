@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.Model.coreLogic.Game;
-import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.gameStatesLogic.ConfigLogic;
 import com.example.myapplication.Model.helper.HelpMethods;
 import com.example.myapplication.Model.loopVideo.VideoFrame;
