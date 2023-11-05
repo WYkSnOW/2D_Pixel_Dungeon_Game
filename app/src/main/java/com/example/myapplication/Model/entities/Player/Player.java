@@ -15,8 +15,8 @@ import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.PlayerCharStrategy;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.environments.GameMap;
-import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
 
@@ -45,6 +45,8 @@ public class Player extends Character {
     private boolean projecting;
     private boolean ableProjectile;
     private GameMap currentMap;
+    private int baseDamage;
+    private boolean invincible;
 
 
     public Player(GameCharacters characterChoice) {
@@ -123,6 +125,8 @@ public class Player extends Character {
         isMakingDamage = false;
         ableProjectile = false;
         ableMakeDamage = false;
+        baseDamage = 0;
+        invincible = false;
     }
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         changeAnim(characterChoice);
@@ -202,7 +206,10 @@ public class Player extends Character {
 
 
     public void setCurrentHealth(int health) {
-        this.currentHealth = health;
+        if (!invincible) {
+            this.currentHealth = health;
+        }
+
     }
 
     public String getPlayerName() {
@@ -296,6 +303,7 @@ public class Player extends Character {
 
     public void setToDash() {
         onSkill = true;
+        invincible = true;
         setCurrentStates(PlayerStates.DASH);
     }
     public void setToSkillOne() {
@@ -315,6 +323,7 @@ public class Player extends Character {
         attacking = false;
         onSkill = false;
         currentStates = PlayerStates.IDLE;
+        invincible = false;
     }
 
     public void setBaseSpeed(float baseSpeed) {
@@ -356,11 +365,34 @@ public class Player extends Character {
         return playerCharStrategy.getMoveDelta(delta, xSpeed, ySpeed);
     }
 
+    public int getCurrentDamage() {
+        return playerCharStrategy.getCurrentDamage(currentStates, baseDamage);
+    }
+
     public GameMap getCurrentMap() {
         return currentMap;
     }
 
     public void setCurrentMap(GameMap currentMap) {
         this.currentMap = currentMap;
+    }
+
+    public int getBaseDamage() {
+        return baseDamage;
+    }
+
+    public void projectileHitEnemy(Projectile p) {
+        playerCharStrategy.projectileHitEnemy(p);
+    }
+
+    public void setBaseDamage(int baseDamage) {
+        this.baseDamage = baseDamage;
+    }
+
+    public void setInvincibleTrue() {
+        if (!invincible) {
+            this.invincible = true;
+        }
+
     }
 }
