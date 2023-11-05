@@ -25,7 +25,8 @@ public abstract class AbstractEnemy extends Character {
     private boolean takeDamageAlready;
 
 
-    public AbstractEnemy(PointF pos, GameCharacters characterType, float baseSpeed, int atk, int health) {
+    public AbstractEnemy(
+            PointF pos, GameCharacters characterType, float baseSpeed, int atk, int health) {
         super(pos, characterType);
         this.baseSpeed = baseSpeed;
         this.atk = atk;
@@ -41,7 +42,8 @@ public abstract class AbstractEnemy extends Character {
         if (currentTime - lastTakeProjectDamage >= 500) {
             lastTakeProjectDamage = currentTime;
 
-            this.currentHealth = Math.max(currentHealth - 10, 0);
+            this.currentHealth = Math.max(currentHealth
+                    - Player.getInstance().getCurrentDamage(), 0);
             if (currentHealth == 0) {
                 active = false;
             }
@@ -52,7 +54,8 @@ public abstract class AbstractEnemy extends Character {
     public void takeDamage() {
         if (!takeDamageAlready) {
             takeDamageAlready = true;
-            this.currentHealth = Math.max(currentHealth - 10, 0);
+            this.currentHealth = Math.max(currentHealth
+                    - Player.getInstance().getCurrentDamage(), 0);
             if (currentHealth == 0) {
                 active = false;
             } else {
