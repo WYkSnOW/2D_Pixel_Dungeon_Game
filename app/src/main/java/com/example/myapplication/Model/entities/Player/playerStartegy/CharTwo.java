@@ -42,6 +42,8 @@ public class CharTwo implements PlayerCharStrategy {
             return 10;
         } else  if (state == PlayerStates.DASH) {
             return 18;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            return 30;
         }
         return 1;
     }
@@ -88,27 +90,52 @@ public class CharTwo implements PlayerCharStrategy {
 
     }
 
+    @Override
+    public void skillOne() {
+
+    }
+
     private PointF getAtkBoxSizeWhenAttacking() {
-        int idx = Player.getInstance().getAniIndex();
-        Player.getInstance().setMakingDamage(true);
+        //int idx = Player.getInstance().getAniIndex();
+        return new PointF(
+                (float) (0.7 * GameConstants.Sprite.SIZE), //width
+                (float) (1.1 * GameConstants.Sprite.SIZE) //height
+        );
 
-        if (9 <= idx && idx <= 15) {
-            return new PointF(
-                    (float) (0.7 * GameConstants.Sprite.SIZE), //width
-                    (float) (1.1 * GameConstants.Sprite.SIZE) //height
-            );
-        }
-
-        resetEnemyAbleTakeDamage();
-        Player.getInstance().setMakingDamage(false);
-        return new PointF(0, 0);
     }
 
     private PointF getAtkBoxPosWhenAttacking() {
         float top = Player.getInstance().getHitBox().top;
+        Player.getInstance().setMakingDamage(true);
 
         int idx = Player.getInstance().getAniIndex();
-        if (9 <= idx && idx <= 15) {
+        if (9 == idx) {
+
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                return new PointF(
+                        Player.getInstance().getHitBox().left,
+                        top
+                );
+            } else {
+                return new PointF(
+                        Player.getInstance().getHitBox().right,
+                        top
+                );
+            }
+
+        } else if (11 == idx) {
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                return new PointF(
+                        Player.getInstance().getHitBox().left,
+                        top
+                );
+            } else {
+                return new PointF(
+                        Player.getInstance().getHitBox().right,
+                        top
+                );
+            }
+        }  else if (13 == idx) {
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
@@ -121,7 +148,8 @@ public class CharTwo implements PlayerCharStrategy {
                 );
             }
         }
-
+        resetEnemyAbleTakeDamage();
+        Player.getInstance().setMakingDamage(false);
         return new PointF(0, 0);
     }
 
@@ -150,6 +178,9 @@ public class CharTwo implements PlayerCharStrategy {
         } else if (state == PlayerStates.DASH) {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
         }
 
         if (dir == GameConstants.FaceDir.LEFT) {
@@ -164,6 +195,8 @@ public class CharTwo implements PlayerCharStrategy {
         PlayerStates state = Player.getInstance().getCurrentStates();
         if (state == PlayerStates.ATTACK) {
             offsetYTop -= Player.getInstance().getHitBoxOffsetY() / 4.5;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            offsetYTop -= Player.getInstance().getHitBoxOffsetY() / 6;
         }
         return offsetYTop;
     }

@@ -7,10 +7,7 @@ import android.graphics.PointF;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
-import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
-import com.example.myapplication.Model.environments.GameMap;
-import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
 
 public interface PlayerCharStrategy {
@@ -25,7 +22,13 @@ public interface PlayerCharStrategy {
         updateAtkBox();
         initCharAtkBoxInfo();
         initBaseSpeed();
+        initBaseDamage();
     }
+
+    default void initBaseDamage() {
+        Player.getInstance().setBaseDamage(10);
+    }
+
     abstract int offSetX();
     abstract int offSetY();
     abstract int getAnimMaxIndex(PlayerStates state);
@@ -56,18 +59,23 @@ public interface PlayerCharStrategy {
         }
     }
 
-    default void skillOne() {
-        if (Player.getInstance().getAniIndex() == 15) {
-            if (Player.getInstance().isAbleProjectile()) {
-                Player.getInstance().setAbleProjectile(false);
-                ProjectileHolder.getInstance().addProjectile(
-                        getProjectileStartPos(),
-                        getProjectileSize(),
-                        Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
-                        getProjectSpeed());
-            }
-        } else {
-            Player.getInstance().setAbleProjectile(true);
+
+    default int getCurrentDamage(PlayerStates state, int baseDamage) {
+        if (state == PlayerStates.ATTACK) {
+            return baseDamage;
+        } else if (state == PlayerStates.PROJECTILE) {
+            return baseDamage;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            return baseDamage * 5;
+        }
+        return 0;
+    }
+
+    abstract void skillOne();
+    default void projectileHitEnemy(Projectile p) {
+        PlayerStates state = Player.getInstance().getCurrentStates();
+        if (state == PlayerStates.PROJECTILE) {
+            p.updateHitCount(1);
         }
     }
 
@@ -158,7 +166,8 @@ public interface PlayerCharStrategy {
     }
     default Bitmap getPlayerSprite() {
         return Player.getInstance().getGameCharType().getSprite(
-                Player.getInstance().getCurrentStates().getAnimRow() + Player.getInstance().getFaceDir(),
+                Player.getInstance().getCurrentStates().getAnimRow()
+                        + Player.getInstance().getFaceDir(),
                 Player.getInstance().getAniIndex()
         );
     }

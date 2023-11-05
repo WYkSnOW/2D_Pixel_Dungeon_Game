@@ -85,6 +85,21 @@ public class CharOne implements PlayerCharStrategy {
         return 0;
 
     }
+    @Override
+    public void skillOne() {
+        if (Player.getInstance().getAniIndex() == 15) {
+            if (Player.getInstance().isAbleProjectile()) {
+                Player.getInstance().setAbleProjectile(false);
+                ProjectileHolder.getInstance().addProjectile(
+                        getProjectileStartPos(),
+                        getProjectileSize(),
+                        Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
+                        getProjectSpeed());
+            }
+        } else {
+            Player.getInstance().setAbleProjectile(true);
+        }
+    }
 
     private PointF getAtkBoxSizeWhenAttacking() {
         int idx = Player.getInstance().getAniIndex();
