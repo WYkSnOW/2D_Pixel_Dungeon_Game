@@ -5,9 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.environments.GameMap;
-import com.example.myapplication.Model.helper.GameConstants;
 
 import java.util.ArrayList;
 
@@ -71,8 +69,10 @@ public class ProjectileHolder {
                 }
 
                 p.updatePos(currentSpeed);
-                if (!(gameMap.canMoveHere(p.getHitBox().left, p.getHitBox().top, p.getHitBox().bottom))
-                        || !(gameMap.canMoveHere(p.getHitBox().right, p.getHitBox().top, p.getHitBox().bottom))) {
+                if (!(gameMap.canMoveHere(
+                        p.getHitBox().left, p.getHitBox().top, p.getHitBox().bottom))
+                        || !(gameMap.canMoveHere(
+                                p.getHitBox().right, p.getHitBox().top, p.getHitBox().bottom))) {
                     p.setActive(false);
                     onClearing = true;
                     proList.remove(p);
