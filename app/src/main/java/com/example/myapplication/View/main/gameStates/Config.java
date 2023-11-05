@@ -256,7 +256,8 @@ public class Config extends BaseState implements GameStateInterFace {
 
         c.drawText(
                 currentNameText,
-                (int) (nameBarPos.x + (ButtonImage.UI_HOLDER1.getWidth() / 2.0) - (currentNameText.length() * 12)),
+                (int) (nameBarPos.x + (ButtonImage.UI_HOLDER1.getWidth() / 2.0)
+                        - (currentNameText.length() * 12)),
                 nameBarPos.y + (int) (ButtonImage.UI_HOLDER1.getHeight() / 1.6),
                 paint
         );
@@ -328,31 +329,16 @@ public class Config extends BaseState implements GameStateInterFace {
     }
 
     public void drawCharacter(Canvas c) {
-//        c.drawBitmap(
-//                teresa.getGameVideoType().getSprite(teresaState, teresa.getAniIndex()),
-//                teresa.getHitBox().left,
-//                teresa.getHitBox().top,
-//                null
-//        );
-//        c.drawBitmap(
-//                witch.getGameVideoType().getSprite(witchState, witch.getAniIndex()),
-//                witch.getHitBox().left,
-//                witch.getHitBox().top,
-//                null
-//        );
-//        c.drawBitmap(
-//                warrior.getGameVideoType().getSprite(warriorState, warrior.getAniIndex()),
-//                warrior.getHitBox().left,
-//                warrior.getHitBox().top,
-//                null
-//        );
 
 
         double scale = 2.0;
         c.drawBitmap(HelpMethods.getScaledBitmap(scale, Player.getInstance().getGameCharType()
-                        .getSprite(Player.getInstance().getCurrentStates().getAnimRow(), Player.getInstance().getAniIndex())),
-                configBoardPos.x + 117 - (int) (Player.getInstance().getCharacterWidth() * scale / 4.0),
-                configBoardPos.y + 603 - (int) (Player.getInstance().getCharacterHeight() * scale),
+                        .getSprite(Player.getInstance().getCurrentStates().getAnimRow(),
+                                Player.getInstance().getAniIndex())),
+                configBoardPos.x + 117
+                        - (int) (Player.getInstance().getCharacterWidth() * scale / 4.0),
+                configBoardPos.y + 603
+                        - (int) (Player.getInstance().getCharacterHeight() * scale),
                 null);
         Player.getInstance().updatePlayerAnim();
 
@@ -367,7 +353,8 @@ public class Config extends BaseState implements GameStateInterFace {
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             if (viewModel.isInBtn(event, btnConfig)) { //check if release inside area of button
                 if (btnConfig.isPushed()) { //check if click start in area of button
-                    if (viewModel.ableStart(selectCharacter, difficultyChoice, validName)) {
+                    if (viewModel.ableStart(
+                            selectCharacter, difficultyChoice, validName)) {
                         viewModel.onBtnConfigClicked();
                     } else {
                         if (!selectCharacter) {

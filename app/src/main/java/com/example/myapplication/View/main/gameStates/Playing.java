@@ -123,17 +123,22 @@ public class Playing extends BaseState implements GameStateInterFace {
                 playerAbleMoveY = ableMove;
             }
         });
-        viewModel.getCheckingPlayerEnemyCollision().observe((LifecycleOwner) context, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean checking) {
-                viewModel.checkAttackByEnemies(Player.getInstance().getHitBox(), mapManager, cameraX, cameraY);
-            }
-        });
+
+        viewModel.getCheckingPlayerEnemyCollision()
+                .observe((LifecycleOwner) context, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean checking) {
+                        viewModel.checkAttackByEnemies(
+                                Player.getInstance().getHitBox(), mapManager, cameraX, cameraY);
+                    }
+                });
     }
 
     private void initCameraValue() {
-        cameraX = GameConstants.UiSize.GAME_WIDTH / 2 - mapManager.getMaxWidthCurrentMap() / 2;
-        cameraY = GameConstants.UiSize.GAME_HEIGHT / 2 - mapManager.getMaxHeightCurrentMap() / 2;
+        cameraX = (float) (GameConstants.UiSize.GAME_WIDTH / 2
+                - mapManager.getMaxWidthCurrentMap() / 2);
+        cameraY = (float) (GameConstants.UiSize.GAME_HEIGHT / 2
+                - mapManager.getMaxHeightCurrentMap() / 2);
     }
 
     private void setPlayerMoveStrategy(PlayerMoveStrategy playerMoveStrategy) {
@@ -170,8 +175,11 @@ public class Playing extends BaseState implements GameStateInterFace {
         //itemManager.setCameraValues(cameraX, cameraY);
 
 
-        viewModel.checkAttack(Player.getInstance().isAttacking(), Player.getInstance().getAttackBox(), mapManager, cameraX, cameraY);
-        //viewModel.checkAttackByEnemies(Player.getInstance().getHitBox(), mapManager, cameraX, cameraY);
+        viewModel.checkAttack(
+                Player.getInstance().isAttacking(),
+                Player.getInstance().getAttackBox(),
+                mapManager, cameraX, cameraY);
+
         viewModel.checkingPlayerEnemyCollision();
         viewModel.updateZombies(mapManager, delta, cameraX, cameraY);
 
@@ -364,11 +372,14 @@ public class Playing extends BaseState implements GameStateInterFace {
         viewModel.setLastTouchDiff(lastTouchDiff);
     }
     public void setPlayerMoveFalse() {
-        if (!(Player.getInstance().isAttacking() || Player.getInstance().isOnSkill() || Player.getInstance().isProjecting())) {
+        if (!(Player.getInstance().isAttacking()
+                || Player.getInstance().isOnSkill()
+                || Player.getInstance().isProjecting())) {
             Player.getInstance().backToIdleState();
         }
 
     }
+
 
 
     public MapManager getMapManager() {
