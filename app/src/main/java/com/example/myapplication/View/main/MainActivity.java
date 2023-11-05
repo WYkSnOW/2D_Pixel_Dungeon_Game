@@ -17,7 +17,4 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(new GamePanel(MainViewModel.getGameContext()));
     }
-
-
-    //this is the newest version 10/29/2023
 }
