@@ -176,7 +176,7 @@ public class PlayingLogic {
                                 enemy.getHitBox().right,
                                 enemy.getHitBox().bottom)
                         ) {
-                            enemy.takePjtDamage(); //remove enemy(or any mob)
+                            enemy.takePjtDamage(p.getDamage()); //remove enemy(or any mob)
                             Player.getInstance().projectileHitEnemy(p);
                         }
                     }

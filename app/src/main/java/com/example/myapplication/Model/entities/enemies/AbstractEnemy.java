@@ -37,13 +37,12 @@ public abstract class AbstractEnemy extends Character {
         takeDamageAlready = false;
     }
 
-    public void takePjtDamage() {
+    public void takePjtDamage(int damage) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastTakeProjectDamage >= 500) {
             lastTakeProjectDamage = currentTime;
 
-            this.currentHealth = Math.max(currentHealth
-                    - Player.getInstance().getPJTDamage(), 0);
+            this.currentHealth = Math.max(currentHealth - damage, 0);
             if (currentHealth == 0) {
                 active = false;
             }
@@ -144,16 +143,24 @@ public abstract class AbstractEnemy extends Character {
             }
         }
 
-        if (distanceX > Player.getInstance().getHitBoxWidth()) {
+        if (distanceX
+                > (float) (Player.getInstance().getHitBoxWidth() / 2 + getHitBoxWidth() / 2)) {
             deltaX *= -1;
-            drawDir = GameConstants.DrawDir.LEFT;
-            faceDir = GameConstants.FaceDir.LEFT;
+
             moveX(gameMap, deltaX);
-        } else if (distanceX < -Player.getInstance().getHitBoxWidth()) {
-            drawDir = GameConstants.DrawDir.RIGHT;
-            faceDir = GameConstants.FaceDir.RIGHT;
+        } else if (distanceX
+                < -(float) (Player.getInstance().getHitBoxWidth() / 2 + getHitBoxWidth() / 2)) {
+
             moveX(gameMap, deltaX);
         }
+        if (distanceX > 1) {
+            drawDir = GameConstants.DrawDir.LEFT;
+            faceDir = GameConstants.FaceDir.LEFT;
+        } else if (distanceX < -1) {
+            drawDir = GameConstants.DrawDir.RIGHT;
+            faceDir = GameConstants.FaceDir.RIGHT;
+        }
+
         if (distanceY > 1) {
             deltaY *= -1;
             moveY(gameMap, deltaY);

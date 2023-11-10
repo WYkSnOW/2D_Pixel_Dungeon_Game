@@ -369,9 +369,6 @@ public class Player extends Character {
     public int getCurrentDamage() {
         return playerCharStrategy.getCurrentDamage(currentStates, baseDamage);
     }
-    public int getPJTDamage() {
-        return playerCharStrategy.getCurrentDamage(PlayerStates.PROJECTILE, baseDamage);
-    }
 
     public GameMap getCurrentMap() {
         return currentMap;
@@ -387,6 +384,9 @@ public class Player extends Character {
 
     public void projectileHitEnemy(Projectile p) {
         playerCharStrategy.projectileHitEnemy(p);
+    }
+    public int getProjectileMaxHit() {
+        return playerCharStrategy.getProjectileMaxHit(currentStates);
     }
 
     public void setBaseDamage(int baseDamage) {

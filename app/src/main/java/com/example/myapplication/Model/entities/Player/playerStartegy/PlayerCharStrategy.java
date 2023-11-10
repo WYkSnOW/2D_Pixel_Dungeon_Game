@@ -73,9 +73,14 @@ public interface PlayerCharStrategy {
 
     abstract void skillOne();
     default void projectileHitEnemy(Projectile p) {
-        PlayerStates state = Player.getInstance().getCurrentStates();
-        if (state == PlayerStates.PROJECTILE) {
-            p.updateHitCount(1);
+        p.updateHitCount();
+    }
+
+    default int getProjectileMaxHit(PlayerStates state) {
+        if (state == PlayerStates.SKILL_ONE) {
+            return -1;
+        } else {
+            return 1;
         }
     }
 

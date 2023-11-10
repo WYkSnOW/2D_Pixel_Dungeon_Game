@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.environments.GameMap;
 
 import java.util.ArrayList;
