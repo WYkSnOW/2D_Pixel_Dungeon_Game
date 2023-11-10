@@ -9,8 +9,8 @@ public class EnemyAbleMoveUnitTest {
 
     @Test
     public void enemyAbleMoveUnitTest() {
-        // here are the id of black that doesn't allow the monster to move
-        int [] notMoveAbleBlock = {59. 60, 150, 0};
+        // here are the id of block that doesn't allow the monster to move
+        int [] notMoveAbleBlock = {59, 60, 150, 0};
 
         for (int i : notMoveAbleBlock) {
             assertFalse(GameMap.isMoveAbleBlock(i));
