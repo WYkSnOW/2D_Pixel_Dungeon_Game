@@ -43,7 +43,7 @@ public abstract class AbstractEnemy extends Character {
             lastTakeProjectDamage = currentTime;
 
             this.currentHealth = Math.max(currentHealth
-                    - Player.getInstance().getCurrentDamage(), 0);
+                    - Player.getInstance().getPJTDamage(), 0);
             if (currentHealth == 0) {
                 active = false;
             }

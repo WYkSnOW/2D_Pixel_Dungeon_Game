@@ -168,7 +168,6 @@ public class PlayingLogic {
                 }
 
 
-
                 for (Projectile p : ProjectileHolder.getInstance().getProList()) {
                     if (p.isActive()) {
                         if (p.getHitBox().intersects(
