@@ -6,8 +6,12 @@ import com.example.myapplication.Model.entities.GameCharacters;
 
 public class ChestMob extends AbstractEnemy {
     public ChestMob(PointF pos) {
-        super(pos, GameCharacters.CHEST_MOB, 100, 3);
+        super(pos, GameCharacters.CHEST_MOB, 100, 3, 50);
     }
 
 
+    @Override
+    int getDefaultChaseDis() {
+        return 4;
+    }
 }

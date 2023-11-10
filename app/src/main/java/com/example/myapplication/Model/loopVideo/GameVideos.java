@@ -27,7 +27,18 @@ public enum GameVideos implements BitmapMethods {
             GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONX,
             GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONY,
             GameConstants.VideosDefault.DIFFICULTY_BOX_SCALE,
-            GameConstants.VideosDefault.DIFFICULTY_BOX_ANIM_RATE
+            60
+
+    ),
+
+    START_DATA(
+            R.drawable.character_start_date,
+            144,
+            118,
+            3,
+            1,
+            3,
+            60
 
     ),
     WITCH(

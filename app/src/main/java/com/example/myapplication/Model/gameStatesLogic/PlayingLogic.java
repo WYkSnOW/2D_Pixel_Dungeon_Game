@@ -4,6 +4,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.entities.Player.projectile.Projectile;
+import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
 
@@ -15,61 +18,69 @@ public class PlayingLogic {
     public boolean checkPlayerAbleMoveX(
             boolean attacking,
             MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
-        if (attacking || Player.getInstance().isOnSkill()) {
+        if (Player.getInstance().getCurrentStates() == PlayerStates.DASH) {
+            System.out.println("hittttt");
+        }
+        System.out.println();
+        if (Player.getInstance().isAttacking()
+                || Player.getInstance().isProjecting()) {
             return false;
         }
-        return checkAbleMoveX(mapManager, pWidth, pHeight, delta, camera);
+        return checkAbleMoveX(mapManager, delta, camera);
 
     }
     public boolean checkPlayerAbleMoveY(
             boolean attacking,
             MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
-        if (attacking || Player.getInstance().isOnSkill()) {
+        if (Player.getInstance().isAttacking()
+                || Player.getInstance().isProjecting()) {
             return false;
         }
-        return checkAbleMoveY(mapManager, pWidth, pHeight, delta, camera);
+        return checkAbleMoveY(mapManager, delta, camera);
 
     }
 
 
     public boolean checkAbleMoveY(
             MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
-        float x
-                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x + pWidth;
+        float xL
+                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x;
+        float xR
+                = Player.getInstance().getHitBox().right + camera.x * -1 + delta.x;
 
         float yTop
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1;
 
         float yBottom
-                = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y * -1 + pHeight;
+                = Player.getInstance().getHitBox().bottom + camera.y * -1 + delta.y * -1;
 
-        return mapManager.getCurrentMap().canMoveHere(x, yTop, yBottom);
+        return mapManager.getCurrentMap().canMoveHere(xR, yTop, yBottom)
+                && mapManager.getCurrentMap().canMoveHere(xL, yTop, yBottom);
     }
 
     public boolean checkAbleMoveX(
             MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
-        float currX
-                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x * -1 + pWidth;
+        float xL
+                = Player.getInstance().getHitBox().left + camera.x * -1 + delta.x * -1;
+        float xR
+                = Player.getInstance().getHitBox().right + camera.x * -1 + delta.x * -1;
 
         float currYTop
                 = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y;
 
         float currYBottom
-                = Player.getInstance().getHitBox().top + camera.y * -1 + delta.y + pHeight;
+                = Player.getInstance().getHitBox().bottom + camera.y * -1 + delta.y;
 
-        return mapManager.getCurrentMap().canMoveHere(currX, currYTop, currYBottom);
+        return mapManager.getCurrentMap().canMoveHere(xL, currYTop, currYBottom)
+                && mapManager.getCurrentMap().canMoveHere(xR, currYTop, currYBottom);
     }
 
     public boolean checkHitBoxCollision(RectF hitBoxOne, RectF hitBoxTwo) {
@@ -136,25 +147,54 @@ public class PlayingLogic {
             MapManager mapManager,
             float cameraX, float cameraY
     ) {
-        if (Player.getInstance().isAbleMakeDamage()) {
-            RectF attackBoxWithoutCamera = new RectF(attackBox);
-            attackBoxWithoutCamera.left -= cameraX;
-            attackBoxWithoutCamera.top -= cameraY;
-            attackBoxWithoutCamera.right -= cameraX;
-            attackBoxWithoutCamera.bottom -= cameraY;
 
-            for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-                if (attackBoxWithoutCamera.intersects(
-                        enemy.getHitBox().left,
-                        enemy.getHitBox().top,
-                        enemy.getHitBox().right,
-                        enemy.getHitBox().bottom)
-                ) {
-                    enemy.setActive(false); //remove enemy(or any mob)
+        RectF attackBoxWithoutCamera = new RectF(attackBox);
+        attackBoxWithoutCamera.left -= cameraX;
+        attackBoxWithoutCamera.top -= cameraY;
+        attackBoxWithoutCamera.right -= cameraX;
+        attackBoxWithoutCamera.bottom -= cameraY;
+
+        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
+            if (enemy.isActive()) {
+                if (Player.getInstance().isMakingDamage()) {
+                    if (attackBoxWithoutCamera.intersects(
+                            enemy.getHitBox().left,
+                            enemy.getHitBox().top,
+                            enemy.getHitBox().right,
+                            enemy.getHitBox().bottom)
+                    ) {
+                        enemy.takeDamage(); //remove enemy(or any mob)
+                    }
                 }
+
+
+
+                for (Projectile p : ProjectileHolder.getInstance().getProList()) {
+                    if (p.isActive()) {
+                        if (p.getHitBox().intersects(
+                                enemy.getHitBox().left,
+                                enemy.getHitBox().top,
+                                enemy.getHitBox().right,
+                                enemy.getHitBox().bottom)
+                        ) {
+                            enemy.takePjtDamage(); //remove enemy(or any mob)
+                            Player.getInstance().projectileHitEnemy(p);
+                        }
+                    }
+
+                }
+
+
             }
+
+
+
         }
+
     }
+
+
+
 
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         for (AbstractEnemy zombie : mapManager.getCurrentMap().getMobArrayList()) {
