@@ -92,6 +92,62 @@ public class CharTwo implements PlayerCharStrategy {
 
     @Override
     public void skillOne() {
+        //Player.getInstance().setInvincibleTrue();
+        PointF pos = getAtkBoxPosWhenSkillOne();
+
+        float w = getAtkBoxSizeWhenSkillOne().x;
+        float h = getAtkBoxSizeWhenSkillOne().y;
+
+        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
+            Player.getInstance().setAttackBox(new RectF(pos.x, pos.y, pos.x + w, pos.y + h));
+        } else {
+            Player.getInstance().setAttackBox(new RectF(pos.x - w, pos.y, pos.x, pos.y + h));
+        }
+    }
+
+
+    private PointF getAtkBoxPosWhenSkillOne() {
+        Player.getInstance().setMakingDamage(true);
+        float top = Player.getInstance().getHitBox().bottom;
+        int idx = Player.getInstance().getAniIndex();
+
+
+        if (idx == 21 || idx == 23 || idx == 25) {
+            PointF size = getAtkBoxSizeWhenSkillOne();
+            top -= size.y;
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
+                return new PointF(
+                        Player.getInstance().getHitBox().right + (float) (size.x * 1.0) / 5,
+                        top
+                );
+            } else {
+                return new PointF(
+                        Player.getInstance().getHitBox().left - (float) (size.x * 1.0) / 5,
+                        top
+                );
+            }
+
+        }
+        resetEnemyAbleTakeDamage();
+        Player.getInstance().setMakingDamage(false);
+        return new PointF(0, 0);
+    }
+
+    private PointF getAtkBoxSizeWhenSkillOne() {
+        int idx = Player.getInstance().getAniIndex();
+
+        if (idx == 21 || idx == 23 || idx == 25) {
+            return new PointF(
+                    (float) (1.5 * GameConstants.Sprite.SIZE),
+                    (float) (1.5 * GameConstants.Sprite.SIZE)
+            );
+        }
+
+
+        return new PointF(
+                (float) (1.2 * GameConstants.Sprite.SIZE),
+                (float) (2 * GameConstants.Sprite.SIZE)
+        );
 
     }
 

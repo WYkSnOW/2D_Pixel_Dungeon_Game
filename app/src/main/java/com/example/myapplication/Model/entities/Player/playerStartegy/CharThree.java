@@ -105,7 +105,7 @@ public class CharThree implements PlayerCharStrategy {
         int idx = Player.getInstance().getAniIndex();
 
 
-        if (25 <= idx && idx <= 28) {
+        if (25 == idx || idx == 27) {
             PointF size = getAtkBoxSizeWhenSkillOne();
             top -= size.y;
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
@@ -129,7 +129,7 @@ public class CharThree implements PlayerCharStrategy {
         int idx = Player.getInstance().getAniIndex();
         Player.getInstance().setMakingDamage(true);
 
-        if (25 <= idx && idx <= 28) {
+        if (25 == idx || idx == 27) {
             return new PointF(
                     (float) (2.1 * GameConstants.Sprite.SIZE),
                     (float) (1.7 * GameConstants.Sprite.SIZE)

@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
@@ -367,6 +368,9 @@ public class Player extends Character {
 
     public int getCurrentDamage() {
         return playerCharStrategy.getCurrentDamage(currentStates, baseDamage);
+    }
+    public int getPJTDamage() {
+        return playerCharStrategy.getCurrentDamage(PlayerStates.PROJECTILE, baseDamage);
     }
 
     public GameMap getCurrentMap() {
