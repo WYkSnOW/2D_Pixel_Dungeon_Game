@@ -29,6 +29,7 @@ import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.playerStateBar.PlayerStateBar;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
 
 import java.util.Random;
@@ -241,6 +242,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         ProjectileHolder.getInstance().draw(c);
 
 
+        PlayerStateBar.getInstance().drawPlayerStateBar(c);
 
 
         drawCurrentPlayingUI(c);
@@ -297,10 +299,10 @@ public class Playing extends BaseState implements GameStateInterFace {
 
 
     private void drawUi(Canvas c) {
-        c.drawText("PlayerName: " + Player.getInstance().getPlayerName(), 200, 100, paint);
-        c.drawText("Difficulty: " + Player.getInstance().getDifficulty(), 200, 150, paint);
-        c.drawText("Health: " + Player.getInstance().getCurrentHealth(), 200, 200, paint);
-        c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 250, paint);
+        c.drawText("PlayerName: " + Player.getInstance().getPlayerName(), 200, 150, paint);
+        c.drawText("Difficulty: " + Player.getInstance().getDifficulty(), 200, 200, paint);
+        c.drawText("Health: " + Player.getInstance().getCurrentHealth(), 200, 250, paint);
+        c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 300, paint);
     }
     public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
         int offsetX = enemy.getHitBoxOffsetX();

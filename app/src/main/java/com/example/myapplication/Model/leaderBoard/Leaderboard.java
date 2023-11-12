@@ -27,18 +27,12 @@ public class Leaderboard {
     private Paint blackPaint = new Paint();
     private Paint boldPaint = new Paint();
     private final PointF recordBoardPos = new PointF(100, 180);
-    private final PointF resultBarPos = new PointF(
-            (int) ((GAME_WIDTH / 2.0) - (GameImages.PLAYER_WIN_BAR.getWidth() / 2.0) + 40.0),
-            30
-    );
-    private final PointF currentBoardPos = new PointF(
-            GAME_WIDTH - GameImages.CURRENT_BOARD.getWidth(),
-            390
-    );
+
 
     private Leaderboard() {
         playerRecords = new ArrayList<>();
         this.newestScore = new Score(0, 0, "player", true);
+
     }
 
     public static synchronized Leaderboard getInstance() {
@@ -61,7 +55,31 @@ public class Leaderboard {
         }
 
     }
-    private void drawPlayer(Canvas c) {
+
+    public void drawLeaderBoard(Canvas c) {
+
+        PointF resultBarPos = new PointF(
+                (int) ((GAME_WIDTH / 2.0) - (GameImages.PLAYER_WIN_BAR.getWidth() / 2.0) + 40.0),
+                30
+        );
+        PointF currentBoardPos = new PointF(
+                GAME_WIDTH - GameImages.CURRENT_BOARD.getWidth(),
+                390
+        );
+
+        drawLeaderBoardUi(c, currentBoardPos, resultBarPos);
+
+        if (Player.getInstance().isWinTheGame()) {
+            drawYouWin(c, currentBoardPos, resultBarPos);
+        } else {
+            drawYouLose(c, currentBoardPos, resultBarPos);
+        }
+        drawText(c, currentBoardPos);
+        drawPlayer(c, currentBoardPos);
+
+    }
+
+    private void drawPlayer(Canvas c, PointF currentBoardPos) {
         Player.getInstance().setCurrentStates(PlayerStates.WALK);
         c.drawBitmap(Player.getInstance().getGameCharType()
                         .getSprite(PlayerStates.WALK.getAnimRow(),
@@ -73,7 +91,7 @@ public class Leaderboard {
         Player.getInstance().updatePlayerAnim();
     }
 
-    private void drawLeaderBoardUi(Canvas c) {
+    private void drawLeaderBoardUi(Canvas c, PointF currentBoardPos, PointF resultBarPos) {
         Bitmap resultBar = GameImages.PLAYER_LOSE_BAR.getImage();
         if (Player.getInstance().isWinTheGame()) {
             resultBar = GameImages.PLAYER_WIN_BAR.getImage();
@@ -99,21 +117,9 @@ public class Leaderboard {
         );
     }
 
-    public void drawLeaderBoard(Canvas c) {
 
-        drawLeaderBoardUi(c);
 
-        if (Player.getInstance().isWinTheGame()) {
-            drawYouWin(c);
-        } else {
-            drawYouLose(c);
-        }
-        drawText(c);
-        drawPlayer(c);
-
-    }
-
-    private void drawText(Canvas c) {
+    private void drawText(Canvas c, PointF currentBoardPos) {
         paint1.setTextSize(35);
         paint1.setColor(Color.WHITE);
 
@@ -149,14 +155,14 @@ public class Leaderboard {
             }
         }
     }
-    private void drawYouWin(Canvas c) {
+    private void drawYouWin(Canvas c, PointF currentBoardPos, PointF resultBarPos) {
         c.drawText(
                 "You Win!",
                 currentBoardPos.x + (int) (GameImages.CURRENT_BOARD.getWidth() / 4.0) + 20,
                 currentBoardPos.y + 150,
                 boldPaint);
     }
-    private void drawYouLose(Canvas c) {
+    private void drawYouLose(Canvas c, PointF currentBoardPos, PointF resultBarPos) {
         c.drawText(
                 "You Lose",
                 currentBoardPos.x + (int) (GameImages.CURRENT_BOARD.getWidth() / 4.0) + 20,
@@ -213,6 +219,4 @@ public class Leaderboard {
     }
 
 
-
-    // 其他需要的方法...
 }

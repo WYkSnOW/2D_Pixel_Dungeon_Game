@@ -156,6 +156,56 @@ public enum GameVideos implements BitmapMethods {
             2,
             3.5,
             GameConstants.Animation.ANI_SPEED
+    ),
+
+    PLAYER_HEALTH_BAR(
+            R.drawable.player_health_bar_blank,
+            157,
+            18,
+            1,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+    PLAYER_HEALTH_START(
+            R.drawable.health_red_bar_start_img,
+            6,
+            18,
+            3,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+
+    PLAYER_HEALTH_MIDDLE(
+            R.drawable.health_red_bar_middle_img,
+            2,
+            18,
+            8,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    PLAYER_HEALTH_END(
+            R.drawable.health_red_bars_end,
+            2,
+            18,
+            8,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    PLAYER_HEALTH_END_ANIM(
+            R.drawable.health_anim_bar,
+            16,
+            18,
+            8,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
     );
 
     private final Bitmap spriteSheet;
