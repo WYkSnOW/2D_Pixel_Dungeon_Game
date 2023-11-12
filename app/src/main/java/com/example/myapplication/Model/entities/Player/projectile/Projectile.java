@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.Entity;
-import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.loopVideo.GameVideos;
@@ -23,7 +22,9 @@ public class Projectile extends Entity {
     private final float animOffsetX;
     private final float animOffsetY;
 
-    public Projectile(PointF pos, PointF size, boolean faceRight, float speed, GameVideos anim, PointF animOffset) {
+    public Projectile(PointF pos, PointF size, boolean faceRight,
+                      float speed, GameVideos anim, PointF animOffset) {
+
         super(pos, size.x, size.y);
         this.faceRight = faceRight;
         this.speed = speed;
