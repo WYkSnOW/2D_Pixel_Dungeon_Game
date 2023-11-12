@@ -27,6 +27,14 @@ public class CharTwo implements PlayerCharStrategy {
     public void initBaseSpeed() {
         Player.getInstance().setBaseSpeed(200);
     }
+    @Override
+    public void initDefence() {
+        Player.getInstance().setDefence(0);
+    }
+    @Override
+    public void initBaseDamage() {
+        Player.getInstance().setBaseDamage(15);
+    }
 
     @Override
     public int getAnimMaxIndex(PlayerStates state) {
@@ -104,17 +112,60 @@ public class CharTwo implements PlayerCharStrategy {
             Player.getInstance().setAttackBox(new RectF(pos.x - w, pos.y, pos.x, pos.y + h));
         }
     }
+    @Override
+    public void drawSkillOne(Canvas c) {
+        if (Player.getInstance().getAniIndex() >= 7) {
+            int idx = Player.getInstance().getAniIndex() - 7;
+
+
+            float xOffset = (float) (47 * GameVideos.BLACK_HOLE_ANIM.getScale());
+            float xPos = getAnimPosSkillOne().x - xOffset;
+
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                xPos -= xOffset;
+            }
+
+
+            c.drawBitmap(
+                    GameVideos.BLACK_HOLE_ANIM.getSprite(Player.getInstance().getFaceDir(), idx),
+                    xPos,
+                    getAnimPosSkillOne().y
+                            - (float) (41 * GameVideos.BLACK_HOLE_ANIM.getScale()),
+                    null
+            );
+        }
+    }
+
+    private PointF getAnimPosSkillOne() {
+        PointF size = getAtkBoxSizeWhenSkillOne();
+        float top = Player.getInstance().getHitBox().bottom - size.y;
+        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
+            return new PointF(
+                    (float) (Player.getInstance().getHitBox().right + (size.x * 1.0) / 5),
+                    top
+            );
+        } else {
+            return new PointF(
+                    (float) (Player.getInstance().getHitBox().left - (size.x * 1.0) / 5),
+                    top
+            );
+        }
+    }
+
+
 
 
     private PointF getAtkBoxPosWhenSkillOne() {
         Player.getInstance().setMakingDamage(true);
         float top = Player.getInstance().getHitBox().bottom;
+
         int idx = Player.getInstance().getAniIndex();
+        PointF size = getAtkBoxSizeWhenSkillOne();
 
+        top -= size.y;
 
-        if (idx == 21 || idx == 23 || idx == 25) {
-            PointF size = getAtkBoxSizeWhenSkillOne();
-            top -= size.y;
+        if (idx == 16 || idx == 19 || idx == 22) {
+
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
                 return new PointF(
                         Player.getInstance().getHitBox().right + (float) (size.x * 1.0) / 5,
@@ -136,17 +187,16 @@ public class CharTwo implements PlayerCharStrategy {
     private PointF getAtkBoxSizeWhenSkillOne() {
         int idx = Player.getInstance().getAniIndex();
 
-        if (idx == 21 || idx == 23 || idx == 25) {
+        if (idx == 16 || idx == 19 || idx == 22) {
             return new PointF(
                     (float) (1.5 * GameConstants.Sprite.SIZE),
                     (float) (1.5 * GameConstants.Sprite.SIZE)
             );
         }
 
-
         return new PointF(
-                (float) (1.2 * GameConstants.Sprite.SIZE),
-                (float) (2 * GameConstants.Sprite.SIZE)
+                (float) (1.5 * GameConstants.Sprite.SIZE),
+                (float) (1.5 * GameConstants.Sprite.SIZE)
         );
 
     }
@@ -267,6 +317,11 @@ public class CharTwo implements PlayerCharStrategy {
     }
 
     @Override
+    public int getProjectileMaxHit(PlayerStates state) {
+        return 1;
+    }
+
+    @Override
     public void makeProjectile() {
         if (Player.getInstance().getAniIndex() == 6) {
             if (Player.getInstance().isAbleProjectile()) {
@@ -275,7 +330,12 @@ public class CharTwo implements PlayerCharStrategy {
                         getProjectileStartPos(),
                         getProjectileSize(),
                         Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
-                        getProjectSpeed());
+                        getProjectSpeed(),
+                        GameVideos.FIRE_BALL_ANIM,
+                        new PointF(
+                                (float) (50 * GameVideos.FIRE_BALL_ANIM.getScale()),
+                                -(float) (55 * GameVideos.FIRE_BALL_ANIM.getScale())
+                        ));
             }
         } else {
             Player.getInstance().setAbleProjectile(true);
@@ -285,7 +345,7 @@ public class CharTwo implements PlayerCharStrategy {
 
     @Override
     public PointF getProjectileStartPos() {
-        float top = Player.getInstance().getHitBox().top;
+        float top = Player.getInstance().getHitBox().top + getProjectileSize().y / 5;
         if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
             return new PointF(
                     Player.getInstance().getHitBox().left - getProjectileSize().x,
@@ -301,6 +361,6 @@ public class CharTwo implements PlayerCharStrategy {
     @Override
     public PointF getProjectileSize() {
         return new PointF(GameConstants.Sprite.SIZE,
-                GameConstants.Sprite.SIZE);
+                (float) (0.6 * GameConstants.Sprite.SIZE));
     }
 }

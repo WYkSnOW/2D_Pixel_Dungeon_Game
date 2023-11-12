@@ -9,6 +9,7 @@ import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.helper.GameConstants;
+import com.example.myapplication.Model.loopVideo.GameVideos;
 
 public class CharThree implements PlayerCharStrategy {
     @Override
@@ -26,6 +27,14 @@ public class CharThree implements PlayerCharStrategy {
     @Override
     public void initBaseSpeed() {
         Player.getInstance().setBaseSpeed(150);
+    }
+    @Override
+    public void initDefence() {
+        Player.getInstance().setDefence(3);
+    }
+    @Override
+    public void initBaseDamage() {
+        Player.getInstance().setBaseDamage(10);
     }
 
     @Override
@@ -96,6 +105,10 @@ public class CharThree implements PlayerCharStrategy {
         } else {
             Player.getInstance().setAttackBox(new RectF(pos.x - w, pos.y, pos.x, pos.y + h));
         }
+    }
+
+    @Override
+    public void drawSkillOne(Canvas c) {
     }
 
 
@@ -289,6 +302,11 @@ public class CharThree implements PlayerCharStrategy {
     }
 
     @Override
+    public int getProjectileMaxHit(PlayerStates state) {
+        return 3;
+    }
+
+    @Override
     public void makeProjectile() {
         if (Player.getInstance().getAniIndex() == 22) {
             if (Player.getInstance().isAbleProjectile()) {
@@ -297,7 +315,12 @@ public class CharThree implements PlayerCharStrategy {
                         getProjectileStartPos(),
                         getProjectileSize(),
                         Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
-                        getProjectSpeed());
+                        getProjectSpeed(),
+                        GameVideos.SWORD_PJT_ANIM,
+                        new PointF(
+                                (float) (16 * GameVideos.SWORD_PJT_ANIM.getScale()),
+                                -(float) (7 * GameVideos.SWORD_PJT_ANIM.getScale())
+                        ));
             }
         } else {
             Player.getInstance().setAbleProjectile(true);
@@ -307,22 +330,22 @@ public class CharThree implements PlayerCharStrategy {
 
     @Override
     public PointF getProjectileStartPos() {
-        float top = Player.getInstance().getHitBox().top;
+        float top = Player.getInstance().getHitBox().bottom - getProjectileSize().y;
         if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
             return new PointF(
                     Player.getInstance().getHitBox().left - getProjectileSize().x,
-                    top - ((float) GameConstants.Sprite.SIZE / 3)
+                    top
             );
         } else {
             return new PointF(
                     Player.getInstance().getHitBox().right,
-                    top - ((float) GameConstants.Sprite.SIZE / 3)
+                    top
             );
         }
     }
     @Override
     public PointF getProjectileSize() {
         return new PointF((float) (GameConstants.Sprite.SIZE * 0.5),
-                (float) (GameConstants.Sprite.SIZE * 1.5));
+                (float) (GameConstants.Sprite.SIZE * 1.2));
     }
 }

@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.environments.GameMap;
+import com.example.myapplication.Model.loopVideo.GameVideos;
 
 import java.util.ArrayList;
 
@@ -42,12 +42,17 @@ public class ProjectileHolder {
         return proList;
     }
 
-    public void addProjectile(PointF pos, PointF size, boolean faceRight, float speed) {
+    public void addProjectile(
+            PointF pos, PointF size, boolean faceRight, float speed,
+            GameVideos anim, PointF animOffset) {
+
         proList.add(new Projectile(
                 new PointF(pos.x - cameraX, pos.y - cameraY),
                 size,
                 faceRight,
-                speed)
+                speed,
+                anim,
+                animOffset)
         );
         isEmpty = false;
     }
@@ -73,7 +78,7 @@ public class ProjectileHolder {
                 if (!(gameMap.canMoveHere(
                         p.getHitBox().left, p.getHitBox().top, p.getHitBox().bottom))
                         || !(gameMap.canMoveHere(
-                                p.getHitBox().right, p.getHitBox().top, p.getHitBox().bottom))) {
+                        p.getHitBox().right, p.getHitBox().top, p.getHitBox().bottom))) {
                     p.setActive(false);
                     onClearing = true;
                     proList.remove(p);
@@ -93,18 +98,12 @@ public class ProjectileHolder {
 
         for (Projectile p : ProjectileHolder.getInstance().getProList()) {
             if (p.isActive()) {
-                drawProjectile(c, p);
+                p.drawProjectileHitBox(c, cameraX, cameraY, hitBoxPaint);
+                p.drawProjectile(c, cameraX, cameraY);
             }
         }
     }
 
-    public void drawProjectile(Canvas c, Projectile p) {
-        c.drawRect(p.getHitBox().left + cameraX,
-                p.getHitBox().top + cameraY,
-                p.getHitBox().right + cameraX,
-                p.getHitBox().bottom + cameraY,
-                hitBoxPaint);
-    }
 
 
 }

@@ -12,7 +12,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
-import com.example.myapplication.Model.ui.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.PauseUI;
+import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 
 public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
@@ -83,21 +84,44 @@ public class PlayingViewModel extends ViewModel {
         playingLogic.checkAttack(attacking, attackBox, mapManager, cameraX, cameraY);
     }
 
+    public void checkItems(MapManager mapManager, float cameraX, float cameraY) {
+        playingLogic.checkItems(mapManager, cameraX, cameraY);
+    }
+
     public void checkAttackByEnemies(RectF playerHitBox,
-                            MapManager mapManager,
-                            float cameraX, float cameraY) {
+                                     MapManager mapManager,
+                                     float cameraX, float cameraY) {
         playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
     }
 
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         playingLogic.updateZombies(mapManager, delta, cameraX, cameraY);
     }
+
+
+
     public void playingUiTouchEvent(MotionEvent event, PlayingUI playingUI) {
         playingUI.touchEvent(event);
     }
     public void playingUiDrawUi(Canvas c, PlayingUI playingUI) {
         playingUI.drawUI(c);
     }
+
+
+    public void pauseUiTouchEvent(MotionEvent event, PauseUI pauseUI) {
+        pauseUI.touchEvent(event);
+    }
+    public void pauseUiDrawUi(Canvas c, PauseUI pauseUI) {
+        pauseUI.drawUI(c);
+    }
+
+
+
+
+
+
+
+
 
 
 }

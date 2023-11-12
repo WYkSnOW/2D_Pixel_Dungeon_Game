@@ -1,4 +1,4 @@
-package com.example.myapplication.Model.ui;
+package com.example.myapplication.Model.ui.playingUI;
 
 import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_HEIGHT;
 import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
@@ -15,6 +15,8 @@ import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.ui.ButtonImage;
+import com.example.myapplication.Model.ui.CustomButton;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
