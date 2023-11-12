@@ -16,10 +16,10 @@ public class GameMap { //store world and help to draw map
 
 
 
-    public GameMap(int[][] spriteIds, Floor floorType, ArrayList<Item> itemArrayList) {
+    public GameMap(int[][] spriteIds, Floor floorType) {
         this.spriteIds = spriteIds;
         this.floorType = floorType;
-        this.itemArrayList = itemArrayList;
+        this.itemArrayList = new ArrayList<>();
         this.doorwayArrayList = new ArrayList<>();
         this.mobArrayList = new ArrayList<>();
     }
@@ -73,6 +73,13 @@ public class GameMap { //store world and help to draw map
     public void replaceZombiesToList(ArrayList<AbstractEnemy> zombies) {
         if (zombies != null) {
             mobArrayList = zombies;
+        }
+    }
+
+
+    public void addItemsToList(ArrayList<Item> items) {
+        if (items != null) {
+            itemArrayList.addAll(items);
         }
     }
 

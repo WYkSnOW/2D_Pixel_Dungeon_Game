@@ -9,12 +9,22 @@ import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.helper.GameConstants;
+import com.example.myapplication.Model.loopVideo.GameVideos;
 
 public class CharOne implements PlayerCharStrategy {
     @Override
     public void initCharAtkBoxInfo() {
         Player.getInstance().setAttackWidth((int) (0.8 * GameConstants.Sprite.SIZE));
         Player.getInstance().setAttackHeight(2 * GameConstants.Sprite.SIZE);
+    }
+
+    @Override
+    public void initDefence() {
+        Player.getInstance().setDefence(2);
+    }
+    @Override
+    public void initBaseDamage() {
+        Player.getInstance().setBaseDamage(10);
     }
 
 
@@ -46,6 +56,15 @@ public class CharOne implements PlayerCharStrategy {
     @Override
     public void initBaseSpeed() {
         Player.getInstance().setBaseSpeed(250);
+    }
+
+    @Override
+    public int getProjectileMaxHit(PlayerStates state) {
+        if (state == PlayerStates.SKILL_ONE) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     @Override
@@ -94,11 +113,19 @@ public class CharOne implements PlayerCharStrategy {
                         getProjectileStartPos(),
                         getProjectileSize(),
                         Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
-                        getProjectSpeed());
+                        getProjectSpeed(),
+                        GameVideos.STORM_ARROW_ANIM,
+                        new PointF(
+                                (float) (7 * GameVideos.STORM_ARROW_ANIM.getScale()),
+                                -(float) (45 * GameVideos.STORM_ARROW_ANIM.getScale())
+                        ));
             }
         } else {
             Player.getInstance().setAbleProjectile(true);
         }
+    }
+    @Override
+    public void drawSkillOne(Canvas c) {
     }
 
     private PointF getAtkBoxSizeWhenAttacking() {
@@ -211,7 +238,7 @@ public class CharOne implements PlayerCharStrategy {
         if (states == PlayerStates.PROJECTILE) {
             return 1300;
         } else if (states == PlayerStates.SKILL_ONE) {
-            return 1300 * 2;
+            return 3000;
         }
         return 100;
     }
@@ -225,7 +252,9 @@ public class CharOne implements PlayerCharStrategy {
                         getProjectileStartPos(),
                         getProjectileSize(),
                         Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
-                        getProjectSpeed());
+                        getProjectSpeed(),
+                        GameVideos.ARROW_ANIM,
+                        new PointF(0, (float) (2 * GameVideos.ARROW_ANIM.getScale())));
             }
         } else {
             Player.getInstance().setAbleProjectile(true);
@@ -249,8 +278,16 @@ public class CharOne implements PlayerCharStrategy {
             );
         }
     }
+
+
+
+
     @Override
     public PointF getProjectileSize() {
+        if (Player.getInstance().getCurrentStates() == PlayerStates.SKILL_ONE) {
+            return new PointF(GameConstants.Sprite.SIZE * 4,
+                    GameConstants.Sprite.SIZE * 0.3f);
+        }
         return new PointF(GameConstants.Sprite.SIZE - 10,
                 GameConstants.Sprite.SIZE * 0.3f);
     }

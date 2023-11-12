@@ -24,6 +24,27 @@ public enum ButtonImage implements BitmapMethods {
             true, 1
     ),
 
+    PLAYING_PAUSE(
+            R.drawable.pause_btn,
+            32,
+            32,
+            true, 3.5
+    ),
+
+    PLAYING_RESUME(
+            R.drawable.resume_btn,
+            32,
+            32,
+            true, 3.5
+    ),
+
+    PLAYING_BOOK(
+            R.drawable.book_btn,
+            32,
+            32,
+            true, 3.5
+    ),
+
     UI_BAR1(
             R.drawable.ui_bar_1,
             GameConstants.UiSize.UI_BAR1_WIDTH,
@@ -67,11 +88,11 @@ public enum ButtonImage implements BitmapMethods {
 
     private int width;
     private int height;
-    private int scale;
+    private double scale;
 
     private Bitmap normal;
     private Bitmap pushed;
-    ButtonImage(int resID, int width, int height, boolean haveAnim, int scale) {
+    ButtonImage(int resID, int width, int height, boolean haveAnim, double scale) {
         OPTIONS.inScaled = false;
         this.height = height;
         this.width = width;
@@ -87,17 +108,20 @@ public enum ButtonImage implements BitmapMethods {
         } else {
             pushed = normal;
         }
-        normal = Bitmap.createScaledBitmap(normal, (width * scale), (height * scale), false);
-        pushed = Bitmap.createScaledBitmap(pushed, (width * scale), (height * scale), false);
+        normal = Bitmap.createScaledBitmap(normal,
+                (int) (width * scale), (int) (height * scale), false);
+
+        pushed = Bitmap.createScaledBitmap(pushed,
+                (int) (width * scale), (int) (height * scale), false);
 
     }
 
     public int getWidth() {
-        return width * scale;
+        return (int) (width * scale);
     }
 
     public int getHeight() {
-        return height * scale;
+        return (int) (height * scale);
     }
 
     public Bitmap getBtnImg(boolean isBtnPush) {

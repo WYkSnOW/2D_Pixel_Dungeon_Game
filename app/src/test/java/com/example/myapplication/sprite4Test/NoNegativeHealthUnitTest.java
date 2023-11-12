@@ -13,9 +13,11 @@ public class NoNegativeHealthUnitTest {
         int currHealth = 1;
         int enemyAttack  = 5;
         int difficulty = 1;
+        int playerDefence = 0;
         PlayingLogic playingLogic = new PlayingLogic();
 
-        int newHealth = playingLogic.calculateNewHealthForPlayer(currHealth, enemyAttack, difficulty);
+        int newHealth
+                = playingLogic.calculateNewHealthForPlayer(currHealth, enemyAttack, difficulty, 0);
 
         assertEquals(0, newHealth);
     }

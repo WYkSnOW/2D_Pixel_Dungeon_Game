@@ -3,8 +3,8 @@ package com.example.myapplication.Model.gameStatesLogic;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
@@ -20,10 +20,7 @@ public class PlayingLogic {
             MapManager mapManager,
             PointF delta, PointF camera
     ) {
-        if (Player.getInstance().getCurrentStates() == PlayerStates.DASH) {
-            System.out.println("hittttt");
-        }
-        System.out.println();
+
         if (Player.getInstance().isAttacking()
                 || Player.getInstance().isProjecting()) {
             return false;
@@ -113,7 +110,8 @@ public class PlayingLogic {
                                 calculateNewHealthForPlayer(
                                         Player.getInstance().getCurrentHealth(),
                                         enemy.getAtk(),
-                                        Player.getInstance().getDifficulty()
+                                        Player.getInstance().getDifficulty(),
+                                        Player.getInstance().getDefence()
                                 ));
                     }
                 }
@@ -122,25 +120,71 @@ public class PlayingLogic {
         }
     }
 
-    public int calculateNewHealthForPlayer(int currentHealth, int enemyAtk, int difficulty) {
+    public int calculateNewHealthForPlayer(
+            int currentHealth, int enemyAtk, int difficulty, int playerDefence) {
+
         int newHealth = calculateHealthByAtk(
                 currentHealth,
                 calculateDamage(
                         enemyAtk,
                         difficulty
-                )
+                ),
+                playerDefence
         );
         return Math.max(newHealth, 0);
     }
 
-    public int calculateHealthByAtk(int currentHealth, int enemyAtk) {
-        return currentHealth - enemyAtk;
+    public int calculateHealthByAtk(int currentHealth, int enemyAtk, int playerDefence) {
+        return currentHealth - (Math.max(enemyAtk - playerDefence, 0));
     }
 
     public int calculateDamage(int enemyAtk, int difficulty) {
         return enemyAtk * difficulty;
     }
 
+
+    public void checkItems(MapManager mapManager, float cameraX, float cameraY) {
+
+
+        RectF hitBoxWithoutCamera = new RectF(Player.getInstance().getHitBox());
+        hitBoxWithoutCamera.left -= cameraX;
+        hitBoxWithoutCamera.top -= cameraY;
+        hitBoxWithoutCamera.right -= cameraX;
+        hitBoxWithoutCamera.bottom -= cameraY;
+
+        int onItemCounter = 0;
+
+        for (Item item : mapManager.getCurrentMap().getItemArrayList()) {
+            if (item.isActive() && item.isAbleReact()) {
+                if (hitBoxWithoutCamera.intersects(
+                        item.getHitBox().left,
+                        item.getHitBox().top,
+                        item.getHitBox().right,
+                        item.getHitBox().bottom)
+                ) {
+
+                    item.setReadyInteract(true);
+                    Player.getInstance().setHaveInteract(true);
+                    if (item.isReadyInteract() && Player.getInstance().isMadeInteraction()) {
+                        Player.getInstance().setMadeInteraction(false);
+                        Player.getInstance().setHaveInteract(false);
+
+                        item.onReaction();
+                    }
+
+
+                    onItemCounter += 1;
+
+                }
+            } else {
+                item.setReadyInteract(false);
+            }
+        }
+        if (onItemCounter <= 0) {
+
+            Player.getInstance().setHaveInteract(false);
+        }
+    }
 
     public void checkAttack(
             boolean attacking, RectF attackBox,
@@ -176,8 +220,7 @@ public class PlayingLogic {
                                 enemy.getHitBox().right,
                                 enemy.getHitBox().bottom)
                         ) {
-                            enemy.takePjtDamage(); //remove enemy(or any mob)
-                            Player.getInstance().projectileHitEnemy(p);
+                            enemy.takePjtDamage(p); //remove enemy(or any mob)
                         }
                     }
 

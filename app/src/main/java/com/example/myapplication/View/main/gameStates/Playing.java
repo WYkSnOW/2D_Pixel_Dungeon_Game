@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerDecorator.PlayerDecorator;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
@@ -26,7 +27,8 @@ import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerMoveStrat
 import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerRun;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.coreLogic.Game;
-import com.example.myapplication.Model.ui.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.PauseUI;
+import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
 
 import java.util.Random;
@@ -43,6 +45,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     private PointF lastTouchDiff;
 
     private final PlayingUI playingUI;
+    private final PauseUI pauseUI;
     private final Paint hitBoxPaint = new Paint();
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
@@ -52,6 +55,9 @@ public class Playing extends BaseState implements GameStateInterFace {
     private PlayerMoveStrategy playerDash;
     private float xSpeed;
     private float ySpeed;
+    private PlayerDecorator powerUps = new PlayerDecorator();
+
+    private boolean onPause;
 
 
 
@@ -85,6 +91,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         //mob1Pos = new PointF(rand.nextInt(GAME_WIDTH), rand.nextInt(GAME_HEIGHT));
 
         playingUI = new PlayingUI(this);
+        pauseUI = new PauseUI(this);
 
         //updateAttackHitbox();
 
@@ -152,11 +159,16 @@ public class Playing extends BaseState implements GameStateInterFace {
         initCameraValue();
         lastTouchDiff = new PointF(0, 0);
         Player.getInstance().backToIdleState();
+        onPause = false;
     }
 
     @Override
     public void update(double delta) {
         if (game.getCurrentGameState() != Game.GameState.PLAYING) {
+            return;
+        }
+
+        if (onPause) {
             return;
         }
 
@@ -174,6 +186,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         checkForDoorway();
         //itemManager.setCameraValues(cameraX, cameraY);
 
+        viewModel.checkItems(mapManager, cameraX, cameraY);
 
         viewModel.checkAttack(
                 Player.getInstance().isAttacking(),
@@ -197,8 +210,20 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.PLAYING) {
             return;
         }
-        viewModel.playingUiTouchEvent(event, playingUI);
+
+
+
+        currentTouchEvent(event);
     }
+
+    private void currentTouchEvent(MotionEvent event) {
+        if (onPause) {
+            viewModel.pauseUiTouchEvent(event, pauseUI);
+        } else {
+            viewModel.playingUiTouchEvent(event, playingUI);
+        }
+    }
+
     @Override
     public void render(Canvas c) {
         if (game.getCurrentGameState() != Game.GameState.PLAYING) {
@@ -215,11 +240,35 @@ public class Playing extends BaseState implements GameStateInterFace {
         }
         ProjectileHolder.getInstance().draw(c);
 
-        viewModel.playingUiDrawUi(c, playingUI);
-        drawUi((c));
 
 
+
+        drawCurrentPlayingUI(c);
+
+
+
+
+        drawUi(c);
+
+        //drawItemHitBox(c);
     }
+
+
+
+    private void drawCurrentPlayingUI(Canvas c) {
+        if (onPause) {
+            viewModel.pauseUiDrawUi(c, pauseUI);
+        } else {
+            viewModel.playingUiDrawUi(c, playingUI);
+        }
+    }
+
+
+
+
+
+
+
 
 
     public void setCameraValues(PointF cameraPos) {
@@ -386,4 +435,11 @@ public class Playing extends BaseState implements GameStateInterFace {
         return mapManager;
     }
 
+    public void setOnPause(boolean onPause) {
+        this.onPause = onPause;
+    }
+
+    public void changeOnPause() {
+        this.onPause = !this.onPause;
+    }
 }

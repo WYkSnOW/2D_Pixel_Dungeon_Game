@@ -1,4 +1,4 @@
-package com.example.myapplication.Model.ui;
+package com.example.myapplication.Model.ui.playingUI;
 
 import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_HEIGHT;
 import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
@@ -15,6 +15,8 @@ import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharTwo;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.ui.ButtonImage;
+import com.example.myapplication.Model.ui.CustomButton;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingUI {
@@ -37,11 +39,13 @@ public class PlayingUI {
     private final PointF atkModBtnCenterPos =  new PointF(GAME_WIDTH - 100, GAME_HEIGHT - 350);
     private final PointF skillOneBtnCenterPos = new PointF(GAME_WIDTH - 350, GAME_HEIGHT - 480);
     private final PointF dashBtnCenterPos = new PointF(GAME_WIDTH - 200, GAME_HEIGHT - 450);
-
-
+    private final PointF interactBtnCenterPos = new PointF(GAME_WIDTH - 480, GAME_HEIGHT - 400);
 
     private final PointF runLockBtnCenterPos = new PointF(200, GAME_HEIGHT - 450);
-    private final  int radius = 150;
+
+
+
+    private final int radius = 150;
     private final int smallRadius = 60;
     private final Paint circlePaint = new Paint();
     private final Paint circlePaint2 = new Paint();
@@ -57,12 +61,15 @@ public class PlayingUI {
     private int atkModBtnPointerId = -1;
     private int dashBtnPointerId = -1;
     private int skillOneBtnPointerId = -1;
-
+    private int interactBtnPointerId = -1;
 
 
     private boolean touchDown;
 
+
     private CustomButton btnMenu;
+    private CustomButton btnPause;
+    private CustomButton btnBook;
     private final Playing playing;
 
 
@@ -95,7 +102,19 @@ public class PlayingUI {
                 ButtonImage.PLAYING_MENU.getHeight()
         );
 
+        btnPause = new CustomButton(
+                GAME_WIDTH - ButtonImage.PLAYING_PAUSE.getWidth() - 5,
+                5,
+                ButtonImage.PLAYING_PAUSE.getWidth(),
+                ButtonImage.PLAYING_PAUSE.getHeight()
+        );
 
+        btnBook = new CustomButton(
+                GAME_WIDTH - (ButtonImage.PLAYING_BOOK.getWidth() * 2) - (5 * 2),
+                5,
+                ButtonImage.PLAYING_BOOK.getWidth(),
+                ButtonImage.PLAYING_BOOK.getHeight()
+        );
 
 
     }
@@ -104,7 +123,18 @@ public class PlayingUI {
 
     public void drawUI(Canvas c) {
         drawCircle(c);
+        drawBtn(c);
 
+
+        //if(touchDown) { //初始点击点在圆环内且并未松开鼠标触发，松开光标被刷新掉
+        //    c.drawLine(xCenter, yCenter, xTouch, yTouch, yellowPaint); //画出光标与圆形的三角形
+        //    c.drawLine(xCenter, yCenter, xTouch, yCenter, yellowPaint);
+        //    c.drawLine(xTouch, yTouch, xTouch, yCenter, yellowPaint);
+        //}
+    }
+
+
+    private void drawBtn(Canvas c) {
         c.drawBitmap(
                 ButtonImage.PLAYING_MENU.getBtnImg(btnMenu.isPushed(btnMenu.getPointerId())),
                 btnMenu.getHitbox().left,
@@ -112,11 +142,19 @@ public class PlayingUI {
                 null
         );
 
-        //if(touchDown) { //初始点击点在圆环内且并未松开鼠标触发，松开光标被刷新掉
-        //    c.drawLine(xCenter, yCenter, xTouch, yTouch, yellowPaint); //画出光标与圆形的三角形
-        //    c.drawLine(xCenter, yCenter, xTouch, yCenter, yellowPaint);
-        //    c.drawLine(xTouch, yTouch, xTouch, yCenter, yellowPaint);
-        //}
+        c.drawBitmap(
+                ButtonImage.PLAYING_PAUSE.getBtnImg(btnPause.isPushed(btnPause.getPointerId())),
+                btnPause.getHitbox().left,
+                btnPause.getHitbox().top,
+                null
+        );
+
+        c.drawBitmap(
+                ButtonImage.PLAYING_BOOK.getBtnImg(btnBook.isPushed(btnBook.getPointerId())),
+                btnBook.getHitbox().left,
+                btnBook.getHitbox().top,
+                null
+        );
     }
 
     private void drawCircle(Canvas c) {
@@ -131,6 +169,13 @@ public class PlayingUI {
 
         c.drawCircle(skillOneBtnCenterPos.x, skillOneBtnCenterPos.y,
                 smallRadius, circlePaint);
+
+
+        if (Player.getInstance().isHaveInteract()) {
+            c.drawCircle(interactBtnCenterPos.x, interactBtnCenterPos.y,
+                    smallRadius, circlePaint2);
+        }
+
 
 
         Paint paint = circlePaint;
@@ -195,6 +240,10 @@ public class PlayingUI {
         return isInsideSmallRadius(eventPos, skillOneBtnCenterPos);
 
     }
+    private boolean checkInsideInteractBtn(PointF eventPos) {
+        return isInsideSmallRadius(eventPos, interactBtnCenterPos);
+
+    }
 
     public void touchEvent(MotionEvent event) {
         final int action = event.getActionMasked();
@@ -237,9 +286,19 @@ public class PlayingUI {
                 if (skillOneBtnPointerId < 0) {
                     skillOneBtnPointerId = pointerId;
                 }
+            } else if (Player.getInstance().isHaveInteract() && checkInsideInteractBtn(eventPos)) {
+                if (interactBtnPointerId < 0) {
+                    interactBtnPointerId = pointerId;
+                }
             } else {
                 if (isIn(eventPos, btnMenu)) {
                     btnMenu.setPushed(true, pointerId);
+                }
+                if (isIn(eventPos, btnPause)) {
+                    btnPause.setPushed(true, pointerId);
+                }
+                if (isIn(eventPos, btnBook)) {
+                    btnBook.setPushed(true, pointerId);
                 }
                 //game.setCurrentGameState(Game.GameState.END);
             }
@@ -293,10 +352,8 @@ public class PlayingUI {
                     if (btnMenu.isPushed(pointerId)) {
                         resetJoystickButton();
 
-
                         //Player.getInstance().setWinTheGame(true);
                         //playing.setGameStateToEnd();
-
 
                         if (Player.getInstance().getGameCharType() == GameCharacters.CENTAUR) {
                             Player.getInstance().setCharStrategy(new CharTwo());
@@ -308,8 +365,17 @@ public class PlayingUI {
                         }
 
                     }
-                }
+                } else if (isIn(eventPos, btnPause)) {
+                    if (btnPause.isPushed(pointerId)) {
+                        resetJoystickButton();
+                        playing.changeOnPause();
+                    }
+                } else if (isIn(eventPos, btnBook)) {
+                    if (btnBook.isPushed(pointerId)) {
+                        resetJoystickButton();
 
+                    }
+                }
             }
 
 
@@ -321,9 +387,15 @@ public class PlayingUI {
 
     }
 
+    private void btnUnPush(int pointerId) {
+        btnMenu.unPush(pointerId);
+        btnPause.unPush(pointerId);
+        btnBook.unPush(pointerId);
+    }
+
 
     private void btnUpAction(int pointerId) {
-        btnMenu.unPush(pointerId);
+        btnUnPush(pointerId);
 
         if (pointerId == attackBtnPointerId) {
 
@@ -369,6 +441,11 @@ public class PlayingUI {
                 Player.getInstance().setToSkillOne();
             }
             skillOneBtnPointerId = -1;
+        }
+
+        if (pointerId == interactBtnPointerId) {
+            Player.getInstance().setMadeInteraction(true);
+            interactBtnPointerId = -1;
         }
 
 

@@ -23,11 +23,11 @@ public interface PlayerCharStrategy {
         initCharAtkBoxInfo();
         initBaseSpeed();
         initBaseDamage();
+        initDefence();
     }
 
-    default void initBaseDamage() {
-        Player.getInstance().setBaseDamage(10);
-    }
+    abstract void initBaseDamage();
+    abstract void initDefence();
 
     abstract int offSetX();
     abstract int offSetY();
@@ -56,8 +56,11 @@ public interface PlayerCharStrategy {
             makeProjectile();
         } else if (state == PlayerStates.SKILL_ONE) {
             skillOne();
+
         }
     }
+
+    abstract void drawSkillOne(Canvas c);
 
 
     default int getCurrentDamage(PlayerStates state, int baseDamage) {
@@ -73,11 +76,10 @@ public interface PlayerCharStrategy {
 
     abstract void skillOne();
     default void projectileHitEnemy(Projectile p) {
-        PlayerStates state = Player.getInstance().getCurrentStates();
-        if (state == PlayerStates.PROJECTILE) {
-            p.updateHitCount(1);
-        }
+        p.updateHitCount();
     }
+
+    abstract int getProjectileMaxHit(PlayerStates state);
 
     default void resetEnemyAbleTakeDamage() {
         if (Player.getInstance().getCurrentMap() == null) {
@@ -153,8 +155,16 @@ public interface PlayerCharStrategy {
             Player.getInstance().drawAtk(c);
         }
 
+        drawSkill(c);
 
 
+    }
+
+    default void drawSkill(Canvas c) {
+        PlayerStates state = Player.getInstance().getCurrentStates();
+        if (state == PlayerStates.SKILL_ONE) {
+            drawSkillOne(c);
+        }
 
     }
 
