@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
@@ -48,6 +47,10 @@ public class Player extends Character {
     private GameMap currentMap;
     private int baseDamage;
     private boolean invincible;
+    private boolean haveInteract;
+    private boolean madeInteraction;
+    private int defence;
+
 
 
     public Player(GameCharacters characterChoice) {
@@ -128,6 +131,8 @@ public class Player extends Character {
         ableMakeDamage = false;
         baseDamage = 0;
         invincible = false;
+        haveInteract = false;
+        madeInteraction = false;
     }
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         changeAnim(characterChoice);
@@ -312,6 +317,13 @@ public class Player extends Character {
         setCurrentStates(PlayerStates.SKILL_ONE);
     }
 
+    public void drawSkill(Canvas c) {
+        if (currentStates == PlayerStates.SKILL_ONE) {
+            playerCharStrategy.drawSkillOne(c);
+        }
+
+    }
+
 
 
     public boolean isOnSkill() {
@@ -397,6 +409,47 @@ public class Player extends Character {
         if (!invincible) {
             this.invincible = true;
         }
+    }
 
+    public boolean isHaveInteract() {
+        return haveInteract;
+    }
+
+    public void setHaveInteract(boolean haveInteract) {
+        this.haveInteract = haveInteract;
+    }
+
+    public boolean isMadeInteraction() {
+        return madeInteraction;
+    }
+
+    public void setMadeInteraction(boolean madeInteraction) {
+        this.madeInteraction = madeInteraction;
+    }
+
+    public void increaseHealth(int amount) {
+        int newHealth = currentHealth + amount;
+        currentHealth = Math.min(newHealth, startingHealth);
+    }
+    public void increaseBaseDamage() {
+        int newDamage = (int) (baseDamage * 1.1);
+        baseDamage = Math.min(newDamage, 100);
+
+    }
+    public void increaseSpeed() {
+        int newDamage = (int) (baseSpeed * 1.1);
+        baseSpeed = Math.min(newDamage, 2000);
+
+    }
+    public void increaseDefence(int amount) {
+        defence += amount;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
     }
 }

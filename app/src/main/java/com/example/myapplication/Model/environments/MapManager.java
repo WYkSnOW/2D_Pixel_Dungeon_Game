@@ -56,12 +56,10 @@ public class MapManager {
     public void drawItems(Canvas c) {
         if (currentMap.getItemArrayList() != null) {
             for (Item i : currentMap.getItemArrayList()) {
-                c.drawBitmap(
-                        i.getItemType().getItemImg(),
-                        i.getPos().x + cameraX,
-                        i.getPos().y + cameraY,
-                        null
-                );
+                if (i.isActive()) {
+                    i.drawItem(c, cameraX, cameraY);
+                }
+
             }
         }
     }
@@ -112,24 +110,38 @@ public class MapManager {
 
 
 
-        ArrayList<Item> itemArrayList = new ArrayList<>();
-        itemArrayList.add(new Item(
-                new PointF(2 * GameConstants.Sprite.SIZE, 2 * GameConstants.Sprite.SIZE),
-                Items.CHEST_ONE)
-        );
 
         //OUTSIDE here is the map asset
-        mapOne = new GameMap(mapOneArray, Floor.OUTSIDE, itemArrayList);
-        mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE, null);
-        mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE, null);
+        mapOne = new GameMap(mapOneArray, Floor.OUTSIDE);
+        mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE);
+        mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE);
 
         initMobList();
+        initItemList();
 
         initDoorway();
 
         currentMap = mapOne;
         Player.getInstance().setCurrentMap(currentMap);
     }
+
+
+    private void initItemList() {
+        mapOne.getItemArrayList().add(new Item(
+                new PointF(2 * GameConstants.Sprite.SIZE, 2 * GameConstants.Sprite.SIZE),
+                Items.CHEST_ONE));
+        mapOne.addItemsToList(HelpMethods.getItemRandomized(
+                2, mapOne, Items.READ_HEART));
+        mapOne.addItemsToList(HelpMethods.getItemRandomized(
+                2, mapOne, Items.BLUE_HEART));
+        mapOne.addItemsToList(HelpMethods.getItemRandomized(
+                2, mapOne, Items.YELLOW_HEART));
+
+    }
+
+
+
+
 
     private void initMobList() {
         mapOne.addMobsToList(HelpMethods.getMobRandomized(

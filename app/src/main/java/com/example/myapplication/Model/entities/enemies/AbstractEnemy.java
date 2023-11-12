@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -37,12 +38,14 @@ public abstract class AbstractEnemy extends Character {
         takeDamageAlready = false;
     }
 
-    public void takePjtDamage(int damage) {
+    public void takePjtDamage(Projectile p) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastTakeProjectDamage >= 500) {
             lastTakeProjectDamage = currentTime;
 
-            this.currentHealth = Math.max(currentHealth - damage, 0);
+            Player.getInstance().projectileHitEnemy(p);
+
+            this.currentHealth = Math.max(currentHealth - p.getDamage(), 0);
             if (currentHealth == 0) {
                 active = false;
             }

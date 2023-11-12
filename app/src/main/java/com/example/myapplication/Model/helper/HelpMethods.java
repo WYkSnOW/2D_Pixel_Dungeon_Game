@@ -8,6 +8,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.myapplication.Model.entities.GameCharacters;
+import com.example.myapplication.Model.entities.Items.Item;
+import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.entities.enemies.EnemyFactory;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
@@ -72,9 +74,38 @@ public class HelpMethods {
         return zombieArrayList;
     }
 
+    public static ArrayList<Item> getItemRandomized(
+            int amount, GameMap gameMap, Items itemType) {
+
+        int width = (gameMap.getArrayWidth() - 1) * GameConstants.Sprite.SIZE;
+        int height = (gameMap.getMapHeight() - 1) * GameConstants.Sprite.SIZE;
+
+        ArrayList<Item> itemArrayList = new ArrayList<>();
+        int i = 0;
+        while (i < amount) {
+            PointF pos = generateRandomPos(width, height);
+            if (
+                    gameMap.canMoveHere(pos.x, pos.y, pos.y + (itemType.getHeight()))
+                            && gameMap.canMoveHere(pos.x + (itemType.getWidth()),
+                            pos.y, pos.y + (itemType.getHeight()))
+            ) {
+                itemArrayList.add(new Item(pos, itemType));
+                i++;
+            }
+        }
+        return itemArrayList;
+    }
+
     public static PointF generateRandomPos(int width, int height) {
-        float x = (float) Math.random() * width;
-        float y = (float) Math.random() * height;
+        int maxX = width / GameConstants.Sprite.SIZE;
+        int maxY = height / GameConstants.Sprite.SIZE;
+
+        int randomX = (int) (Math.random() * maxX);
+        int randomY = (int) (Math.random() * maxY);
+
+        float x = randomX * GameConstants.Sprite.SIZE;
+        float y = randomY * GameConstants.Sprite.SIZE;
+
         return new PointF(x, y);
     }
 
