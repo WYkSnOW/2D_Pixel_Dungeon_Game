@@ -6,10 +6,11 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
+import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.Doorways.DoorwayType;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -55,12 +56,10 @@ public class MapManager {
     public void drawItems(Canvas c) {
         if (currentMap.getItemArrayList() != null) {
             for (Item i : currentMap.getItemArrayList()) {
-                c.drawBitmap(
-                        i.getItemType().getItemImg(),
-                        i.getPos().x + cameraX,
-                        i.getPos().y + cameraY,
-                        null
-                );
+                if (i.isActive()) {
+                    i.drawItem(c, cameraX, cameraY);
+                }
+
             }
         }
     }
@@ -81,9 +80,10 @@ public class MapManager {
         }
     }
 
-    public void changeMap(Doorway doorwayTarget, Game game) {
+    public void changeMap(Doorway doorwayTarget) {
 
         this.currentMap = doorwayTarget.getGameMapLocatedIn();
+        Player.getInstance().setCurrentMap(currentMap);
 
         float cX = GameConstants.UiSize.GAME_WIDTH / 2 - doorwayTarget.getPosOfDoorway().x;
         float cY = GameConstants.UiSize.GAME_HEIGHT / 2 - doorwayTarget.getPosOfDoorway().y;
@@ -110,32 +110,54 @@ public class MapManager {
 
 
 
-        ArrayList<Item> itemArrayList = new ArrayList<>();
-        itemArrayList.add(new Item(
-                new PointF(2 * GameConstants.Sprite.SIZE, 2 * GameConstants.Sprite.SIZE),
-                Items.CHEST_ONE)
-        );
 
         //OUTSIDE here is the map asset
-        mapOne = new GameMap(mapOneArray, Floor.OUTSIDE, itemArrayList);
-        mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE, null);
-        mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE, null);
+        mapOne = new GameMap(mapOneArray, Floor.OUTSIDE);
+        mapTwo = new GameMap(mapTwoArray, Floor.OUTSIDE);
+        mapThree = new GameMap(mapThreeArray, Floor.OUTSIDE);
 
         initMobList();
+        initItemList();
 
         initDoorway();
 
         currentMap = mapOne;
+        Player.getInstance().setCurrentMap(currentMap);
     }
 
-    private void initMobList() {
-        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.ZOMBIE));
-        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CHEST_MOB));
-        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.CROW_MAN));
-        mapOne.addMobsToList(HelpMethods.getMobRandomized(1, mapOne, GameCharacters.STEEL_GOLEM));
 
-        mapTwo.addMobsToList(HelpMethods.getMobRandomized(3, mapTwo, GameCharacters.ZOMBIE));
-        mapThree.addMobsToList(HelpMethods.getMobRandomized(4, mapThree, GameCharacters.ZOMBIE));
+    private void initItemList() {
+        mapOne.getItemArrayList().add(new Item(
+                new PointF(2 * GameConstants.Sprite.SIZE, 2 * GameConstants.Sprite.SIZE),
+                Items.CHEST_ONE));
+        mapOne.addItemsToList(HelpMethods.getItemRandomized(
+                2, mapOne, Items.READ_HEART));
+        mapOne.addItemsToList(HelpMethods.getItemRandomized(
+                2, mapOne, Items.BLUE_HEART));
+        mapOne.addItemsToList(HelpMethods.getItemRandomized(
+                2, mapOne, Items.YELLOW_HEART));
+
+    }
+
+
+
+
+
+    private void initMobList() {
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                2, mapOne, GameCharacters.CHEST_MOB));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                3, mapOne, GameCharacters.STEEL_GOLEM));
+
+        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
+                3, mapTwo, GameCharacters.ZOMBIE));
+        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
+                5, mapTwo, GameCharacters.CROW_MAN));
+
+        mapThree.addMobsToList(HelpMethods.getMobRandomized(
+                4, mapThree, GameCharacters.CHEST_MOB));
+        mapThree.addMobsToList(HelpMethods.getMobRandomized(
+                5, mapThree, GameCharacters.STEEL_GOLEM));
     }
 
     private void initDoorway() {
@@ -271,22 +293,17 @@ public class MapManager {
     }
     public void resetMap() {
         currentMap = mapOne;
+        Player.getInstance().setCurrentMap(currentMap);
         mapOne.clearMobList();
         mapTwo.clearMobList();
         mapThree.clearMobList();
         initMobList();
+
     }
     public GameMap getCurrentMap() {
         return currentMap;
     }
 
-    public void changeCurrentMap(int mapNumber) {
-        if (mapNumber == 1 && currentMap == mapOne) {
-            currentMap = mapTwo;
-        } else if (mapNumber == 2 && currentMap == mapTwo) {
-            currentMap = mapThree;
-        }
-    }
 
     private int[][] initMapOne() {
         return new int[][]{
@@ -405,6 +422,20 @@ public class MapManager {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 54, 135,
                     136, 136, 137, 58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
+    }
+
+    public void initEnemyHealthWithDiff() {
+        ArrayList<GameMap> mapList = new ArrayList<>();
+        mapList.add(mapOne);
+        mapList.add(mapTwo);
+        mapList.add(mapThree);
+        for (GameMap currentMap : mapList) {
+            for (AbstractEnemy enemy : currentMap.getMobArrayList()) {
+                if (enemy.isActive()) {
+                    enemy.initWithDiff(Player.getInstance().getDifficulty());
+                }
+            }
+        }
     }
 
 

@@ -11,7 +11,6 @@ public abstract class  Character extends Entity {
     protected int drawDir = GameConstants.DrawDir.RIGHT;
     protected int faceDir = GameConstants.FaceDir.RIGHT;
     protected GameCharacters gameCharType;
-
     protected int characterWidth;
     protected int characterHeight;
     protected int hitBoxOffsetX;
@@ -80,6 +79,13 @@ public abstract class  Character extends Entity {
         return gameCharType;
     }
 
+    public int getHitBoxWidth() {
+        return Math.abs((int) (hitBox.right - hitBox.left));
+    }
+    public int getHitBoxHeight() {
+        return Math.abs((int) (hitBox.bottom - hitBox.top));
+    }
+
     public int getCharacterWidth() {
         return characterWidth;
     }
@@ -91,7 +97,7 @@ public abstract class  Character extends Entity {
         return hitBoxOffsetX;
     }
 
-    public int getHitBoxOffSetY() {
+    public int getHitBoxOffsetY() {
         return hitBoxOffSetY;
     }
 

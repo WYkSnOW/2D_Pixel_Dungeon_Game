@@ -7,13 +7,24 @@ import android.graphics.RectF;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.helper.GameConstants;
+import com.example.myapplication.Model.loopVideo.GameVideos;
 
 public class CharOne implements PlayerCharStrategy {
     @Override
     public void initCharAtkBoxInfo() {
         Player.getInstance().setAttackWidth((int) (0.8 * GameConstants.Sprite.SIZE));
         Player.getInstance().setAttackHeight(2 * GameConstants.Sprite.SIZE);
+    }
+
+    @Override
+    public void initDefence() {
+        Player.getInstance().setDefence(2);
+    }
+    @Override
+    public void initBaseDamage() {
+        Player.getInstance().setBaseDamage(10);
     }
 
 
@@ -27,6 +38,12 @@ public class CharOne implements PlayerCharStrategy {
             return 8;
         } else if (state == PlayerStates.ATTACK) {
             return 12;
+        } else if (state == PlayerStates.PROJECTILE) {
+            return 21;
+        } else if (state == PlayerStates.DASH) {
+            return 14;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            return 20;
         }
         return 1;
     }
@@ -39,6 +56,15 @@ public class CharOne implements PlayerCharStrategy {
     @Override
     public void initBaseSpeed() {
         Player.getInstance().setBaseSpeed(250);
+    }
+
+    @Override
+    public int getProjectileMaxHit(PlayerStates state) {
+        if (state == PlayerStates.SKILL_ONE) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     @Override
@@ -63,13 +89,52 @@ public class CharOne implements PlayerCharStrategy {
         }
     }
 
+    @Override
+    public float getSpeedDuringDash(float baseSpeed) {
+        int idx = Player.getInstance().getAniIndex();
+        if (1 <= idx && idx <= 2) {
+            return baseSpeed * 2;
+        } else if (3 <= idx && idx <= 7) {
+            return baseSpeed * 4;
+        } else if (8 <= idx && idx <= 11) {
+            return baseSpeed * 2;
+        } else if (12 <= idx && idx <= 14) {
+            return baseSpeed;
+        }
+        return 0;
+
+    }
+    @Override
+    public void skillOne() {
+        if (Player.getInstance().getAniIndex() == 15) {
+            if (Player.getInstance().isAbleProjectile()) {
+                Player.getInstance().setAbleProjectile(false);
+                ProjectileHolder.getInstance().addProjectile(
+                        getProjectileStartPos(),
+                        getProjectileSize(),
+                        Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
+                        getProjectSpeed(),
+                        GameVideos.STORM_ARROW_ANIM,
+                        new PointF(
+                                (float) (7 * GameVideos.STORM_ARROW_ANIM.getScale()),
+                                -(float) (45 * GameVideos.STORM_ARROW_ANIM.getScale())
+                        ));
+            }
+        } else {
+            Player.getInstance().setAbleProjectile(true);
+        }
+    }
+    @Override
+    public void drawSkillOne(Canvas c) {
+    }
+
     private PointF getAtkBoxSizeWhenAttacking() {
         int idx = Player.getInstance().getAniIndex();
-        Player.getInstance().setAbleMakeDamage(true);
+        Player.getInstance().setMakingDamage(true);
 
         if (6 <= idx && idx <= 8) {
             return new PointF(
-                    (float) (0.7 * GameConstants.Sprite.SIZE),
+                    (float) (0.9 * GameConstants.Sprite.SIZE),
                     (float) (1.5 * GameConstants.Sprite.SIZE)
             );
         } else if (10 <= idx && idx <= 11) {
@@ -79,7 +144,9 @@ public class CharOne implements PlayerCharStrategy {
             );
         }
 
-        Player.getInstance().setAbleMakeDamage(false);
+
+        resetEnemyAbleTakeDamage();
+        Player.getInstance().setMakingDamage(false);
         return new PointF(0, 0);
     }
 
@@ -89,7 +156,7 @@ public class CharOne implements PlayerCharStrategy {
 
 
         if (6 <= idx && idx <= 8) {
-            top -= Player.getInstance().getHitBoxOffSetY() / 2f;
+            top -= Player.getInstance().getHitBoxOffsetY() / 2f;
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
@@ -102,7 +169,7 @@ public class CharOne implements PlayerCharStrategy {
                 );
             }
         } else if (10 <= idx && idx <= 11) {
-            top += Player.getInstance().getHitBoxOffSetY() / 2.6f;
+            top += Player.getInstance().getHitBoxOffsetY() / 2.6f;
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
@@ -138,6 +205,15 @@ public class CharOne implements PlayerCharStrategy {
         } else if (state == PlayerStates.ATTACK) {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.5;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.5;
+        } else if (state == PlayerStates.PROJECTILE) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.5;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.5;
+        } else if (state == PlayerStates.DASH) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 4;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 4;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.5;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.5;
         }
 
         if (dir == GameConstants.FaceDir.LEFT) {
@@ -148,6 +224,71 @@ public class CharOne implements PlayerCharStrategy {
 
     @Override
     public int offSetY() {
-        return Player.getInstance().getHitBoxOffSetY();
+        int offsetYTop = Player.getInstance().getHitBoxOffsetY();
+        PlayerStates state = Player.getInstance().getCurrentStates();
+        if (state == PlayerStates.SKILL_ONE) {
+            offsetYTop -= Player.getInstance().getHitBoxOffsetY() / 4.5;
+        }
+        return offsetYTop;
+    }
+
+    @Override
+    public float getProjectSpeed() {
+        PlayerStates states = Player.getInstance().getCurrentStates();
+        if (states == PlayerStates.PROJECTILE) {
+            return 1300;
+        } else if (states == PlayerStates.SKILL_ONE) {
+            return 3000;
+        }
+        return 100;
+    }
+
+    @Override
+    public void makeProjectile() {
+        if (Player.getInstance().getAniIndex() == 16) {
+            if (Player.getInstance().isAbleProjectile()) {
+                Player.getInstance().setAbleProjectile(false);
+                ProjectileHolder.getInstance().addProjectile(
+                        getProjectileStartPos(),
+                        getProjectileSize(),
+                        Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
+                        getProjectSpeed(),
+                        GameVideos.ARROW_ANIM,
+                        new PointF(0, (float) (2 * GameVideos.ARROW_ANIM.getScale())));
+            }
+        } else {
+            Player.getInstance().setAbleProjectile(true);
+        }
+    }
+
+
+    @Override
+    public PointF getProjectileStartPos() {
+        float top = Player.getInstance().getHitBox().top;
+        top += (float) (Player.getInstance().getHitBoxHeight() / 6);
+        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+            return new PointF(
+                    Player.getInstance().getHitBox().left - getProjectileSize().x,
+                    top
+            );
+        } else {
+            return new PointF(
+                    Player.getInstance().getHitBox().right,
+                    top
+            );
+        }
+    }
+
+
+
+
+    @Override
+    public PointF getProjectileSize() {
+        if (Player.getInstance().getCurrentStates() == PlayerStates.SKILL_ONE) {
+            return new PointF(GameConstants.Sprite.SIZE * 4,
+                    GameConstants.Sprite.SIZE * 0.3f);
+        }
+        return new PointF(GameConstants.Sprite.SIZE - 10,
+                GameConstants.Sprite.SIZE * 0.3f);
     }
 }

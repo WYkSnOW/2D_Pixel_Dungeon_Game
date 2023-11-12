@@ -12,7 +12,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
-import com.example.myapplication.Model.ui.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.PauseUI;
+import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 
 public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
@@ -62,20 +63,18 @@ public class PlayingViewModel extends ViewModel {
 
     public boolean checkPlayerAbleMoveX(
             boolean attacking, MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
         return playingLogic.checkPlayerAbleMoveX(
-                attacking, mapManager, pWidth, pHeight, delta, camera
+                attacking, mapManager, delta, camera
         );
     }
     public boolean checkPlayerAbleMoveY(
             boolean attacking, MapManager mapManager,
-            int pWidth, int pHeight,
             PointF delta, PointF camera
     ) {
         return playingLogic.checkPlayerAbleMoveY(
-                attacking, mapManager, pWidth, pHeight, delta, camera
+                attacking, mapManager, delta, camera
         );
     }
 
@@ -83,6 +82,10 @@ public class PlayingViewModel extends ViewModel {
                             MapManager mapManager,
                             float cameraX, float cameraY) {
         playingLogic.checkAttack(attacking, attackBox, mapManager, cameraX, cameraY);
+    }
+
+    public void checkItems(MapManager mapManager, float cameraX, float cameraY) {
+        playingLogic.checkItems(mapManager, cameraX, cameraY);
     }
 
     public void checkAttackByEnemies(RectF playerHitBox,
@@ -94,12 +97,31 @@ public class PlayingViewModel extends ViewModel {
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         playingLogic.updateZombies(mapManager, delta, cameraX, cameraY);
     }
+
+
+
     public void playingUiTouchEvent(MotionEvent event, PlayingUI playingUI) {
         playingUI.touchEvent(event);
     }
     public void playingUiDrawUi(Canvas c, PlayingUI playingUI) {
         playingUI.drawUI(c);
     }
+
+
+    public void pauseUiTouchEvent(MotionEvent event, PauseUI pauseUI) {
+        pauseUI.touchEvent(event);
+    }
+    public void pauseUiDrawUi(Canvas c, PauseUI pauseUI) {
+        pauseUI.drawUI(c);
+    }
+
+
+
+
+
+
+
+
 
 
 }
