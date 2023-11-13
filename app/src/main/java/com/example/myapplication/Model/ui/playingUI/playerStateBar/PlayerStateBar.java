@@ -12,6 +12,7 @@ public class PlayerStateBar {
     private PointF leftTop;
     private float currentHealthBarX;
     private int healthHealthBarEndAnimIdx = 0;
+    private int aniTick = 0;
 
 
     private static PlayerStateBar instance;
@@ -63,17 +64,20 @@ public class PlayerStateBar {
                     currentHealthBarX,
                     leftTop.y,
                     null);
-            updateHealthMiddleIdx();
+            updateHealthEndAnimation();
         }
 
     }
 
 
-    private void updateHealthMiddleIdx() {
-        if (healthHealthBarEndAnimIdx + 1 >= 8) {
-            healthHealthBarEndAnimIdx = 0;
-        } else {
-            healthHealthBarEndAnimIdx += 1;
+    private void updateHealthEndAnimation() {
+        aniTick++;
+        if (aniTick >= GameVideos.PLAYER_HEALTH_END_ANIM.getAnimRate()) {
+            aniTick = 0;
+            healthHealthBarEndAnimIdx++;
+            if (healthHealthBarEndAnimIdx >= GameVideos.PLAYER_HEALTH_END_ANIM.getMaxAnimIndex()) {
+                healthHealthBarEndAnimIdx = 0;
+            }
         }
     }
 

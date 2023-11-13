@@ -42,6 +42,8 @@ public class CharOne implements PlayerCharStrategy {
             return 21;
         } else if (state == PlayerStates.DASH) {
             return 14;
+        } else if (state == PlayerStates.HURT) {
+            return 4;
         } else if (state == PlayerStates.SKILL_ONE) {
             return 20;
         }
@@ -209,6 +211,9 @@ public class CharOne implements PlayerCharStrategy {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.5;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.5;
         } else if (state == PlayerStates.DASH) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 4;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 4;
+        } else if (state == PlayerStates.HURT) {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 4;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 4;
         } else if (state == PlayerStates.SKILL_ONE) {

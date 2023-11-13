@@ -211,9 +211,13 @@ public class Player extends Character {
 
 
 
-    public void setCurrentHealth(int health) {
+    public void lostHealth(int health) {
         if (!invincible) {
-            this.currentHealth = health;
+            if (currentHealth > health) {
+                this.currentHealth = health;
+                setToHurt();
+            }
+
         }
 
     }
@@ -305,6 +309,15 @@ public class Player extends Character {
             aniIndex = 0;
             this.currentStates = currentStates;
         }
+    }
+
+    public void setToHurt() {
+        if (!onSkill) {
+            onSkill = true;
+            invincible = true;
+            setCurrentStates(PlayerStates.HURT);
+        }
+
     }
 
     public void setToDash() {

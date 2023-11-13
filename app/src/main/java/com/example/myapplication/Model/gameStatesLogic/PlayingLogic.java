@@ -106,7 +106,7 @@ public class PlayingLogic {
 
                     if (Player.getInstance().getCurrentHealth() > 0) {
 
-                        Player.getInstance().setCurrentHealth(
+                        Player.getInstance().lostHealth(
                                 calculateNewHealthForPlayer(
                                         Player.getInstance().getCurrentHealth(),
                                         enemy.getAtk(),

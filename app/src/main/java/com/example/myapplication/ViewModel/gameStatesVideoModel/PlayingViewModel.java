@@ -14,6 +14,7 @@ import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.bookUI.BookUI;
 
 public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
@@ -113,6 +114,14 @@ public class PlayingViewModel extends ViewModel {
     }
     public void pauseUiDrawUi(Canvas c, PauseUI pauseUI) {
         pauseUI.drawUI(c);
+    }
+
+
+    public void bookUiTouchEvent(MotionEvent event, BookUI bookUI) {
+        bookUI.touchEvent(event);
+    }
+    public void bookUiDrawUi(Canvas c, BookUI bookUI) {
+        bookUI.drawUI(c);
     }
 
 

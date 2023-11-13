@@ -373,7 +373,7 @@ public class PlayingUI {
                 } else if (isIn(eventPos, btnBook)) {
                     if (btnBook.isPushed(pointerId)) {
                         resetJoystickButton();
-
+                        playing.changeOnBook();
                     }
                 }
             }

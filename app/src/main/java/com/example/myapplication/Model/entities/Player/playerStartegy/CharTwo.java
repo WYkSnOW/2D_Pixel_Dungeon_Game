@@ -50,6 +50,8 @@ public class CharTwo implements PlayerCharStrategy {
             return 10;
         } else  if (state == PlayerStates.DASH) {
             return 18;
+        } else  if (state == PlayerStates.HURT) {
+            return 4;
         } else if (state == PlayerStates.SKILL_ONE) {
             return 30;
         }
@@ -284,6 +286,9 @@ public class CharTwo implements PlayerCharStrategy {
         } else if (state == PlayerStates.DASH) {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
+        } else if (state == PlayerStates.HURT) {
+            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 4;
+            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 4;
         } else if (state == PlayerStates.SKILL_ONE) {
             offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
             offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;

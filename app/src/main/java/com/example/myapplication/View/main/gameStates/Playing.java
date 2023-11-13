@@ -28,6 +28,7 @@ import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.bookUI.BookUI;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
 
 import java.util.Random;
@@ -45,6 +46,9 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     private final PlayingUI playingUI;
     private final PauseUI pauseUI;
+    private final BookUI bookUI;
+
+
     private final Paint hitBoxPaint = new Paint();
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
@@ -57,6 +61,7 @@ public class Playing extends BaseState implements GameStateInterFace {
     private PlayerDecorator powerUps = new PlayerDecorator();
 
     private boolean onPause;
+    private boolean onBook;
 
 
 
@@ -91,6 +96,7 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         playingUI = new PlayingUI(this);
         pauseUI = new PauseUI(this);
+        bookUI = new BookUI(this);
 
         //updateAttackHitbox();
 
@@ -159,6 +165,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         lastTouchDiff = new PointF(0, 0);
         Player.getInstance().backToIdleState();
         onPause = false;
+        onBook = false;
     }
 
     @Override
@@ -167,7 +174,7 @@ public class Playing extends BaseState implements GameStateInterFace {
             return;
         }
 
-        if (onPause) {
+        if (onPause || onBook) {
             return;
         }
 
@@ -218,6 +225,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     private void currentTouchEvent(MotionEvent event) {
         if (onPause) {
             viewModel.pauseUiTouchEvent(event, pauseUI);
+        } else if (onBook) {
+            viewModel.bookUiTouchEvent(event, bookUI);
         } else {
             viewModel.playingUiTouchEvent(event, playingUI);
         }
@@ -233,11 +242,11 @@ public class Playing extends BaseState implements GameStateInterFace {
         viewModel.drawThingOnMap(c, mapManager);
 
 
-        drawCurrentPlayingUI(c);
-
-
 
         drawUi(c);
+
+
+        drawCurrentPlayingUI(c);
 
     }
 
@@ -246,6 +255,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     private void drawCurrentPlayingUI(Canvas c) {
         if (onPause) {
             viewModel.pauseUiDrawUi(c, pauseUI);
+        } else if (onBook) {
+            viewModel.bookUiDrawUi(c, bookUI);
         } else {
             viewModel.playingUiDrawUi(c, playingUI);
         }
@@ -402,5 +413,10 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     public void changeOnPause() {
         this.onPause = !this.onPause;
+        this.onBook = false;
+    }
+    public void changeOnBook() {
+        this.onBook = !this.onBook;
+        this.onPause = false;
     }
 }

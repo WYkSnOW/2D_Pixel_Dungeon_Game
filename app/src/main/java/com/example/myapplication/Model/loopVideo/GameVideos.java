@@ -222,8 +222,38 @@ public enum GameVideos implements BitmapMethods {
     MOB_HEALTH(
             R.drawable.mob_health,
             1,
-            4,
+                    4,
+                    1,
+                    1,
+                    3,
+            GameConstants.Animation.ANI_SPEED
+            ),
+
+
+    BOOK_OPENING(
+            R.drawable.book_open_anim_list,
+            768,
+            640,
+            8,
             1,
+            3,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    BOOK_BTN_APPEARING(
+            R.drawable.book_btn_appearing_anim,
+            768,
+            640,
+            11,
+            1,
+            3,
+            GameConstants.Animation.ANI_SPEED
+    ),
+    BOOK_CLOSING(
+            R.drawable.book_closing,
+            768,
+            640,
+            8,
             1,
             3,
             GameConstants.Animation.ANI_SPEED

@@ -51,6 +51,8 @@ public class CharThree implements PlayerCharStrategy {
             return 28;
         } else if (state == PlayerStates.DASH) {
             return 7;
+        } else if (state == PlayerStates.HURT) {
+            return 5;
         } else if (state == PlayerStates.SKILL_ONE) {
             return 30;
         }

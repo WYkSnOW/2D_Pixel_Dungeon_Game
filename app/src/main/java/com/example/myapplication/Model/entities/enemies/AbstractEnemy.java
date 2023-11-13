@@ -80,6 +80,7 @@ public abstract class AbstractEnemy extends Character {
 
     public void initWithDiff(int difficulty) {
         this.currentHealth *= difficulty;
+        this.maxHealth = currentHealth;
     }
 
     public void update(double delta, MapManager mapManager, PointF playerPos) {
