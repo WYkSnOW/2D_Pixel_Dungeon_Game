@@ -37,7 +37,7 @@ public class MapManager {
     public MapManager(Playing playing) {
         this.playing = playing;
         initMap();
-        paint.setTextSize(50);
+        paint.setTextSize(15);
         paint.setColor(Color.WHITE);
 
         healthPaint.setTextSize(20);
@@ -98,19 +98,21 @@ public class MapManager {
                 hitBoxPaint); //draw mob's hitBox
 
         canvas.drawText(
-                "" + enemy.getCurrentHealth(),
+                "" + enemy.getCurrentHealth() + " / " + enemy.getMaxHealth(),
                 enemy.getHitBox().left + cameraX,
-                enemy.getHitBox().top - 30 + cameraY,
+                enemy.getHitBox().top - 25 + cameraY,
                 paint
         );
 
-        //drawMobHealthBar(canvas, enemy);
+        drawMobHealthBar(canvas, enemy);
 
     }
 
     private void drawMobHealthBar(Canvas canvas, AbstractEnemy enemy) {
-
         float currentX = enemy.getHitBox().left + (float) (enemy.getHitBoxWidth() / 2);
+        float xOffset = (float) (GameVideos.MOB_HEALTH_BAR.getScale());
+
+
         currentX -= (float) (GameVideos.MOB_HEALTH_BAR.getWidth() / 2);
 
         canvas.drawBitmap(
@@ -119,8 +121,21 @@ public class MapManager {
                 enemy.getHitBox().top - 20 + cameraY,
                 null
         );
+        currentX += xOffset;
 
-        currentX += (float) (GameVideos.MOB_HEALTH_BAR.getScale());
+        int drawTime = (int) (enemy.getHealthPercentage() / 2.0);
+
+        int counter = 0;
+        while (counter < drawTime) {
+            canvas.drawBitmap(
+                    GameVideos.MOB_HEALTH.getSprite(0, 0),
+                    currentX + cameraX,
+                    enemy.getHitBox().top - 20 + cameraY,
+                    null
+            );
+            currentX += xOffset;
+            counter += 1;
+        }
     }
 
 

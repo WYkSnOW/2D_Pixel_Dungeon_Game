@@ -25,6 +25,7 @@ public abstract class AbstractEnemy extends Character {
     private int atk;
     private float currentSpeed;
     private int chaseDistance;
+    private int maxHealth;
     private int currentHealth;
     private boolean takeDamageAlready;
 
@@ -37,6 +38,7 @@ public abstract class AbstractEnemy extends Character {
         this.ableAttackPlayer = false;
         this.lastAttackPlayer = System.currentTimeMillis();
         this.chaseDistance = getDefaultChaseDis();
+        this.maxHealth = health;
         this.currentHealth = health;
         takeDamageAlready = false;
     }
@@ -298,5 +300,13 @@ public abstract class AbstractEnemy extends Character {
 
     public void setTakeDamageAlready(boolean takeDamageAlready) {
         this.takeDamageAlready = takeDamageAlready;
+    }
+
+    public double getHealthPercentage() {
+        return (((double) currentHealth / (double) maxHealth) * 100.0);
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 }

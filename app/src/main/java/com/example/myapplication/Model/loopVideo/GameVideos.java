@@ -217,6 +217,16 @@ public enum GameVideos implements BitmapMethods {
             1,
             3,
             GameConstants.Animation.ANI_SPEED
+    ),
+
+    MOB_HEALTH(
+            R.drawable.mob_health,
+            1,
+            4,
+            1,
+            1,
+            3,
+            GameConstants.Animation.ANI_SPEED
     );
 
     private final Bitmap spriteSheet;
