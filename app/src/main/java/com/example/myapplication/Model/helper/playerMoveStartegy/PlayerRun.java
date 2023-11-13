@@ -3,12 +3,14 @@ package com.example.myapplication.Model.helper.playerMoveStartegy;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.HelpMethods;
 
 public class PlayerRun implements PlayerMoveStrategy {
     @Override
     public void setPlayerAnim(float xSpeed, float ySpeed, PointF lastTouchDiff) {
+
         if (xSpeed > ySpeed) { //意味着x角度更大，角色应该随着x调整     实现角色移动时的动画切换
             if (lastTouchDiff.x > 0) { //正数意味光标在圆环右侧，即朝右移动
                 Player.getInstance().setMoveDir(GameConstants.MoveDir.RIGHT);

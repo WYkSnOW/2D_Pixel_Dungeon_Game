@@ -96,6 +96,13 @@ public class MapManager {
                 enemy.getHitBox().bottom + cameraY,
                 hitBoxPaint); //draw mob's hitBox
 
+//        canvas.drawRect(
+//                enemy.getAtkHitBox().left + cameraX,
+//                enemy.getAtkHitBox().top + cameraY,
+//                enemy.getAtkHitBox().right + cameraX,
+//                enemy.getAtkHitBox().bottom + cameraY,
+//                hitBoxPaint); //draw mob's hitBox
+
         canvas.drawText(
                 "" + enemy.getCurrentHealth() + " / " + enemy.getMaxHealth(),
                 enemy.getHitBox().left + cameraX,

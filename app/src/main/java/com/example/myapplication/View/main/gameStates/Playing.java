@@ -178,6 +178,15 @@ public class Playing extends BaseState implements GameStateInterFace {
             return;
         }
 
+        if (Player.getInstance().keepChangeOfDirDuringMovement()) {
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                lastTouchDiff.x = -1;
+            } else {
+                lastTouchDiff.x = 1;
+            }
+
+        }
+
         if (playerMoveStrategy != null && !Player.getInstance().isOnSkill()) {
             playerMoveStrategy.setPlayerAnim(xSpeed, ySpeed, lastTouchDiff);
         }

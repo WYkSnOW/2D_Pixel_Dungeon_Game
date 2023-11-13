@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.Model.coreLogic.Game;
+import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.helper.HelpMethods;
 import com.example.myapplication.Model.ui.CustomButton;
 
@@ -37,6 +39,7 @@ public class MenuViewModel extends ViewModel {
     }
 
     public void btnStartRespond(Game game) {
+        Player.getInstance().setCurrentStates(PlayerStates.WALK);
         game.setCurrentGameState(Game.GameState.CONFIG);
     }
     public void btnExitRespond(Context context) {

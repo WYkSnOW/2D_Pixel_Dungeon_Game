@@ -479,4 +479,9 @@ public class Player extends Character {
     public double getPercentHealth() {
         return ((double) currentHealth / (double) startingHealth) * 100.0;
     }
+
+    public boolean keepChangeOfDirDuringMovement() {
+        return currentStates == PlayerStates.HURT;
+    }
+
 }

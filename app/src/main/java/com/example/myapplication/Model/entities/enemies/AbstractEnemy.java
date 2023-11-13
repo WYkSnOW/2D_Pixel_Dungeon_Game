@@ -2,6 +2,7 @@ package com.example.myapplication.Model.entities.enemies;
 
 
 import android.graphics.PointF;
+import android.graphics.RectF;
 
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Character;
@@ -29,7 +30,9 @@ public abstract class AbstractEnemy extends Character {
 
 
     public AbstractEnemy(
-            PointF pos, GameCharacters characterType, float baseSpeed, int atk, int health) {
+            PointF pos, GameCharacters characterType,
+            float baseSpeed, int atk, int health) {
+
         super(pos, characterType);
         this.baseSpeed = baseSpeed;
         this.atk = atk;
@@ -38,6 +41,8 @@ public abstract class AbstractEnemy extends Character {
         this.chaseDistance = getDefaultChaseDis();
         this.maxHealth = health;
         this.currentHealth = health;
+
+
         takeDamageAlready = false;
     }
 
@@ -305,5 +310,29 @@ public abstract class AbstractEnemy extends Character {
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+
+
+    public PointF getAtkHitBoxSize() {
+        return new PointF(GameConstants.Sprite.SIZE, GameConstants.Sprite.SIZE);
+    }
+    public RectF getAtkHitBox() {
+        PointF size = getAtkHitBoxSize();
+        if (faceDir == GameConstants.FaceDir.RIGHT) {
+            return new RectF(
+                    hitBox.right,
+                    hitBox.bottom - size.y,
+                    hitBox.right + size.x,
+                    hitBox.bottom
+            );
+        } else {
+            return new RectF(
+                    hitBox.left - size.x,
+                    hitBox.bottom - size.y,
+                    hitBox.left,
+                    hitBox.bottom
+            );
+        }
     }
 }
