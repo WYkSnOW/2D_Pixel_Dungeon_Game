@@ -1,7 +1,6 @@
 package com.example.myapplication.Model.entities.enemies;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.GameCharacters;
@@ -12,7 +11,6 @@ import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.HelpMethods;
-import com.example.myapplication.Model.loopVideo.GameVideos;
 
 import java.util.Random;
 public abstract class AbstractEnemy extends Character {

@@ -16,7 +16,6 @@ import com.example.myapplication.Model.entities.Player.playerDecorator.PlayerDec
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -27,10 +26,8 @@ import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerMoveStrat
 import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerRun;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.coreLogic.Game;
-import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
-import com.example.myapplication.Model.ui.playingUI.playerStateBar.PlayerStateBar;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
 
 import java.util.Random;
@@ -231,20 +228,9 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.PLAYING) {
             return;
         }
-        //mapManager.draw(c);
-        //itemManager.draw(c);
-        //Player.getInstance().drawPlayer(c);
 
 
         viewModel.drawThingOnMap(c, mapManager);
-//        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-//            if (enemy.isActive()) {
-//                drawEnemy(c, enemy);
-//
-//            }
-//        }
-
-
 
 
         drawCurrentPlayingUI(c);
@@ -253,7 +239,6 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         drawUi(c);
 
-        //drawItemHitBox(c);
     }
 
 

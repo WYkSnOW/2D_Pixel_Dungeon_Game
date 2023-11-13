@@ -3,7 +3,6 @@ package com.example.myapplication.Model.environments;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Picture;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
