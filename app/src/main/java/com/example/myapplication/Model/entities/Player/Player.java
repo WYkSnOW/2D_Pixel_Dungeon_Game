@@ -452,4 +452,8 @@ public class Player extends Character {
     public void setDefence(int defence) {
         this.defence = defence;
     }
+
+    public double getPercentHealth() {
+        return ((double) currentHealth / (double) startingHealth) * 100.0;
+    }
 }

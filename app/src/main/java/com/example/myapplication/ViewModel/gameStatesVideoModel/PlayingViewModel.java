@@ -89,8 +89,8 @@ public class PlayingViewModel extends ViewModel {
     }
 
     public void checkAttackByEnemies(RectF playerHitBox,
-                            MapManager mapManager,
-                            float cameraX, float cameraY) {
+                                     MapManager mapManager,
+                                     float cameraX, float cameraY) {
         playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
     }
 

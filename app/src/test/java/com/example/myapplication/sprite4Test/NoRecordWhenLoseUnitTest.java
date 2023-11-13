@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.sprite4Test;
 
 
 import com.example.myapplication.Model.leaderBoard.Leaderboard;

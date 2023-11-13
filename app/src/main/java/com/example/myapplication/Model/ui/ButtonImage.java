@@ -100,7 +100,7 @@ public enum ButtonImage implements BitmapMethods {
 
         Bitmap buttonAtlas
                 = BitmapFactory.decodeResource(
-                        MainViewModel.getGameContext().getResources(), resID, OPTIONS
+                MainViewModel.getGameContext().getResources(), resID, OPTIONS
         );
         normal = Bitmap.createBitmap(buttonAtlas, 0, 0, width, height);
         if (haveAnim) {

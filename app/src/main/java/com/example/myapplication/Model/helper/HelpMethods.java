@@ -63,7 +63,7 @@ public class HelpMethods {
             PointF pos = generateRandomPos(width, height);
             if (
                     gameMap.canMoveHere(pos.x, pos.y, pos.y + (enemyType.getCharacterHeight()))
-                    && gameMap.canMoveHere(pos.x + (enemyType.getCharacterWidth()),
+                            && gameMap.canMoveHere(pos.x + (enemyType.getCharacterWidth()),
                             pos.y, pos.y + (enemyType.getCharacterHeight()))
             ) {
                 zombieArrayList.add(EnemyFactory.createEnemy(enemyType, pos));

@@ -24,7 +24,6 @@ public class Projectile extends Entity {
 
     public Projectile(PointF pos, PointF size, boolean faceRight,
                       float speed, GameVideos anim, PointF animOffset) {
-
         super(pos, size.x, size.y);
         this.faceRight = faceRight;
         this.speed = speed;

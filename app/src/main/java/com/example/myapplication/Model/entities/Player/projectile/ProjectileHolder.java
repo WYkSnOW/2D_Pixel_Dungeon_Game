@@ -78,7 +78,7 @@ public class ProjectileHolder {
                 if (!(gameMap.canMoveHere(
                         p.getHitBox().left, p.getHitBox().top, p.getHitBox().bottom))
                         || !(gameMap.canMoveHere(
-                                p.getHitBox().right, p.getHitBox().top, p.getHitBox().bottom))) {
+                        p.getHitBox().right, p.getHitBox().top, p.getHitBox().bottom))) {
                     p.setActive(false);
                     onClearing = true;
                     proList.remove(p);

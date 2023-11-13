@@ -97,7 +97,7 @@ public class PlayingUI {
 
         btnMenu = new CustomButton(
                 5,
-                5,
+                100,
                 ButtonImage.PLAYING_MENU.getWidth(),
                 ButtonImage.PLAYING_MENU.getHeight()
         );

@@ -15,7 +15,8 @@ public class CalculateHealthByAttackUnitTest {
         int enemyAttack = 10;
         int playerDefense = 5;
 
-        int newHealth = playingLogic.calculateHealthByAtk(currentHealth, enemyAttack, playerDefense);
+        int newHealth
+                = playingLogic.calculateHealthByAtk(currentHealth, enemyAttack, playerDefense);
         assertEquals(95, newHealth);
 
     }
