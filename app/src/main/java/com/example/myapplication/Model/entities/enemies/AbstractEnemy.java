@@ -106,7 +106,7 @@ public abstract class AbstractEnemy extends Character {
         //defaultMoveMode(delta, gameMap);
 
         float facePoint = hitBox.left;
-        if (drawDir == GameConstants.DrawDir.RIGHT) {
+        if (faceDir == GameConstants.FaceDir.RIGHT) {
             facePoint = hitBox.right;
         }
 
@@ -161,10 +161,8 @@ public abstract class AbstractEnemy extends Character {
             moveX(gameMap, deltaX);
         }
         if (distanceX > 1) {
-            drawDir = GameConstants.DrawDir.LEFT;
             faceDir = GameConstants.FaceDir.LEFT;
         } else if (distanceX < -1) {
-            drawDir = GameConstants.DrawDir.RIGHT;
             faceDir = GameConstants.FaceDir.RIGHT;
         }
 
@@ -216,7 +214,7 @@ public abstract class AbstractEnemy extends Character {
             lastDirChange = System.currentTimeMillis(); //更新改变方向的时间
         }
         if (moveDir == 0 || moveDir == 1) {
-            drawDir = moveDir;       //若新方向为左或右，则改变为对应动画，若为上或下则保留原先的数值
+            faceDir = moveDir;       //若新方向为左或右，则改变为对应动画，若为上或下则保留原先的数值
         }
 
         //检测是否碰撞到屏幕边缘，如果是则将方向翻转(1，将坐标位置改变，2.通过改变Face_Dir改变动画行数，变为对应目标的动画
@@ -237,14 +235,14 @@ public abstract class AbstractEnemy extends Character {
             hitBox.right += currentSpeed;
             if (!(gameMap.canMoveHere(hitBox.right, hitBox.top, hitBox.bottom))) {
                 moveDir = GameConstants.MoveDir.LEFT;
-                drawDir = GameConstants.DrawDir.LEFT;
+                faceDir = GameConstants.FaceDir.LEFT;
             }
         } else if (moveDir == GameConstants.MoveDir.LEFT) {
             hitBox.left -= currentSpeed;
             hitBox.right -= currentSpeed;
             if (!(gameMap.canMoveHere(hitBox.left, hitBox.top, hitBox.bottom))) {
                 moveDir = GameConstants.MoveDir.RIGHT;
-                drawDir = GameConstants.DrawDir.RIGHT;
+                faceDir = GameConstants.FaceDir.RIGHT;
             }
         }
     }

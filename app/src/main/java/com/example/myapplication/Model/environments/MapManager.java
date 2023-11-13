@@ -77,12 +77,12 @@ public class MapManager {
 
     public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
         int offsetX = enemy.getHitBoxOffsetX();
-        if (enemy.getDrawDir() == GameConstants.DrawDir.RIGHT) {
+        if (enemy.getFaceDir() == GameConstants.FaceDir.RIGHT) {
             offsetX = 0;
         }
         canvas.drawBitmap(
                 enemy.getGameCharType().getSprite(
-                        enemy.getDrawDir(),
+                        enemy.getFaceDir(),
                         enemy.getAniIndex()
                 ),
                 enemy.getHitBox().left + cameraX - offsetX,

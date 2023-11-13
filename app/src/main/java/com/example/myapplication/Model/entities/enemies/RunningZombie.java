@@ -28,14 +28,14 @@ public class RunningZombie extends Character {
                     >= GameConstants.UiSize.GAME_WIDTH
                     - GameCharacters.ZOMBIE.getCharacterWidth()) {
                 moveDir = GameConstants.MoveDir.LEFT;
-                drawDir = 1;
+                faceDir = 1;
 
             }
         } else if (moveDir == GameConstants.MoveDir.LEFT) {
             hitBox.left -= delta * 300;
             if (hitBox.left <= 0) {
                 moveDir = GameConstants.MoveDir.RIGHT;
-                drawDir = 0;
+                faceDir = 0;
             }
         }
 

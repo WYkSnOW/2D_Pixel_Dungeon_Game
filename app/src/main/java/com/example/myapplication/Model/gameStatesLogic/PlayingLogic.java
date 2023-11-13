@@ -104,7 +104,7 @@ public class PlayingLogic {
                 if (enemy.isAbleAttackPlayer()) {
                     enemy.setAbleAttackPlayer(false);
 
-                    if (Player.getInstance().getCurrentHealth() > 0) {
+                    if (Player.getInstance().getCurrentHealth() > 0 && enemy.isActive()) {
 
                         Player.getInstance().lostHealth(
                                 calculateNewHealthForPlayer(
@@ -112,7 +112,8 @@ public class PlayingLogic {
                                         enemy.getAtk(),
                                         Player.getInstance().getDifficulty(),
                                         Player.getInstance().getDefence()
-                                ));
+                                ),
+                                enemy.getFaceDir());
                     }
                 }
 

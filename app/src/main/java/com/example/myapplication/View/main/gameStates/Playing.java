@@ -178,7 +178,7 @@ public class Playing extends BaseState implements GameStateInterFace {
             return;
         }
 
-        if (playerMoveStrategy != null) {
+        if (playerMoveStrategy != null && !Player.getInstance().isOnSkill()) {
             playerMoveStrategy.setPlayerAnim(xSpeed, ySpeed, lastTouchDiff);
         }
 

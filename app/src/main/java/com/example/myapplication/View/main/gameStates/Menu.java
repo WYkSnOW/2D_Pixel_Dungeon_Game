@@ -108,7 +108,7 @@ public class Menu extends BaseState implements GameStateInterFace {
 
         c.drawBitmap(
                 runningZombie.getGameCharType().getSprite(
-                        runningZombie.getDrawDir(), runningZombie.getAniIndex()
+                        runningZombie.getFaceDir(), runningZombie.getAniIndex()
                 ),
                 runningZombie.getHitBox().left,
                 runningZombie.getHitBox().top,

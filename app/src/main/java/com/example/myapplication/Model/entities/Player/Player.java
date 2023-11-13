@@ -211,11 +211,11 @@ public class Player extends Character {
 
 
 
-    public void lostHealth(int health) {
+    public void lostHealth(int health, int fromDir) {
         if (!invincible) {
             if (currentHealth > health) {
                 this.currentHealth = health;
-                setToHurt();
+                setToHurt(fromDir);
             }
 
         }
@@ -311,11 +311,21 @@ public class Player extends Character {
         }
     }
 
-    public void setToHurt() {
+    public void setToHurt(int fromDir) {
         if (!onSkill) {
             onSkill = true;
             invincible = true;
+
+            if (fromDir == faceDir) {
+                if (faceDir == GameConstants.FaceDir.RIGHT) {
+                    faceDir = GameConstants.FaceDir.LEFT;
+                } else {
+                    faceDir = GameConstants.FaceDir.RIGHT;
+                }
+            }
+
             setCurrentStates(PlayerStates.HURT);
+
         }
 
     }

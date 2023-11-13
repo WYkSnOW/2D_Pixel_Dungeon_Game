@@ -29,7 +29,7 @@ public class PlayerRun implements PlayerMoveStrategy {
             Player.getInstance().setDrawDir(GameConstants.DrawDir.LEFT);
             Player.getInstance().setFaceDir(GameConstants.FaceDir.LEFT);
         }
-        //Player.getInstance().setPlayerStates(PlayerStates.RUNNING);
+
     }
 
     @Override
