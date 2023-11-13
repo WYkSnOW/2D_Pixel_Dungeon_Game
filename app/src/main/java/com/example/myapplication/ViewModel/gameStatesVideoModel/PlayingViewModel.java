@@ -116,6 +116,11 @@ public class PlayingViewModel extends ViewModel {
     }
 
 
+    public void drawThingOnMap(Canvas c, MapManager mapManager) {
+        mapManager.draw(c);
+    }
+
+
 
 
 

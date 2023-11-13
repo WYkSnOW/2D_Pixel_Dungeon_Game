@@ -232,7 +232,7 @@ public class PlayerStateBar {
                         leftTop.y,
                         null);
                 currentHealthBarX += playerHealthMiddleWidth;
-                currentHealthBarX -= 5;
+                currentHealthBarX -= GameVideos.PLAYER_HEALTH_MIDDLE.getScale();
                 healthDraw += 1.25;
             }
 

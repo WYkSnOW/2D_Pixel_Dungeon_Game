@@ -27,6 +27,7 @@ import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerMoveStrat
 import com.example.myapplication.Model.helper.playerMoveStartegy.PlayerRun;
 import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.coreLogic.Game;
+import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 import com.example.myapplication.Model.ui.playingUI.playerStateBar.PlayerStateBar;
@@ -230,23 +231,23 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.PLAYING) {
             return;
         }
-        mapManager.draw(c);
+        //mapManager.draw(c);
         //itemManager.draw(c);
-        Player.getInstance().drawPlayer(c);
-        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-            if (enemy.isActive()) {
-                drawEnemy(c, enemy);
-
-            }
-        }
-        ProjectileHolder.getInstance().draw(c);
+        //Player.getInstance().drawPlayer(c);
 
 
-        PlayerStateBar.getInstance().drawPlayerStateBar(c);
+        viewModel.drawThingOnMap(c, mapManager);
+//        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
+//            if (enemy.isActive()) {
+//                drawEnemy(c, enemy);
+//
+//            }
+//        }
+
+
 
 
         drawCurrentPlayingUI(c);
-
 
 
 
@@ -304,35 +305,8 @@ public class Playing extends BaseState implements GameStateInterFace {
         c.drawText("Health: " + Player.getInstance().getCurrentHealth(), 200, 250, paint);
         c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 300, paint);
     }
-    public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
-        int offsetX = enemy.getHitBoxOffsetX();
-        if (enemy.getDrawDir() == GameConstants.DrawDir.RIGHT) {
-            offsetX = 0;
-        }
-        canvas.drawBitmap(
-                enemy.getGameCharType().getSprite(
-                        enemy.getDrawDir(),
-                        enemy.getAniIndex()
-                ),
-                enemy.getHitBox().left + cameraX - offsetX,
-                enemy.getHitBox().top + cameraY - enemy.getHitBoxOffsetY(),
-                null
-        );
-        canvas.drawRect(
-                enemy.getHitBox().left + cameraX,
-                enemy.getHitBox().top + cameraY,
-                enemy.getHitBox().right + cameraX,
-                enemy.getHitBox().bottom + cameraY,
-                hitBoxPaint); //draw mob's hitBox
 
-        canvas.drawText(
-                "" + enemy.getCurrentHealth(),
-                enemy.getHitBox().left + cameraX,
-                enemy.getHitBox().top - 20 + cameraY,
-                paint
-        );
 
-    }
 
 
 

@@ -134,9 +134,9 @@ public class Player extends Character {
         haveInteract = false;
         madeInteraction = false;
     }
+
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         changeAnim(characterChoice);
-
         resetPlayer();
     }
 

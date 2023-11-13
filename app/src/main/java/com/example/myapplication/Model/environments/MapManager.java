@@ -3,6 +3,7 @@ package com.example.myapplication.Model.environments;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -10,11 +11,14 @@ import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.Doorways.DoorwayType;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.HelpMethods;
+import com.example.myapplication.Model.loopVideo.GameVideos;
+import com.example.myapplication.Model.ui.playingUI.playerStateBar.PlayerStateBar;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 import java.util.ArrayList;
@@ -27,9 +31,21 @@ public class MapManager {
     private float cameraX;
     private float cameraY;
     private final Playing playing;
+    private Paint paint = new Paint();
+    private Paint healthPaint = new Paint();
+    private Paint hitBoxPaint = new Paint();
     public MapManager(Playing playing) {
         this.playing = playing;
         initMap();
+        paint.setTextSize(50);
+        paint.setColor(Color.WHITE);
+
+        healthPaint.setTextSize(20);
+        healthPaint.setTextSize(Color.WHITE);
+
+        hitBoxPaint.setStrokeWidth(1);
+        hitBoxPaint.setStyle(Paint.Style.STROKE);
+        hitBoxPaint.setColor(Color.RED);
     }
 
 
@@ -37,6 +53,74 @@ public class MapManager {
         drawTiles(c);
         drawItems(c);
         drawDoorway(c);
+
+        Player.getInstance().drawPlayer(c);
+
+        drawEnemies(c);
+
+
+        ProjectileHolder.getInstance().draw(c);
+
+
+        PlayerStateBar.getInstance().drawPlayerStateBar(c);
+    }
+
+
+
+    public void drawEnemies(Canvas c) {
+        for (AbstractEnemy enemy : currentMap.getMobArrayList()) {
+            if (enemy.isActive()) {
+                drawEnemy(c, enemy);
+
+            }
+        }
+    }
+
+    public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
+        int offsetX = enemy.getHitBoxOffsetX();
+        if (enemy.getDrawDir() == GameConstants.DrawDir.RIGHT) {
+            offsetX = 0;
+        }
+        canvas.drawBitmap(
+                enemy.getGameCharType().getSprite(
+                        enemy.getDrawDir(),
+                        enemy.getAniIndex()
+                ),
+                enemy.getHitBox().left + cameraX - offsetX,
+                enemy.getHitBox().top + cameraY - enemy.getHitBoxOffsetY(),
+                null
+        );
+        canvas.drawRect(
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top + cameraY,
+                enemy.getHitBox().right + cameraX,
+                enemy.getHitBox().bottom + cameraY,
+                hitBoxPaint); //draw mob's hitBox
+
+        canvas.drawText(
+                "" + enemy.getCurrentHealth(),
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top - 30 + cameraY,
+                paint
+        );
+
+        //drawMobHealthBar(canvas, enemy);
+
+    }
+
+    private void drawMobHealthBar(Canvas canvas, AbstractEnemy enemy) {
+
+        float currentX = enemy.getHitBox().left + (float) (enemy.getHitBoxWidth() / 2);
+        currentX -= (float) (GameVideos.MOB_HEALTH_BAR.getWidth() / 2);
+
+        canvas.drawBitmap(
+                GameVideos.MOB_HEALTH_BAR.getSprite(0, 0),
+                currentX + cameraX,
+                enemy.getHitBox().top - 20 + cameraY,
+                null
+        );
+
+        currentX += (float) (GameVideos.MOB_HEALTH_BAR.getScale());
     }
 
 
