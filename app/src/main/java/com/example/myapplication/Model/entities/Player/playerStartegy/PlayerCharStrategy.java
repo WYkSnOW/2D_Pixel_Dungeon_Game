@@ -7,7 +7,7 @@ import android.graphics.PointF;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.helper.GameConstants;
 
 public interface PlayerCharStrategy {

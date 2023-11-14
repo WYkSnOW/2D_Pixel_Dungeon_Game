@@ -106,13 +106,13 @@ public enum GameCharacters implements BitmapMethods {
             7
     ),
     STEEL_GOLEM(
-            R.drawable.steel_golem_mob_list,
-            new PointF(32, 40),
-            13,
-            4,
+            R.drawable.golem_steel_anim_list,
+            new PointF(96, 96),
+            20,
+            8,
             6,
-            13,
-            15
+            76,
+            69
     );
 
 

@@ -11,7 +11,7 @@ import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.Doorways.DoorwayType;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -33,6 +33,7 @@ public class MapManager {
     private Paint paint = new Paint();
     private Paint healthPaint = new Paint();
     private Paint hitBoxPaint = new Paint();
+    private Paint hitBoxPaint2 = new Paint();
     public MapManager(Playing playing) {
         this.playing = playing;
         initMap();
@@ -45,6 +46,10 @@ public class MapManager {
         hitBoxPaint.setStrokeWidth(1);
         hitBoxPaint.setStyle(Paint.Style.STROKE);
         hitBoxPaint.setColor(Color.RED);
+
+        hitBoxPaint2.setStrokeWidth(2);
+        hitBoxPaint2.setStyle(Paint.Style.STROKE);
+        hitBoxPaint2.setColor(Color.BLUE);
     }
 
 
@@ -76,19 +81,34 @@ public class MapManager {
     }
 
     public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
+
+
+
         int offsetX = enemy.getHitBoxOffsetX();
+
+
+
         if (enemy.getFaceDir() == GameConstants.FaceDir.RIGHT) {
             offsetX = 0;
         }
+
+
         canvas.drawBitmap(
-                enemy.getGameCharType().getSprite(
-                        enemy.getFaceDir(),
-                        enemy.getAniIndex()
-                ),
-                enemy.getHitBox().left + cameraX - offsetX,
-                enemy.getHitBox().top + cameraY - enemy.getHitBoxOffsetY(),
+                enemy.getEnemySprite(),
+                enemy.getEnemyLeft() + cameraX,
+                enemy.getEnemyTop() + cameraY,
                 null
         );
+
+        drawEnemyHitBox(canvas, enemy);
+
+
+        drawMobHealthBar(canvas, enemy);
+
+    }
+
+
+    private void drawEnemyHitBox(Canvas canvas, AbstractEnemy enemy) {
         canvas.drawRect(
                 enemy.getHitBox().left + cameraX,
                 enemy.getHitBox().top + cameraY,
@@ -96,28 +116,26 @@ public class MapManager {
                 enemy.getHitBox().bottom + cameraY,
                 hitBoxPaint); //draw mob's hitBox
 
-//        canvas.drawRect(
-//                enemy.getAtkHitBox().left + cameraX,
-//                enemy.getAtkHitBox().top + cameraY,
-//                enemy.getAtkHitBox().right + cameraX,
-//                enemy.getAtkHitBox().bottom + cameraY,
-//                hitBoxPaint); //draw mob's hitBox
 
-        canvas.drawText(
-                "" + enemy.getCurrentHealth() + " / " + enemy.getMaxHealth(),
-                enemy.getHitBox().left + cameraX,
-                enemy.getHitBox().top - 25 + cameraY,
-                paint
-        );
+        canvas.drawRect(
+                enemy.getAtkRange().left + cameraX,
+                enemy.getAtkRange().top + cameraY,
+                enemy.getAtkRange().right + cameraX,
+                enemy.getAtkRange().bottom + cameraY,
+                hitBoxPaint2); //draw mob's hitBox
 
-        drawMobHealthBar(canvas, enemy);
-
+        canvas.drawRect(
+                enemy.getAtkHitBox().left + cameraX,
+                enemy.getAtkHitBox().top + cameraY,
+                enemy.getAtkHitBox().right + cameraX,
+                enemy.getAtkHitBox().bottom + cameraY,
+                hitBoxPaint); //draw mob's hitBox
     }
+
 
     private void drawMobHealthBar(Canvas canvas, AbstractEnemy enemy) {
         float currentX = enemy.getHitBox().left + (float) (enemy.getHitBoxWidth() / 2);
         float xOffset = (float) (GameVideos.MOB_HEALTH_BAR.getScale());
-
 
         currentX -= (float) (GameVideos.MOB_HEALTH_BAR.getWidth() / 2);
 
@@ -142,6 +160,13 @@ public class MapManager {
             currentX += xOffset;
             counter += 1;
         }
+
+        canvas.drawText(
+                "" + enemy.getCurrentHealth() + " / " + enemy.getMaxHealth(),
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top - 25 + cameraY,
+                paint
+        );
     }
 
 
@@ -249,20 +274,20 @@ public class MapManager {
 
 
     private void initMobList() {
-        mapOne.addMobsToList(HelpMethods.getMobRandomized(
-                2, mapOne, GameCharacters.CHEST_MOB));
+//        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+//                2, mapOne, GameCharacters.CHEST_MOB));
         mapOne.addMobsToList(HelpMethods.getMobRandomized(
                 3, mapOne, GameCharacters.STEEL_GOLEM));
 
-        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
-                3, mapTwo, GameCharacters.ZOMBIE));
-        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
-                5, mapTwo, GameCharacters.CROW_MAN));
-
-        mapThree.addMobsToList(HelpMethods.getMobRandomized(
-                4, mapThree, GameCharacters.CHEST_MOB));
-        mapThree.addMobsToList(HelpMethods.getMobRandomized(
-                5, mapThree, GameCharacters.STEEL_GOLEM));
+//        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
+//                3, mapTwo, GameCharacters.ZOMBIE));
+//        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
+//                5, mapTwo, GameCharacters.CROW_MAN));
+//
+//        mapThree.addMobsToList(HelpMethods.getMobRandomized(
+//                4, mapThree, GameCharacters.CHEST_MOB));
+//        mapThree.addMobsToList(HelpMethods.getMobRandomized(
+//                5, mapThree, GameCharacters.STEEL_GOLEM));
     }
 
     private void initDoorway() {

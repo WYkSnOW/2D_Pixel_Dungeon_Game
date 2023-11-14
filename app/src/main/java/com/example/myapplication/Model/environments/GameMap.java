@@ -1,7 +1,7 @@
 package com.example.myapplication.Model.environments;
 
 import com.example.myapplication.Model.entities.Items.Item;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.helper.GameConstants;
 

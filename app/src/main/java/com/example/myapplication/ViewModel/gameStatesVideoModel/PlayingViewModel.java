@@ -95,6 +95,8 @@ public class PlayingViewModel extends ViewModel {
         playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
     }
 
+
+
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         playingLogic.updateZombies(mapManager, delta, cameraX, cameraY);
     }

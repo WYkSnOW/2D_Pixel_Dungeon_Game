@@ -7,7 +7,7 @@ import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
 
 public class PlayingLogic {
@@ -100,26 +100,45 @@ public class PlayingLogic {
         attackBoxWithoutCamera.bottom -= cameraY;
 
         for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-            if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getHitBox())) {
-                if (enemy.isAbleAttackPlayer()) {
-                    enemy.setAbleAttackPlayer(false);
+            if (enemy.isActive()) {
 
-                    if (Player.getInstance().getCurrentHealth() > 0 && enemy.isActive()) {
+                if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getAtkRange())) {
+                    enemy.setToAtk();
+                }
 
-                        Player.getInstance().lostHealth(
-                                calculateNewHealthForPlayer(
-                                        Player.getInstance().getCurrentHealth(),
-                                        enemy.getAtk(),
-                                        Player.getInstance().getDifficulty(),
-                                        Player.getInstance().getDefence()
-                                ),
-                                enemy.getFaceDir());
+
+                if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getAtkHitBox())) {
+
+                    //enemy.startPreparingAtk();
+
+                    if (enemy.isMakingDamage()) {
+
+                        enemy.setAlreadyMadeDamageToPlayer(true);
+
+                        if (Player.getInstance().getCurrentHealth() > 0) {
+
+                            Player.getInstance().lostHealth(
+                                    calculateNewHealthForPlayer(
+                                            Player.getInstance().getCurrentHealth(),
+                                            enemy.getAtk(),
+                                            Player.getInstance().getDifficulty(),
+                                            Player.getInstance().getDefence()
+                                    ),
+                                    enemy.getFaceDir());
+                        }
                     }
+
                 }
 
             }
+
         }
     }
+
+
+
+
+
 
     public int calculateNewHealthForPlayer(
             int currentHealth, int enemyAtk, int difficulty, int playerDefence) {
