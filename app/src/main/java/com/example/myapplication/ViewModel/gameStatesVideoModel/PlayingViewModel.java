@@ -10,11 +10,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 import com.example.myapplication.Model.ui.playingUI.bookUI.BookUI;
+import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
@@ -95,7 +97,9 @@ public class PlayingViewModel extends ViewModel {
         playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
     }
 
-
+    public boolean ableMoveWhenOverlap() {
+        return Player.getInstance().ableMoveWhenOverlap();
+    }
 
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
         playingLogic.updateZombies(mapManager, delta, cameraX, cameraY);

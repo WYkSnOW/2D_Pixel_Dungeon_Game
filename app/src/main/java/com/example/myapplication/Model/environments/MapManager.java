@@ -122,14 +122,17 @@ public class MapManager {
                 enemy.getAtkRange().top + cameraY,
                 enemy.getAtkRange().right + cameraX,
                 enemy.getAtkRange().bottom + cameraY,
-                hitBoxPaint2); //draw mob's hitBox
+                hitBoxPaint2);
 
-        canvas.drawRect(
-                enemy.getAtkHitBox().left + cameraX,
-                enemy.getAtkHitBox().top + cameraY,
-                enemy.getAtkHitBox().right + cameraX,
-                enemy.getAtkHitBox().bottom + cameraY,
-                hitBoxPaint); //draw mob's hitBox
+        if (enemy.isMakingDamage()) {
+            canvas.drawRect(
+                    enemy.getAtkHitBox().left + cameraX,
+                    enemy.getAtkHitBox().top + cameraY,
+                    enemy.getAtkHitBox().right + cameraX,
+                    enemy.getAtkHitBox().bottom + cameraY,
+                    hitBoxPaint);
+        }
+
     }
 
 

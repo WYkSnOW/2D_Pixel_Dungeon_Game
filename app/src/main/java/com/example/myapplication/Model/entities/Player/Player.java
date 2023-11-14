@@ -51,6 +51,9 @@ public class Player extends Character {
     private boolean madeInteraction;
     private int defence;
 
+    private boolean overlapEnemy;
+    private int overlapDir;
+
 
 
     public Player(GameCharacters characterChoice) {
@@ -133,6 +136,7 @@ public class Player extends Character {
         invincible = false;
         haveInteract = false;
         madeInteraction = false;
+        overlapEnemy = false;
     }
 
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
@@ -484,4 +488,18 @@ public class Player extends Character {
         return currentStates == PlayerStates.HURT;
     }
 
+    public void setOverlapEnemy(boolean overlapEnemy) {
+        if (overlapEnemy && !(this.overlapEnemy)) {
+            overlapDir = faceDir;
+        }
+        this.overlapEnemy = overlapEnemy;
+
+    }
+
+    public boolean ableMoveWhenOverlap() {
+        if (overlapEnemy && faceDir == overlapDir) {
+            return !(currentStates == PlayerStates.WALK || currentStates == PlayerStates.RUNNING);
+        }
+        return true;
+    }
 }

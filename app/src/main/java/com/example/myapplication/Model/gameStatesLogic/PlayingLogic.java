@@ -93,21 +93,27 @@ public class PlayingLogic {
             MapManager mapManager,
             float cameraX, float cameraY
     ) {
-        RectF attackBoxWithoutCamera = new RectF(playerHitBox);
-        attackBoxWithoutCamera.left -= cameraX;
-        attackBoxWithoutCamera.top -= cameraY;
-        attackBoxWithoutCamera.right -= cameraX;
-        attackBoxWithoutCamera.bottom -= cameraY;
+        RectF playerHitBoxWithoutCamera = new RectF(playerHitBox);
+        playerHitBoxWithoutCamera.left -= cameraX;
+        playerHitBoxWithoutCamera.top -= cameraY;
+        playerHitBoxWithoutCamera.right -= cameraX;
+        playerHitBoxWithoutCamera.bottom -= cameraY;
+
+        int overlapEnemyCounter = 0;
 
         for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
             if (enemy.isActive()) {
 
-                if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getAtkRange())) {
+                if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkRange())) {
                     enemy.setToAtk();
                 }
 
+                if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getHitBox())) {
+                    overlapEnemyCounter += 1;
+                }
 
-                if (checkHitBoxCollision(attackBoxWithoutCamera, enemy.getAtkHitBox())) {
+
+                if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkHitBox())) {
 
                     //enemy.startPreparingAtk();
 
@@ -133,6 +139,7 @@ public class PlayingLogic {
             }
 
         }
+        Player.getInstance().setOverlapEnemy(overlapEnemyCounter != 0);
     }
 
 

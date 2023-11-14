@@ -371,16 +371,18 @@ public class Playing extends BaseState implements GameStateInterFace {
     }
 
     private void updatePlayerPosition(double delta) {
+        if (viewModel.ableMoveWhenOverlap()) {
 
-        float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
 
-
-        if (playerAbleMoveX) {
-            cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+            float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
+            if (playerAbleMoveX) {
+                cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+            }
+            if (playerAbleMoveY) {
+                cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
+            }
         }
-        if (playerAbleMoveY) {
-            cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
-        }
+
 
     }
 
