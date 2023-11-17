@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.myapplication.Model.entities.Player.Player;
+
 import com.example.myapplication.Model.entities.Player.playerDecorator.PlayerDecorator;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
@@ -58,7 +59,6 @@ public class Playing extends BaseState implements GameStateInterFace {
     private PlayerMoveStrategy playerDash;
     private float xSpeed;
     private float ySpeed;
-    private PlayerDecorator powerUps = new PlayerDecorator();
 
     private boolean onPause;
     private boolean onBook;
