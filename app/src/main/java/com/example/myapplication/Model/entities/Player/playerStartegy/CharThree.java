@@ -69,15 +69,15 @@ public class CharThree implements PlayerCharStrategy {
 
     @Override
     public void updateAtkBoxWhenAttacking() {
-        PointF pos = getAtkBoxPosWhenAttacking();
+        PointF pos = getAtkBoxPosWhenAttacking(); // y of pos is bottom
 
         float w = getAtkBoxSizeWhenAttacking().x;
         float h = getAtkBoxSizeWhenAttacking().y;
 
         if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
-            Player.getInstance().setAttackBox(new RectF(pos.x, pos.y, pos.x + w, pos.y + h));
+            Player.getInstance().setAttackBox(new RectF(pos.x, pos.y - h, pos.x + w, pos.y));
         } else {
-            Player.getInstance().setAttackBox(new RectF(pos.x - w, pos.y, pos.x, pos.y + h));
+            Player.getInstance().setAttackBox(new RectF(pos.x - w, pos.y - h, pos.x, pos.y));
         }
     }
 
@@ -168,6 +168,8 @@ public class CharThree implements PlayerCharStrategy {
         int idx = Player.getInstance().getAniIndex();
         Player.getInstance().setMakingDamage(true);
 
+        float scale = (float) Player.getInstance().getGameCharType().getScale();
+
 
         if (6 <= idx && idx <= 8) {
             return new PointF(
@@ -178,15 +180,15 @@ public class CharThree implements PlayerCharStrategy {
 
         if (12 <= idx && idx <= 14) {
             return new PointF(
-                    (float) (0.9 * GameConstants.Sprite.SIZE),
-                    (float) (1.5 * GameConstants.Sprite.SIZE)
+                    28 * scale,
+                    35 * scale
             );
         }
 
         if (19 <= idx && idx <= 22) {
             return new PointF(
-                    (float) (1.2 * GameConstants.Sprite.SIZE),
-                    (float) (0.3 * GameConstants.Sprite.SIZE)
+                    36 * scale,
+                    4 * scale
             );
         }
 
@@ -194,53 +196,55 @@ public class CharThree implements PlayerCharStrategy {
         resetEnemyAbleTakeDamage();
         Player.getInstance().setMakingDamage(false);
         return new PointF(
-                (float) (1.2 * GameConstants.Sprite.SIZE),
-                (float) (2 * GameConstants.Sprite.SIZE)
+                24 * scale,
+                30 * scale
         );
     }
 
     private PointF getAtkBoxPosWhenAttacking() {
-        float top = Player.getInstance().getHitBox().top;
+        float bottom = Player.getInstance().getHitBox().bottom;
+        float scale = (float) Player.getInstance().getGameCharType().getScale();
 
         int idx = Player.getInstance().getAniIndex();
         if (6 <= idx && idx <= 8) {
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                bottom -= 3 * scale;
                 return new PointF(
                         Player.getInstance().getHitBox().left,
-                        top
+                        bottom
                 );
             } else {
                 return new PointF(
                         Player.getInstance().getHitBox().right,
-                        top
+                        bottom
                 );
             }
         } else if (12 <= idx && idx <= 14) {
-            top -= Player.getInstance().getHitBoxOffsetY() / 3f;
+            bottom -= 9 * scale;
 
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
-                        top
+                        bottom
                 );
             } else {
                 return new PointF(
                         Player.getInstance().getHitBox().right,
-                        top
+                        bottom
                 );
             }
         } else if (19 <= idx && idx <= 22) {
-            top += Player.getInstance().getHitBoxOffsetY() / 3.3f;
+            bottom -= 19 * scale;
 
             if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
                 return new PointF(
                         Player.getInstance().getHitBox().left,
-                        top
+                        bottom
                 );
             } else  {
                 return new PointF(
                         Player.getInstance().getHitBox().right,
-                        top
+                        bottom
                 );
             }
         }
@@ -249,37 +253,43 @@ public class CharThree implements PlayerCharStrategy {
     }
 
     @Override
-    public int offSetX() { //画出动画时会减去这个值, 数字越大越往左
+    public float adjustX() {
         PlayerStates state = Player.getInstance().getCurrentStates();
-        int dir = Player.getInstance().getFaceDir();
-        int offsetXRight = Player.getInstance().getHitBoxOffsetX();
-        int offsetXLeft = 0;
-
+        float scale = (float) Player.getInstance().getGameCharType().getScale();
+        float offset = 0;
         if (state == PlayerStates.IDLE) {
-            offsetXRight = Player.getInstance().getHitBoxOffsetX();
-            offsetXLeft = 0;
-        } else if (state == PlayerStates.RUNNING) {
-            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 3;
-            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 3;
+            offset = 11;
         } else if (state == PlayerStates.WALK) {
-            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 2;
-            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 2;
+            offset = 22;
+        } else if (state == PlayerStates.RUNNING) {
+            offset = 9;
         } else if (state == PlayerStates.ATTACK) {
-            offsetXRight -= Player.getInstance().getHitBoxOffsetX();
-            offsetXLeft += Player.getInstance().getHitBoxOffsetX();
+            offset = 36;
         } else if (state == PlayerStates.PROJECTILE) {
-            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 2;
-            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 2;
+            offset = 27;
+        } else if (state == PlayerStates.DASH) {
+            offset = 9;
+        } else if (state == PlayerStates.HURT) {
+            offset = 14;
         } else if (state == PlayerStates.SKILL_ONE) {
-            offsetXRight -= Player.getInstance().getHitBoxOffsetX() / 1.5;
-            offsetXLeft += Player.getInstance().getHitBoxOffsetX() / 1.5;
+            offset = 31;
         }
+        return offset * scale;
+    }
 
-
-        if (dir == GameConstants.FaceDir.LEFT) {
-            return offsetXLeft;
+    @Override
+    public float adjustY() {
+        PlayerStates state = Player.getInstance().getCurrentStates();
+        float scale = (float) Player.getInstance().getGameCharType().getScale();
+        float offset = 0;
+        if (state == PlayerStates.PROJECTILE) {
+            offset = 6;
+        } else if (state == PlayerStates.HURT) {
+            offset = 1;
+        } else if (state == PlayerStates.SKILL_ONE) {
+            offset = 8;
         }
-        return offsetXRight;
+        return offset * scale;
     }
 
     @Override
@@ -332,16 +342,18 @@ public class CharThree implements PlayerCharStrategy {
 
     @Override
     public PointF getProjectileStartPos() {
-        float top = Player.getInstance().getHitBox().bottom - getProjectileSize().y;
+        float bottom = Player.getInstance().getHitBox().bottom;
+        //float scale = (float) Player.getInstance().getGameCharType().getScale();
+
         if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
             return new PointF(
                     Player.getInstance().getHitBox().left - getProjectileSize().x,
-                    top
+                    bottom - getProjectileSize().y
             );
         } else {
             return new PointF(
                     Player.getInstance().getHitBox().right,
-                    top
+                    bottom - getProjectileSize().y
             );
         }
     }

@@ -102,14 +102,17 @@ public class PlayingLogic {
         int overlapEnemyCounter = 0;
 
         for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-            if (enemy.isActive()) {
+            if (enemy.isActive() && !enemy.isOnDeath()) {
 
                 if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkRange())) {
                     enemy.setToAtk();
                 }
 
                 if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getHitBox())) {
-                    overlapEnemyCounter += 1;
+                    if (enemy.getMoveDir() != Player.getInstance().getMoveDir()) {
+                        overlapEnemyCounter += 1;
+                    }
+
                 }
 
 
@@ -226,7 +229,7 @@ public class PlayingLogic {
         attackBoxWithoutCamera.bottom -= cameraY;
 
         for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-            if (enemy.isActive()) {
+            if (enemy.isActive() && !enemy.isOnDeath()) {
                 if (Player.getInstance().isMakingDamage()) {
                     if (attackBoxWithoutCamera.intersects(
                             enemy.getHitBox().left,

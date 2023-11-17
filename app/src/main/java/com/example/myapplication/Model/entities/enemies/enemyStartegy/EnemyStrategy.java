@@ -38,12 +38,7 @@ public interface EnemyStrategy {
         return new PointF(GameConstants.Sprite.SIZE, GameConstants.Sprite.SIZE);
     }
 
-    default boolean isMakingDamage(EnemyStates state, int idx) {
-        if (state == EnemyStates.ATK) {
-            return (13 <= idx && idx <= 16);
-        }
-        return false;
-    }
+    abstract boolean isMakingDamage(EnemyStates state, int idx);
 
 
 }

@@ -277,20 +277,24 @@ public class MapManager {
 
 
     private void initMobList() {
-//        mapOne.addMobsToList(HelpMethods.getMobRandomized(
-//                2, mapOne, GameCharacters.CHEST_MOB));
         mapOne.addMobsToList(HelpMethods.getMobRandomized(
-                3, mapOne, GameCharacters.STEEL_GOLEM));
+                1, mapOne, GameCharacters.OGRE));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                1, mapOne, GameCharacters.STEEL_GOLEM));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                1, mapOne, GameCharacters.ROGUE_GOBLIN));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                1, mapOne, GameCharacters.MINOTAUR));
 
-//        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
-//                3, mapTwo, GameCharacters.ZOMBIE));
-//        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
-//                5, mapTwo, GameCharacters.CROW_MAN));
-//
-//        mapThree.addMobsToList(HelpMethods.getMobRandomized(
-//                4, mapThree, GameCharacters.CHEST_MOB));
-//        mapThree.addMobsToList(HelpMethods.getMobRandomized(
-//                5, mapThree, GameCharacters.STEEL_GOLEM));
+        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
+                3, mapTwo, GameCharacters.OGRE));
+        mapTwo.addMobsToList(HelpMethods.getMobRandomized(
+                5, mapTwo, GameCharacters.ROGUE_GOBLIN));
+
+        mapThree.addMobsToList(HelpMethods.getMobRandomized(
+                4, mapThree, GameCharacters.MINOTAUR));
+        mapThree.addMobsToList(HelpMethods.getMobRandomized(
+                5, mapThree, GameCharacters.STEEL_GOLEM));
     }
 
     private void initDoorway() {

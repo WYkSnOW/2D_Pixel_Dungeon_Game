@@ -490,14 +490,14 @@ public class Player extends Character {
 
     public void setOverlapEnemy(boolean overlapEnemy) {
         if (overlapEnemy && !(this.overlapEnemy)) {
-            overlapDir = faceDir;
+            overlapDir = moveDir;
         }
         this.overlapEnemy = overlapEnemy;
 
     }
 
     public boolean ableMoveWhenOverlap() {
-        if (overlapEnemy && faceDir == overlapDir) {
+        if (overlapEnemy && moveDir == overlapDir) {
             return !(currentStates == PlayerStates.WALK || currentStates == PlayerStates.RUNNING);
         }
         return true;

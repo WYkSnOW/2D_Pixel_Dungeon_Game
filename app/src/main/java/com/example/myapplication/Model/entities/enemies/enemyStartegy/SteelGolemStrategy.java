@@ -13,6 +13,10 @@ public class SteelGolemStrategy implements EnemyStrategy {
             return 9;
         } else if (state == EnemyStates.ATK) {
             return 20;
+        } else if (state == EnemyStates.HURT) {
+            return 4;
+        } else if (state == EnemyStates.DEATH) {
+            return 20;
         }
 
         return 1;
@@ -32,6 +36,10 @@ public class SteelGolemStrategy implements EnemyStrategy {
             offset = 12;
         } else if (states == EnemyStates.ATK) {
             offset = 32;
+        } else if (states == EnemyStates.HURT) {
+            offset = 12;
+        } else if (states == EnemyStates.DEATH) {
+            offset = 12;
         }
         return offset * scale;
     }
@@ -43,5 +51,13 @@ public class SteelGolemStrategy implements EnemyStrategy {
             offset = 2;
         }
         return offset * scale;
+    }
+
+    @Override
+    public boolean isMakingDamage(EnemyStates state, int idx) {
+        if (state == EnemyStates.ATK) {
+            return (13 <= idx && idx <= 16);
+        }
+        return false;
     }
 }

@@ -14,7 +14,6 @@ import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
 import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
-import com.example.myapplication.Model.helper.HelpMethods;
 
 import java.util.Random;
 public abstract class AbstractEnemy extends Character {
@@ -34,6 +33,7 @@ public abstract class AbstractEnemy extends Character {
 
     private boolean onSkill;
     private boolean alreadyMadeDamageToPlayer;
+    private boolean onDeath;
 
 
     public AbstractEnemy(
@@ -57,6 +57,7 @@ public abstract class AbstractEnemy extends Character {
 
         this.onSkill = false;
         this.alreadyMadeDamageToPlayer = false;
+        this.onDeath = false;
     }
 
     public void takePjtDamage(Projectile p) {
@@ -67,8 +68,9 @@ public abstract class AbstractEnemy extends Character {
             Player.getInstance().projectileHitEnemy(p);
 
             this.currentHealth = Math.max(currentHealth - p.getDamage(), 0);
+            setToHurt();
             if (currentHealth == 0) {
-                active = false;
+                setToDeath();
             }
 
         }
@@ -80,9 +82,13 @@ public abstract class AbstractEnemy extends Character {
             this.currentHealth = Math.max(currentHealth
                     - Player.getInstance().getCurrentDamage(), 0);
             if (currentHealth == 0) {
-                active = false;
+                setToDeath();
             } else {
-                hitBack(GameConstants.Sprite.SIZE / 4f);
+                if (!onSkill) {
+                    hitBack(GameConstants.Sprite.SIZE / 4f);
+                }
+                setToHurt();
+
             }
         }
     }
@@ -125,6 +131,9 @@ public abstract class AbstractEnemy extends Character {
                     onSkill = false;
                     alreadyMadeDamageToPlayer = false;
                     setToWalk();
+                }
+                if (onDeath) {
+                    active = false;
                 }
                 aniIndex = 0;
             }
@@ -249,6 +258,8 @@ public abstract class AbstractEnemy extends Character {
 
 
 
+
+
     private void defaultMoveMode(GameMap gameMap, float facePoint) {
         if (System.currentTimeMillis() - lastDirChange >= 3000) { // 距离上次改变方向，3000毫秒即3秒后改变怪物方向
             moveDir = rand.nextInt(4);
@@ -332,6 +343,24 @@ public abstract class AbstractEnemy extends Character {
         }
 
     }
+    public void setToDeath() {
+        if (currentState != EnemyStates.DEATH) {
+            onSkill = true;
+            resetAnimation();
+            currentState = EnemyStates.DEATH;
+            onDeath = true;
+        }
+
+
+    }
+
+    public void setToHurt() {
+        if (!onSkill) {
+            onSkill = true;
+            resetAnimation();
+            currentState = EnemyStates.HURT;
+        }
+    }
 
     private void setToWalk() {
         resetAnimation();
@@ -385,9 +414,11 @@ public abstract class AbstractEnemy extends Character {
     public float getEnemyLeft() {
 
         if (faceDir == GameConstants.FaceDir.RIGHT) {
-            return hitBox.left - getHitBoxOffsetX() + enemyStrategy.adjustX(currentState, (float) gameCharType.getScale());
+            return hitBox.left - getHitBoxOffsetX()
+                    + enemyStrategy.adjustX(currentState, (float) gameCharType.getScale());
         } else {
-            return hitBox.left - enemyStrategy.adjustX(currentState, (float) gameCharType.getScale());
+            return hitBox.left
+                    - enemyStrategy.adjustX(currentState, (float) gameCharType.getScale());
         }
 
     }
@@ -404,9 +435,18 @@ public abstract class AbstractEnemy extends Character {
         );
     }
 
+    public boolean isOnDeath() {
+        return onDeath;
+    }
+
 
     public boolean isMakingDamage() {
-        return enemyStrategy.isMakingDamage(currentState, aniIndex) && !alreadyMadeDamageToPlayer;
+        if (!enemyStrategy.isMakingDamage(currentState, aniIndex)) {
+            alreadyMadeDamageToPlayer = false;
+            return false;
+        } else {
+            return !alreadyMadeDamageToPlayer;
+        }
     }
 
     public void setAlreadyMadeDamageToPlayer(boolean alreadyMadeDamageToPlayer) {

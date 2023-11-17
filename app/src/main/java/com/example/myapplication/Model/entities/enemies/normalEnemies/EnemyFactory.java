@@ -7,12 +7,12 @@ import com.example.myapplication.Model.entities.GameCharacters;
 public class EnemyFactory {
     public static AbstractEnemy createEnemy(GameCharacters characterType, PointF position) {
         switch (characterType) {
-        case ZOMBIE:
-            return new Zombie(position);
-        case CHEST_MOB:
-            return new ChestMob(position);
-        case CROW_MAN:
-            return new CrowMan(position);
+        case OGRE:
+            return new Ogre(position);
+        case MINOTAUR:
+            return new Minotaur(position);
+        case ROGUE_GOBLIN:
+            return new RogueGoblin(position);
         case STEEL_GOLEM:
             return new SteelGolem(position);
         default:

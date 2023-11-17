@@ -9,7 +9,7 @@ import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEn
 public class SteelGolem extends AbstractEnemy {
 
     public SteelGolem(PointF pos) {
-        super(pos, GameCharacters.STEEL_GOLEM, 50, 5,  100, new SteelGolemStrategy());
+        super(pos, GameCharacters.STEEL_GOLEM, 70, 5,  100, new SteelGolemStrategy());
     }
 
     @Override
