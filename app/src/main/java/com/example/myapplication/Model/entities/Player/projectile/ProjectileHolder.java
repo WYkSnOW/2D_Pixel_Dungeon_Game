@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ProjectileStrategy;
+import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ShotProjectile;
 import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 
@@ -44,7 +46,8 @@ public class ProjectileHolder {
 
     public void addProjectile(
             PointF pos, PointF size, boolean faceRight, float speed,
-            GameVideos anim, PointF animOffset) {
+            GameVideos anim, PointF animOffset,
+            ProjectileStrategy projectileStrategy) {
 
         proList.add(new Projectile(
                 new PointF(pos.x - cameraX, pos.y - cameraY),
@@ -52,7 +55,8 @@ public class ProjectileHolder {
                 faceRight,
                 speed,
                 anim,
-                animOffset)
+                animOffset,
+                projectileStrategy)
         );
         isEmpty = false;
     }

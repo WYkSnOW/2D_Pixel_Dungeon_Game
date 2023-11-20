@@ -257,6 +257,36 @@ public enum GameVideos implements BitmapMethods {
             1,
             3,
             GameConstants.Animation.ANI_SPEED
+    ),
+
+    BOOK_CATEGORIES(
+            R.drawable.book_categories,
+            768,
+            640,
+            6,
+            1,
+            3,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    BOOK_LEFT_FLIP(
+            R.drawable.book_left_flip,
+            768,
+            640,
+            7,
+            1,
+            3,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    BOOK_RIGHT_FLIP(
+            R.drawable.book_right_flip,
+            768,
+            640,
+            7,
+            1,
+            3,
+            GameConstants.Animation.ANI_SPEED
     );
 
     private final Bitmap spriteSheet;

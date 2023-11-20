@@ -8,6 +8,7 @@ import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
+import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ShotProjectile;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 
@@ -352,7 +353,8 @@ public class CharTwo implements PlayerCharStrategy {
                         new PointF(
                                 (float) (50 * GameVideos.FIRE_BALL_ANIM.getScale()),
                                 -(float) (55 * GameVideos.FIRE_BALL_ANIM.getScale())
-                        ));
+                        ),
+                        new ShotProjectile());
             }
         } else {
             Player.getInstance().setAbleProjectile(true);

@@ -155,14 +155,17 @@ public abstract class AbstractEnemy extends Character {
         GameMap gameMap = mapManager.getCurrentMap();
         //defaultMoveMode(delta, gameMap);
 
-        float facePoint = hitBox.left;
-        if (faceDir == GameConstants.FaceDir.RIGHT) {
-            facePoint = hitBox.right;
-        }
+
 
         currentSpeed = (float) delta * baseSpeed;
+
+
+
         float distanceX = hitBox.centerX() - playerPos.x;
         float distanceY = hitBox.centerY() - playerPos.y;
+
+
+
         double distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 
 
@@ -170,7 +173,7 @@ public abstract class AbstractEnemy extends Character {
         if (distance <= chaseDistance * GameConstants.Sprite.SIZE) { //怪物检测范围，单位为格
             chaseMoveMode(distanceX, distanceY, gameMap);
         } else {
-            defaultMoveMode(gameMap, facePoint);
+            defaultMoveMode(gameMap);
         }
 
     }
@@ -260,7 +263,7 @@ public abstract class AbstractEnemy extends Character {
 
 
 
-    private void defaultMoveMode(GameMap gameMap, float facePoint) {
+    private void defaultMoveMode(GameMap gameMap) {
         if (System.currentTimeMillis() - lastDirChange >= 3000) { // 距离上次改变方向，3000毫秒即3秒后改变怪物方向
             moveDir = rand.nextInt(4);
             lastDirChange = System.currentTimeMillis(); //更新改变方向的时间
@@ -273,13 +276,13 @@ public abstract class AbstractEnemy extends Character {
         if (moveDir == GameConstants.MoveDir.DOWN) {
             hitBox.top += currentSpeed;  //updating hitBox
             hitBox.bottom += currentSpeed; //300 is the speed
-            if (!(gameMap.canMoveHere(facePoint, hitBox.bottom, hitBox.bottom))) { //2220为屏幕像素
+            if (!(gameMap.canMoveHereTwoX(hitBox.left, hitBox.right, hitBox.bottom))) { //2220为屏幕像素
                 moveDir = GameConstants.MoveDir.UP;
             }
         } else if (moveDir == GameConstants.MoveDir.UP) {
             hitBox.top -= currentSpeed;
             hitBox.bottom -= currentSpeed;
-            if (!(gameMap.canMoveHere(facePoint, hitBox.top, hitBox.top))) {
+            if (!(gameMap.canMoveHereTwoX(hitBox.left, hitBox.right, hitBox.top))) {
                 moveDir = GameConstants.MoveDir.DOWN;
             }
         } else if (moveDir == GameConstants.MoveDir.RIGHT) {
@@ -382,7 +385,7 @@ public abstract class AbstractEnemy extends Character {
     }
 
     public RectF getAtkRange() {
-        return getRectBySize(enemyStrategy.getAtkRangeSize());
+        return enemyStrategy.getAtkDetectBox(hitBox, faceDir, (float) (gameCharType.getScale()));
 
     }
 
@@ -452,4 +455,6 @@ public abstract class AbstractEnemy extends Character {
     public void setAlreadyMadeDamageToPlayer(boolean alreadyMadeDamageToPlayer) {
         this.alreadyMadeDamageToPlayer = alreadyMadeDamageToPlayer;
     }
+
+
 }

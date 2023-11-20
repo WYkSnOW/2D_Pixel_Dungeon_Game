@@ -3,6 +3,7 @@ package com.example.myapplication.Model.entities.enemies.enemyStartegy;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
+import com.example.myapplication.Model.helper.GameConstants;
 
 public class RogueGoblinStrategy implements EnemyStrategy {
     @Override
@@ -53,6 +54,16 @@ public class RogueGoblinStrategy implements EnemyStrategy {
             offset = 7;
         }
         return offset * scale;
+    }
+
+    @Override
+    public PointF getAtkDetectSize() {
+        return new PointF(GameConstants.Sprite.SIZE * 0.4f, GameConstants.Sprite.SIZE);
+    }
+
+    @Override
+    public PointF getAtkHitBoxSize() {
+        return new PointF(GameConstants.Sprite.SIZE * 1f, GameConstants.Sprite.SIZE);
     }
 
     @Override

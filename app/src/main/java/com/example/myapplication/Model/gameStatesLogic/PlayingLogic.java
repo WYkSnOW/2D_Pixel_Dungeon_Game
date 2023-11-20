@@ -1,5 +1,10 @@
 package com.example.myapplication.Model.gameStatesLogic;
 
+import static com.example.myapplication.Model.helper.GameConstants.MoveDir.DOWN;
+import static com.example.myapplication.Model.helper.GameConstants.MoveDir.LEFT;
+import static com.example.myapplication.Model.helper.GameConstants.MoveDir.RIGHT;
+import static com.example.myapplication.Model.helper.GameConstants.MoveDir.UP;
+
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -9,6 +14,7 @@ import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
+import com.example.myapplication.Model.helper.GameConstants;
 
 public class PlayingLogic {
 
@@ -39,6 +45,39 @@ public class PlayingLogic {
         }
         return checkAbleMoveY(mapManager, delta, camera);
 
+    }
+
+    public boolean checkIntoWallX(MapManager mapManager, PointF camera) {
+        float xL
+                = Player.getInstance().getHitBox().left + camera.x * -1 + 1;
+        float xR
+                = Player.getInstance().getHitBox().right + camera.x * -1 - 1;
+
+        float yTop
+                = Player.getInstance().getHitBox().top + camera.y * -1 + 1;
+
+        float yBottom
+                = Player.getInstance().getHitBox().bottom + camera.y * -1 - 1;
+
+        return !(mapManager.getCurrentMap().canMoveHere(xR, yTop, yBottom)
+                && mapManager.getCurrentMap().canMoveHere(xL, yTop, yBottom));
+    }
+
+
+    public boolean checkIntoWallY(MapManager mapManager, PointF camera) {
+        float xL
+                = Player.getInstance().getHitBox().left + camera.x * -1 + 1;
+        float xR
+                = Player.getInstance().getHitBox().right + camera.x * -1 - 1;
+
+        float yTop
+                = Player.getInstance().getHitBox().top + camera.y * -1 + 1;
+
+        float yBottom
+                = Player.getInstance().getHitBox().bottom + camera.y * -1 - 1;
+
+        return !(mapManager.getCurrentMap().canMoveHereTwoX(xL, xR, yTop)
+                && mapManager.getCurrentMap().canMoveHereTwoX(xL, xR, yBottom));
     }
 
 
@@ -80,6 +119,11 @@ public class PlayingLogic {
                 && mapManager.getCurrentMap().canMoveHere(xR, currYTop, currYBottom);
     }
 
+
+
+
+
+
     public boolean checkHitBoxCollision(RectF hitBoxOne, RectF hitBoxTwo) {
         return hitBoxOne.intersects(
                 hitBoxTwo.left,
@@ -104,19 +148,25 @@ public class PlayingLogic {
         for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
             if (enemy.isActive() && !enemy.isOnDeath()) {
 
-                if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkRange())) {
+                if (
+                        checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkRange())
+                        || checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getHitBox())
+                ) {
                     enemy.setToAtk();
                 }
 
                 if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getHitBox())) {
-                    if (enemy.getMoveDir() != Player.getInstance().getMoveDir()) {
-                        overlapEnemyCounter += 1;
+                    if ((Player.getInstance().getFaceDir() != enemy.getFaceDir())) {
+                        overlapEnemyCounter++;
                     }
 
                 }
 
 
-                if (checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkHitBox())) {
+                if (
+                        checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getAtkHitBox())
+                        || checkHitBoxCollision(playerHitBoxWithoutCamera, enemy.getHitBox())
+                ) {
 
                     //enemy.startPreparingAtk();
 

@@ -90,10 +90,25 @@ public class GameMap { //store world and help to draw map
         if (x < 0 || yTop < 0 || yBottom < 0) {
             return false;
         }
-        if (x >= mapWidth || yTop >= mapHeight || yBottom >= mapHeight) {
+        return !(x >= mapWidth) && !(yTop >= mapHeight) && !(yBottom >= mapHeight);
+    }
+
+
+    public boolean canMoveHereTwoX(float xL, float xR, float y) {
+
+        if (!checkEdge(xL, y, y, getMapWidth(), getMapHeight())
+                || !checkEdge(xR, y, y, getMapWidth(), getMapHeight())) {
             return false;
         }
-        return true;
+
+        int tileXL = (int) (xL / GameConstants.Sprite.SIZE);
+        int tileXR = (int) (xR / GameConstants.Sprite.SIZE);
+        int tileY = (int) (y / GameConstants.Sprite.SIZE);
+
+        int tileIdLeft = getSpriteID(tileXL, tileY);
+        int tileIdRight = getSpriteID(tileXR, tileY);
+
+        return (isMoveAbleBlock(tileIdLeft) && isMoveAbleBlock(tileIdRight));
     }
 
 

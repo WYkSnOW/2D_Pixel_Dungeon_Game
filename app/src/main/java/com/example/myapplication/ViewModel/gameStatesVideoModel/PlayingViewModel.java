@@ -16,7 +16,6 @@ import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 import com.example.myapplication.Model.ui.playingUI.bookUI.BookUI;
-import com.example.myapplication.View.main.gameStates.Playing;
 
 public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
@@ -79,6 +78,14 @@ public class PlayingViewModel extends ViewModel {
         return playingLogic.checkPlayerAbleMoveY(
                 attacking, mapManager, delta, camera
         );
+    }
+
+    public boolean checkIntoWallX(MapManager mapManager, PointF camera) {
+        return playingLogic.checkIntoWallX(mapManager, camera);
+    }
+
+    public boolean checkIntoWallY(MapManager mapManager, PointF camera) {
+        return playingLogic.checkIntoWallY(mapManager, camera);
     }
 
     public void checkAttack(boolean attacking, RectF attackBox,

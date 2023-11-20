@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.myapplication.Model.entities.Player.Player;
 
-import com.example.myapplication.Model.entities.Player.playerDecorator.PlayerDecorator;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
@@ -370,18 +369,40 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     }
 
+//    private void updatePlayerPosition(double delta) {
+//        if (viewModel.ableMoveWhenOverlap()) {
+//            float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
+//            if (playerAbleMoveX) {
+//                cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+//            }
+//            if (playerAbleMoveY) {
+//                cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
+//            }
+//        }
+//
+//
+//    }
+
     private void updatePlayerPosition(double delta) {
+        float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
         if (viewModel.ableMoveWhenOverlap()) {
-
-
-            float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
             if (playerAbleMoveX) {
                 cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
             }
-            if (playerAbleMoveY) {
-                cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
-            }
         }
+        if (playerAbleMoveY) {
+            cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
+        }
+
+
+        if (viewModel.checkIntoWallX(mapManager, new PointF(cameraX, cameraY))) {
+            cameraX -= Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+        }
+        if (viewModel.checkIntoWallY(mapManager, new PointF(cameraX, cameraY))) {
+            cameraY -= Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
+        }
+
+        System.out.println("into wall right: " + viewModel.checkIntoWallX(mapManager, new PointF(cameraX, cameraY)));
 
 
     }

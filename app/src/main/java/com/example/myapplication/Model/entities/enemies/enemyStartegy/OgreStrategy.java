@@ -3,6 +3,7 @@ package com.example.myapplication.Model.entities.enemies.enemyStartegy;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
+import com.example.myapplication.Model.helper.GameConstants;
 
 public class OgreStrategy implements EnemyStrategy {
     @Override
@@ -57,6 +58,16 @@ public class OgreStrategy implements EnemyStrategy {
             offset = 2;
         }
         return offset * scale;
+    }
+
+    @Override
+    public PointF getAtkDetectSize() {
+        return new PointF(GameConstants.Sprite.SIZE * 0.5f, GameConstants.Sprite.SIZE);
+    }
+
+    @Override
+    public PointF getAtkHitBoxSize() {
+        return new PointF(GameConstants.Sprite.SIZE * 1.3f, GameConstants.Sprite.SIZE);
     }
 
     @Override

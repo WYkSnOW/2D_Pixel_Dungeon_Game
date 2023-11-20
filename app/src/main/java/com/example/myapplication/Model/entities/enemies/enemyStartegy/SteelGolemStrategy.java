@@ -3,6 +3,7 @@ package com.example.myapplication.Model.entities.enemies.enemyStartegy;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
+import com.example.myapplication.Model.helper.GameConstants;
 
 public class SteelGolemStrategy implements EnemyStrategy {
     @Override
@@ -51,6 +52,16 @@ public class SteelGolemStrategy implements EnemyStrategy {
             offset = 2;
         }
         return offset * scale;
+    }
+
+    @Override
+    public PointF getAtkDetectSize() {
+        return new PointF(GameConstants.Sprite.SIZE, GameConstants.Sprite.SIZE);
+    }
+
+    @Override
+    public PointF getAtkHitBoxSize() {
+        return new PointF(GameConstants.Sprite.SIZE * 2, GameConstants.Sprite.SIZE);
     }
 
     @Override

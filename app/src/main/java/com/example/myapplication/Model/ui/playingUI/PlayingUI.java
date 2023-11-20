@@ -34,6 +34,7 @@ public class PlayingUI {
 
 
     private final PointF joystickCenterPos = new PointF(320, GAME_HEIGHT - 250);
+    private PointF innerJoystickCenterPos = joystickCenterPos;
     private final PointF attackBtnCenterPos = new PointF(GAME_WIDTH - 320, GAME_HEIGHT - 250);
 
     private final PointF atkModBtnCenterPos =  new PointF(GAME_WIDTH - 100, GAME_HEIGHT - 350);
@@ -157,6 +158,8 @@ public class PlayingUI {
         );
     }
 
+
+
     private void drawCircle(Canvas c) {
         c.drawCircle(joystickCenterPos.x, joystickCenterPos.y,
                 radius, circlePaint);
@@ -168,6 +171,9 @@ public class PlayingUI {
                 smallRadius, circlePaint);
 
         c.drawCircle(skillOneBtnCenterPos.x, skillOneBtnCenterPos.y,
+                smallRadius, circlePaint);
+
+        c.drawCircle(innerJoystickCenterPos.x, innerJoystickCenterPos.y,
                 smallRadius, circlePaint);
 
 
@@ -251,141 +257,181 @@ public class PlayingUI {
         final int pointerId = event.getPointerId(actionIndex);
         final PointF eventPos = new PointF(event.getX(actionIndex), event.getY(actionIndex));
 
-
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
 
-            if (checkInsideJoyStick(eventPos, pointerId)) { //光标在圆环内部
-                touchDown = true; //初始点击点在圆环内部
-            } else if (checkInsideAttackBtn(eventPos)) {
-                if (attackBtnPointerId < 0) {
+            actionDown(pointerId, eventPos);
 
-
-                    if (atkModState == 1) {
-                        Player.getInstance().setAttacking(true);
-                    } else {
-                        Player.getInstance().setProjecting(true);
-                    }
-
-
-                    attackBtnPointerId = pointerId;
-                }
-            } else if (checkInsideRunLock(eventPos)) {
-                if (runLockBtnPointerId < 0) {
-
-                    runLockBtnPointerId = pointerId;
-                }
-            } else if (checkInsideAtkMod(eventPos)) {
-                if (atkModBtnPointerId < 0) {
-                    atkModBtnPointerId = pointerId;
-                }
-            } else if (checkInsideDashBtn(eventPos)) {
-                if (dashBtnPointerId < 0) {
-                    dashBtnPointerId = pointerId;
-                }
-            } else if (checkInsideSkillOneBtn(eventPos)) {
-                if (skillOneBtnPointerId < 0) {
-                    skillOneBtnPointerId = pointerId;
-                }
-            } else if (Player.getInstance().isHaveInteract() && checkInsideInteractBtn(eventPos)) {
-                if (interactBtnPointerId < 0) {
-                    interactBtnPointerId = pointerId;
-                }
-            } else {
-                if (isIn(eventPos, btnMenu)) {
-                    btnMenu.setPushed(true, pointerId);
-                }
-                if (isIn(eventPos, btnPause)) {
-                    btnPause.setPushed(true, pointerId);
-                }
-                if (isIn(eventPos, btnBook)) {
-                    btnBook.setPushed(true, pointerId);
-                }
-                //game.setCurrentGameState(Game.GameState.END);
-            }
         } else if (action == MotionEvent.ACTION_MOVE) { //点击后移动光标
 
-            if (touchDown) { //只有点击圆环内部而后滑出可以操纵
-
-                for (int i = 0; i < event.getPointerCount(); i++) {
-                    if (event.getPointerId(i) == joystickPointerId) {
-                        //负数意味点击点x值在圆心x值左边（小于），即角色应该左移，反之右移
-                        float xDiff = event.getX(i) - joystickCenterPos.x;
-                        float yDiff = event.getY(i) - joystickCenterPos.y;
-                        //传输进入控制板中决定玩家是否移动的function
-                        if (!(Player.getInstance().isAttacking()
-                                || Player.getInstance().isOnSkill()
-                                || Player.getInstance().isProjecting())) {
-                            playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
-                            if (runLockState == 2) {
-                                Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
-                            } else if (runLockState == 3) {
-                                Player.getInstance().setCurrentStates(PlayerStates.WALK);
-                            } else {
-                                if (checkInsideJoyStick(
-                                        new PointF(event.getX(),
-                                                event.getY()),
-                                        event.getPointerId(i))) {
-                                    Player.getInstance().setCurrentStates(PlayerStates.WALK);
-                                } else {
-                                    Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
-                                }
-                            }
-                        }
-
-
-                    }
-                }
-
-            }
-
-
+            actionMove(event);
 
         } else if (action == MotionEvent.ACTION_UP
                 || action == MotionEvent.ACTION_POINTER_UP) { //松开光标
 
-            if (pointerId == joystickPointerId) {
-                resetJoystickButton();
-
-
-            } else {
-                if (isIn(eventPos, btnMenu)) {
-                    if (btnMenu.isPushed(pointerId)) {
-                        resetJoystickButton();
-
-                        //Player.getInstance().setWinTheGame(true);
-                        //playing.setGameStateToEnd();
-
-                        if (Player.getInstance().getGameCharType() == GameCharacters.CENTAUR) {
-                            Player.getInstance().setCharStrategy(new CharTwo());
-                        } else if (Player.getInstance().getGameCharType()
-                                == GameCharacters.WITCH2) {
-                            Player.getInstance().setCharStrategy(new CharThree());
-                        } else {
-                            Player.getInstance().setCharStrategy(new CharOne());
-                        }
-
-                    }
-                } else if (isIn(eventPos, btnPause)) {
-                    if (btnPause.isPushed(pointerId)) {
-                        resetJoystickButton();
-                        playing.changeOnPause();
-                    }
-                } else if (isIn(eventPos, btnBook)) {
-                    if (btnBook.isPushed(pointerId)) {
-                        resetJoystickButton();
-                        playing.changeOnBook();
-                    }
-                }
-            }
-
-
-
-            //btnConfig.unPush(pointerId);
-
-            btnUpAction(pointerId);
+            actionUp(pointerId, eventPos);
         }
 
     }
+
+    private void actionDown(int pointerId, PointF eventPos) {
+        if (checkInsideJoyStick(eventPos, pointerId)) { //光标在圆环内部
+
+            innerJoystickCenterPos = eventPos; //更新内部摇杆小球
+            touchDown = true; //初始点击点在圆环内部
+        } else if (checkInsideAttackBtn(eventPos)) {
+            if (attackBtnPointerId < 0) {
+
+
+                if (atkModState == 1) {
+                    Player.getInstance().setAttacking(true);
+                } else {
+                    Player.getInstance().setProjecting(true);
+                }
+
+
+                attackBtnPointerId = pointerId;
+            }
+        } else if (checkInsideRunLock(eventPos)) {
+            if (runLockBtnPointerId < 0) {
+
+                runLockBtnPointerId = pointerId;
+            }
+        } else if (checkInsideAtkMod(eventPos)) {
+            if (atkModBtnPointerId < 0) {
+                atkModBtnPointerId = pointerId;
+            }
+        } else if (checkInsideDashBtn(eventPos)) {
+            if (dashBtnPointerId < 0) {
+                dashBtnPointerId = pointerId;
+            }
+        } else if (checkInsideSkillOneBtn(eventPos)) {
+            if (skillOneBtnPointerId < 0) {
+                skillOneBtnPointerId = pointerId;
+            }
+        } else if (Player.getInstance().isHaveInteract() && checkInsideInteractBtn(eventPos)) {
+            if (interactBtnPointerId < 0) {
+                interactBtnPointerId = pointerId;
+            }
+        } else {
+            if (isIn(eventPos, btnMenu)) {
+                btnMenu.setPushed(true, pointerId);
+            }
+            if (isIn(eventPos, btnPause)) {
+                btnPause.setPushed(true, pointerId);
+            }
+            if (isIn(eventPos, btnBook)) {
+                btnBook.setPushed(true, pointerId);
+            }
+            //game.setCurrentGameState(Game.GameState.END);
+        }
+    }
+
+
+
+    private void actionMove(MotionEvent event) {
+        if (touchDown) { //只有点击圆环内部而后滑出可以操纵
+
+            for (int i = 0; i < event.getPointerCount(); i++) {
+                if (event.getPointerId(i) == joystickPointerId) {
+                    //负数意味点击点x值在圆心x值左边（小于），即角色应该左移，反之右移
+                    float xDiff = event.getX(i) - joystickCenterPos.x;
+                    float yDiff = event.getY(i) - joystickCenterPos.y;
+
+
+                    float xPos = joystickCenterPos.x + returnDiff(xDiff); //更新摇杆内部小球
+                    float yPos = joystickCenterPos.y + returnDiff(yDiff);
+                    innerJoystickCenterPos = new PointF(xPos, yPos);
+
+
+
+                    //传输进入控制板中决定玩家是否移动的function
+                    if (!(Player.getInstance().isAttacking()
+                            || Player.getInstance().isOnSkill()
+                            || Player.getInstance().isProjecting())) {
+                        playing.setPlayerMoveTrue(new PointF(xDiff, yDiff));
+                        if (runLockState == 2) {
+                            Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
+                        } else if (runLockState == 3) {
+                            Player.getInstance().setCurrentStates(PlayerStates.WALK);
+                        } else {
+                            if (checkInsideJoyStick(
+                                    new PointF(event.getX(),
+                                            event.getY()),
+                                    event.getPointerId(i))) {
+                                Player.getInstance().setCurrentStates(PlayerStates.WALK);
+
+
+                            } else {
+                                Player.getInstance().setCurrentStates(PlayerStates.RUNNING);
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+        }
+    }
+
+
+
+    private void actionUp(int pointerId, PointF eventPos) {
+        if (pointerId == joystickPointerId) {
+            resetJoystickButton();
+
+
+        } else {
+            if (isIn(eventPos, btnMenu)) {
+                if (btnMenu.isPushed(pointerId)) {
+                    resetJoystickButton();
+
+                    //Player.getInstance().setWinTheGame(true);
+                    //playing.setGameStateToEnd();
+
+                    if (Player.getInstance().getGameCharType() == GameCharacters.CENTAUR) {
+                        Player.getInstance().setCharStrategy(new CharTwo());
+                    } else if (Player.getInstance().getGameCharType()
+                            == GameCharacters.WITCH2) {
+                        Player.getInstance().setCharStrategy(new CharThree());
+                    } else {
+                        Player.getInstance().setCharStrategy(new CharOne());
+                    }
+
+                }
+            } else if (isIn(eventPos, btnPause)) {
+                if (btnPause.isPushed(pointerId)) {
+                    resetJoystickButton();
+                    playing.changeOnPause();
+                }
+            } else if (isIn(eventPos, btnBook)) {
+                if (btnBook.isPushed(pointerId)) {
+                    resetJoystickButton();
+                    playing.changeOnBook();
+                }
+            }
+        }
+
+
+        //btnConfig.unPush(pointerId);
+
+        btnUpAction(pointerId);
+    }
+
+
+
+
+
+
+    private float returnDiff(float diff) {
+        if (diff < 0) {
+            return Math.max(-(2 * smallRadius), diff);
+        } else {
+            return Math.min((2 * smallRadius), diff);
+        }
+    }
+
+
 
     private void btnUnPush(int pointerId) {
         btnMenu.unPush(pointerId);
@@ -459,8 +505,10 @@ public class PlayingUI {
 
 
 
+
     private void resetJoystickButton() {
         touchDown = false; //松开光标即操作消失
+        innerJoystickCenterPos = joystickCenterPos;
         playing.setPlayerMoveFalse();
         joystickPointerId = -1;
     }

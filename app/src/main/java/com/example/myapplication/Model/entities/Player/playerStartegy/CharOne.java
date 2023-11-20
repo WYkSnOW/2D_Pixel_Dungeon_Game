@@ -8,6 +8,7 @@ import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
+import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ShotProjectile;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 
@@ -120,7 +121,8 @@ public class CharOne implements PlayerCharStrategy {
                         new PointF(
                                 (float) (7 * GameVideos.STORM_ARROW_ANIM.getScale()),
                                 -(float) (45 * GameVideos.STORM_ARROW_ANIM.getScale())
-                        ));
+                        ),
+                        new ShotProjectile());
             }
         } else {
             Player.getInstance().setAbleProjectile(true);
@@ -258,7 +260,8 @@ public class CharOne implements PlayerCharStrategy {
                         Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT,
                         getProjectSpeed(),
                         GameVideos.ARROW_ANIM,
-                        new PointF(0, (float) (2 * GameVideos.ARROW_ANIM.getScale())));
+                        new PointF(0, (float) (2 * GameVideos.ARROW_ANIM.getScale())),
+                        new ShotProjectile());
             }
         } else {
             Player.getInstance().setAbleProjectile(true);

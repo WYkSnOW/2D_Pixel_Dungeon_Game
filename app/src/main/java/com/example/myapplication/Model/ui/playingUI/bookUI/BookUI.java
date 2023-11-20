@@ -5,7 +5,10 @@ package com.example.myapplication.Model.ui.playingUI.bookUI;
 import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.view.MotionEvent;
 
 
@@ -23,18 +26,41 @@ public class BookUI {
     private boolean opingBook = true;
     private boolean btnAppearing = true;
 
+
+
+
     private boolean btnDisappearing = false;
     private boolean closing = false;
 
+
+
+
+
     private boolean ableClick = false;
+
+
+
+
+
 
     private int aniIndex = 0;
     private int aniTick = 0;
 
 
+    private boolean flippingLeft = false;
+    private boolean flippingRight = false;
+    private int categoriesState = 0;
+    private final int categoriesBtnAmount = 6;
 
 
-    private PointF bookPos;
+    private final PointF bookPos;
+    private final PointF bookLeftTop;
+    private final PointF firstBtnPos;
+    private final PointF categoriesBtnSize;
+    private final float btnSpace;
+
+
+    private final Paint paint = new Paint();
 
     public BookUI(Playing playing) {
         this.playing = playing;
@@ -43,12 +69,36 @@ public class BookUI {
                 -(float) (GameVideos.BOOK_OPENING.getHeight() / 5)
         );
 
+        this.bookLeftTop = new PointF(
+                bookPos.x + (float) (145 * GameVideos.BOOK_OPENING.getScale()),
+                bookPos.y + (float) (160 * GameVideos.BOOK_OPENING.getScale())
+        );
+
+        this.firstBtnPos = new PointF(
+                bookLeftTop.x + (float) (482 * GameVideos.BOOK_OPENING.getScale()),
+                bookLeftTop.y + (float) (46 * GameVideos.BOOK_OPENING.getScale())
+        );
+
+        this.categoriesBtnSize = new PointF(
+                (float) (30 * GameVideos.BOOK_OPENING.getScale()),
+                (float) (26 * GameVideos.BOOK_OPENING.getScale())
+        );
+
+        this.btnSpace = (float) (39 * GameVideos.BOOK_OPENING.getScale());
+
+
         btnResume = new CustomButton(
                 GAME_WIDTH - ButtonImage.PLAYING_RESUME.getWidth() - 5,
                 5,
                 ButtonImage.PLAYING_RESUME.getWidth(),
                 ButtonImage.PLAYING_RESUME.getHeight()
         );
+
+
+
+        paint.setColor(Color.RED);
+        paint.setAlpha(100);
+        paint.setStrokeWidth(5);
     }
 
     public void drawUI(Canvas c) {
@@ -73,24 +123,77 @@ public class BookUI {
                         drawBtnDisappear(c);
                     }
                 } else {
-                    ableClick = true;
-                    c.drawBitmap(
-                            GameVideos.BOOK_BTN_APPEARING.getSprite(0,
-                                    GameVideos.BOOK_BTN_APPEARING.getMaxAnimIndex() - 1),
-                            bookPos.x,
-                            bookPos.y,
-                            null
-                    );
+
+
+                    if (flippingLeft) {
+                        drawBookFlipLeft(c);
+                    } else if (flippingRight) {
+                        drawBookFlipRight(c);
+                    } else {
+
+                        ableClick = true;
+                        drawBookCategories(c);
+
+                    }
+
+
 
 
                 }
-
             }
         }
 
 
+    }
+
+
+    private void drawBookFlipLeft(Canvas c) {
+        c.drawBitmap(
+                GameVideos.BOOK_LEFT_FLIP.getSprite(0,
+                        aniIndex),
+                bookPos.x,
+                bookPos.y,
+                null
+        );
+        updateAnimation(GameVideos.BOOK_LEFT_FLIP.getAnimRate());
+
+        if (aniIndex >= GameVideos.BOOK_LEFT_FLIP.getMaxAnimIndex()) {
+            aniIndex = 0;
+            flippingLeft = false;
+            ableClick = false;
+        }
+    }
+
+    private void drawBookFlipRight(Canvas c) {
+        c.drawBitmap(
+                GameVideos.BOOK_RIGHT_FLIP.getSprite(0,
+                        aniIndex),
+                bookPos.x,
+                bookPos.y,
+                null
+        );
+        updateAnimation(GameVideos.BOOK_RIGHT_FLIP.getAnimRate());
+
+        if (aniIndex >= GameVideos.BOOK_RIGHT_FLIP.getMaxAnimIndex()) {
+            aniIndex = 0;
+            flippingRight = false;
+            ableClick = false;
+        }
+    }
+
+
+    private void drawBookCategories(Canvas c) {
+        c.drawBitmap(
+                GameVideos.BOOK_CATEGORIES.getSprite(0,
+                        categoriesState),
+                bookPos.x,
+                bookPos.y,
+                null
+        );
 
     }
+
+
 
     private void drawClosing(Canvas c) {
 
@@ -109,6 +212,8 @@ public class BookUI {
 
             btnDisappearing = false;
             closing = false;
+
+            categoriesState = 0;
 
             opingBook = true;
             btnAppearing = true;
@@ -205,9 +310,15 @@ public class BookUI {
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
 
 
+            isInCategories(eventPos);
+
+
             if (isIn(eventPos, btnResume)) {
                 btnResume.setPushed(true, pointerId);
             }
+
+
+
         } else if (action == MotionEvent.ACTION_UP
                 || action == MotionEvent.ACTION_POINTER_UP) { //松开光标
             if (isIn(eventPos, btnResume)) {
@@ -239,6 +350,31 @@ public class BookUI {
     private boolean isIn(PointF eventPos, CustomButton b) {
         return b.getHitbox().contains(eventPos.x, eventPos.y);
     }
+
+    private void isInCategories(PointF eventPos) {
+        for (int i = 0; i < categoriesBtnAmount; i++) {
+            RectF btn = new RectF(
+                    firstBtnPos.x,
+                    firstBtnPos.y + (btnSpace * i),
+                    firstBtnPos.x + categoriesBtnSize.x,
+                    firstBtnPos.y + (btnSpace * i) + categoriesBtnSize.y
+            );
+
+            if (btn.contains(eventPos.x, eventPos.y)) {
+                if (i != categoriesState) {
+                    if (i < categoriesState) {
+                        flippingLeft = true;
+                    } else {
+                        flippingRight = true;
+                    }
+                    ableClick = false;
+                    categoriesState = i;
+                }
+
+            }
+        }
+    }
+
 
 
 
