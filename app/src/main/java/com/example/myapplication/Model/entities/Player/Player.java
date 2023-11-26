@@ -12,11 +12,13 @@ import android.graphics.RectF;
 import com.example.myapplication.Model.entities.Character;
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
+import com.example.myapplication.Model.entities.Player.playerStartegy.CharThree;
 import com.example.myapplication.Model.entities.Player.playerStartegy.PlayerCharStrategy;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
+import com.example.myapplication.Model.entities.Player.projectile.Projectile;
+import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.leaderBoard.Score.Score;
-import com.example.myapplication.Model.loopVideo.GameAnimation;
 
 public class Player extends Character {
 
@@ -38,9 +40,16 @@ public class Player extends Character {
     private PlayerStates currentStates;
     private boolean onSkill;
     private float baseSpeed;
+    private boolean isMakingDamage;
     private boolean ableMakeDamage;
-
-
+    private boolean projecting;
+    private boolean ableProjectile;
+    private GameMap currentMap;
+    private int baseDamage;
+    private boolean invincible;
+    private boolean haveInteract;
+    private boolean madeInteraction;
+    private int defence;
 
 
 
@@ -53,6 +62,7 @@ public class Player extends Character {
         hitBoxPaint.setColor(Color.RED);
 
         playerCharStrategy = new CharOne();
+        difficulty = 1;
 
 
 
@@ -74,19 +84,28 @@ public class Player extends Character {
         updateGameScore();
         updateAtkBox();
 
-        //playerCharStrategy.updateCharAtkBox();
-        //attackAffect.update(delta);
+
+
     }
 
     public void updatePlayerAnim() {
         aniTick++;
+
+
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;
             aniIndex++;
+
             if (aniIndex >= playerCharStrategy.getAnimMaxIndex(currentStates)) {
+                if (onSkill) {
+                    backToIdleState();
+                }
                 aniIndex = 0;
             }
         }
+    }
+    public PointF getPlayerMovement(float xSpeed, float ySpeed, float baseSpeed) {
+        return playerCharStrategy.gePlayerMovement(xSpeed, ySpeed, baseSpeed);
     }
 
     public void drawPlayer(Canvas c) {
@@ -101,13 +120,19 @@ public class Player extends Character {
 
     private void resetPlayer() {
         initializeGameTime();
-        setDifficulty(1);
+        setDifficulty(difficulty);
         winTheGame = false;
         baseSpeed = 300;
         attacking = false;
         currentStates = PlayerStates.IDLE;
         onSkill = false;
+        isMakingDamage = false;
+        ableProjectile = false;
         ableMakeDamage = false;
+        baseDamage = 0;
+        invincible = false;
+        haveInteract = false;
+        madeInteraction = false;
     }
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         changeAnim(characterChoice);
@@ -131,7 +156,8 @@ public class Player extends Character {
 
     public static synchronized Player getInstance() {
         if (instance == null) {
-            instance = new Player(GameCharacters.WARRIOR);
+            instance = new Player(GameCharacters.WARRIOR2);
+            instance.setCharStrategy(new CharThree());
         }
         return instance;
     }
@@ -183,8 +209,13 @@ public class Player extends Character {
     }
 
 
+
+
     public void setCurrentHealth(int health) {
-        this.currentHealth = health;
+        if (!invincible) {
+            this.currentHealth = health;
+        }
+
     }
 
     public String getPlayerName() {
@@ -223,13 +254,7 @@ public class Player extends Character {
         this.attackHeight = attackHeight;
     }
 
-    public int getAttackWidth() {
-        return attackWidth;
-    }
 
-    public int getAttackHeight() {
-        return attackHeight;
-    }
 
     public Paint getHitBoxPaint() {
         return hitBoxPaint;
@@ -246,10 +271,25 @@ public class Player extends Character {
             if (attacking) {
                 setCurrentStates(PlayerStates.ATTACK);
             } else {
-                ableMakeDamage = false;
                 backToIdleState();
             }
         }
+    }
+
+    public void setProjecting(boolean projecting) {
+        if (!onSkill) {
+            this.projecting = projecting;
+            if (projecting) {
+                setCurrentStates(PlayerStates.PROJECTILE);
+            } else {
+                ableProjectile = false;
+                backToIdleState();
+            }
+        }
+    }
+
+    public boolean isProjecting() {
+        return projecting;
     }
 
     public boolean isAttacking() {
@@ -267,26 +307,48 @@ public class Player extends Character {
         }
     }
 
+    public void setToDash() {
+        onSkill = true;
+        invincible = true;
+        setCurrentStates(PlayerStates.DASH);
+    }
+    public void setToSkillOne() {
+        onSkill = true;
+        setCurrentStates(PlayerStates.SKILL_ONE);
+    }
+
+    public void drawSkill(Canvas c) {
+        if (currentStates == PlayerStates.SKILL_ONE) {
+            playerCharStrategy.drawSkillOne(c);
+        }
+
+    }
+
+
+
     public boolean isOnSkill() {
         return onSkill;
     }
     public void backToIdleState() {
+        resetAnimation();
+        isMakingDamage = false;
         ableMakeDamage = false;
         attacking = false;
         onSkill = false;
         currentStates = PlayerStates.IDLE;
+        invincible = false;
     }
 
     public void setBaseSpeed(float baseSpeed) {
         this.baseSpeed = baseSpeed;
     }
 
-    public void setAbleMakeDamage(boolean ableMakeDamage) {
-        this.ableMakeDamage = ableMakeDamage;
+    public void setMakingDamage(boolean makingDamage) {
+        this.isMakingDamage = makingDamage;
     }
 
-    public boolean isAbleMakeDamage() {
-        return ableMakeDamage;
+    public boolean isMakingDamage() {
+        return isMakingDamage;
     }
 
     public float getBaseSpeed() {
@@ -296,5 +358,102 @@ public class Player extends Character {
         return playerCharStrategy.getCurrentSpeed(baseSpeed, currentStates);
     }
 
+    public void setAbleProjectile(boolean ableProjectile) {
+        this.ableProjectile = ableProjectile;
+    }
 
+    public boolean isAbleProjectile() {
+        return ableProjectile;
+    }
+
+    public boolean isAbleMakeDamage() {
+        return ableMakeDamage;
+    }
+
+    public void setAbleMakeDamage(boolean ableMakeDamage) {
+        this.ableMakeDamage = ableMakeDamage;
+    }
+
+    public PointF getMoveDelta(double delta, float xSpeed, float ySpeed) {
+        return playerCharStrategy.getMoveDelta(delta, xSpeed, ySpeed);
+    }
+
+    public int getCurrentDamage() {
+        return playerCharStrategy.getCurrentDamage(currentStates, baseDamage);
+    }
+
+    public GameMap getCurrentMap() {
+        return currentMap;
+    }
+
+    public void setCurrentMap(GameMap currentMap) {
+        this.currentMap = currentMap;
+    }
+
+    public int getBaseDamage() {
+        return baseDamage;
+    }
+
+    public void projectileHitEnemy(Projectile p) {
+        playerCharStrategy.projectileHitEnemy(p);
+    }
+    public int getProjectileMaxHit() {
+        return playerCharStrategy.getProjectileMaxHit(currentStates);
+    }
+
+    public void setBaseDamage(int baseDamage) {
+        this.baseDamage = baseDamage;
+    }
+
+    public void setInvincibleTrue() {
+        if (!invincible) {
+            this.invincible = true;
+        }
+    }
+
+    public boolean isHaveInteract() {
+        return haveInteract;
+    }
+
+    public void setHaveInteract(boolean haveInteract) {
+        this.haveInteract = haveInteract;
+    }
+
+    public boolean isMadeInteraction() {
+        return madeInteraction;
+    }
+
+    public void setMadeInteraction(boolean madeInteraction) {
+        this.madeInteraction = madeInteraction;
+    }
+
+    public void increaseHealth(int amount) {
+        int newHealth = currentHealth + amount;
+        currentHealth = Math.min(newHealth, startingHealth);
+    }
+    public void increaseBaseDamage() {
+        int newDamage = (int) (baseDamage * 1.1);
+        baseDamage = Math.min(newDamage, 100);
+
+    }
+    public void increaseSpeed() {
+        int newDamage = (int) (baseSpeed * 1.1);
+        baseSpeed = Math.min(newDamage, 2000);
+
+    }
+    public void increaseDefence(int amount) {
+        defence += amount;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
+    public double getPercentHealth() {
+        return ((double) currentHealth / (double) startingHealth) * 100.0;
+    }
 }

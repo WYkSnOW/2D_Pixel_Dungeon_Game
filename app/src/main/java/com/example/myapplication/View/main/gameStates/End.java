@@ -3,7 +3,6 @@ import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_H
 import static com.example.myapplication.Model.helper.GameConstants.UiSize.GAME_WIDTH;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
@@ -22,7 +21,6 @@ import com.example.myapplication.Model.loopVideo.GameAnimation;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.ui.ButtonImage;
 import com.example.myapplication.Model.ui.CustomButton;
-import com.example.myapplication.Model.ui.GameImages;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.EndViewModel;
 
 public class End extends BaseState implements GameStateInterFace {
@@ -124,13 +122,6 @@ public class End extends BaseState implements GameStateInterFace {
     }
 
 
-//    private void drawPlayer(Canvas c) {
-//        c.drawBitmap(Player.getInstance().getGameCharType()
-//                        .getSprite(2, Player.getInstance().getAniIndex()),
-//                1880 + 50,
-//                390 + 300 - Player.getInstance().getHitBoxOffSetY() / 2f,
-//                null);
-//    }
 
     private void drawBtn(Canvas c) {
         c.drawBitmap(

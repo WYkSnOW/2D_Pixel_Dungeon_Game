@@ -27,7 +27,18 @@ public enum GameVideos implements BitmapMethods {
             GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONX,
             GameConstants.VideosDefault.DIFFICULTY_BOX_ANIMATIONY,
             GameConstants.VideosDefault.DIFFICULTY_BOX_SCALE,
-            GameConstants.VideosDefault.DIFFICULTY_BOX_ANIM_RATE
+            60
+
+    ),
+
+    START_DATA(
+            R.drawable.character_start_date,
+            144,
+            118,
+            3,
+            1,
+            3,
+            60
 
     ),
     WITCH(
@@ -87,7 +98,7 @@ public enum GameVideos implements BitmapMethods {
             1,
             GameConstants.VideosDefault.BACKGROUND_SCALE,
             8
-            ),
+    ),
 
     LOSE_SCREEN_VIDEO(
             R.drawable.lose_screen_video,
@@ -97,15 +108,113 @@ public enum GameVideos implements BitmapMethods {
             1,
             GameConstants.VideosDefault.BACKGROUND_SCALE * 2,
             8
+    ),
+
+    ARROW_ANIM(
+            R.drawable.arrow_anim_list,
+            46,
+            5,
+            4,
+            2,
+            3.5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    FIRE_BALL_ANIM(
+            R.drawable.fire_ball_anim_list,
+            128,
+            128,
+            4,
+            2,
+            3.5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+    SWORD_PJT_ANIM(
+            R.drawable.sword_pjt_anim_list,
+            32,
+            32,
+            8,
+            2,
+            6,
+            GameConstants.Animation.ANI_SPEED
+    ),
+    STORM_ARROW_ANIM(
+            R.drawable.storm_arrow_anim_list,
+            256,
+            96,
+            4,
+            2,
+            2,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    BLACK_HOLE_ANIM(
+            R.drawable.black_hole_anim_list,
+            148,
+            128,
+            23,
+            2,
+            3.5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    PLAYER_HEALTH_BAR(
+            R.drawable.player_health_bar_blank,
+            157,
+            18,
+            1,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+    PLAYER_HEALTH_START(
+            R.drawable.health_red_bar_start_img,
+            6,
+            18,
+            3,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+
+    PLAYER_HEALTH_MIDDLE(
+            R.drawable.health_red_bar_middle_img,
+            2,
+            18,
+            8,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    PLAYER_HEALTH_END(
+            R.drawable.health_red_bars_end,
+            2,
+            18,
+            8,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
+    ),
+
+    PLAYER_HEALTH_END_ANIM(
+            R.drawable.health_anim_bar,
+            16,
+            18,
+            8,
+            1,
+            5,
+            GameConstants.Animation.ANI_SPEED
     );
 
     private final Bitmap spriteSheet;
     private final Bitmap[][] sprites;
     private int maxAnimIndex;
-    private BitmapFactory.Options options = new BitmapFactory.Options();
+
     private int width;
     private int height;
-    private int cScale;
+    private double scale;
     private int animRate;
 
     //contain all video resource that is being use
@@ -114,17 +223,17 @@ public enum GameVideos implements BitmapMethods {
             int animationX, int animationY,
             double scale, int animRate
     ) {
-        options.inScaled = false;
+        OPTIONS.inScaled = false;
         this.width = width;
         this.height = height;
-        this.cScale = (int) scale;
+        this.scale =  scale;
         this.maxAnimIndex = animationX;
         this.animRate = animRate;
 
 
         sprites = new Bitmap[animationY][animationX];
         spriteSheet = BitmapFactory.decodeResource(
-                MainViewModel.getGameContext().getResources(), resID, options
+                MainViewModel.getGameContext().getResources(), resID, OPTIONS
         );
         for (int j = 0; j < sprites.length; j++) {
             for (int i = 0; i < sprites[j].length; i++) {
@@ -152,11 +261,15 @@ public enum GameVideos implements BitmapMethods {
     }
 
     public int getWidth() {
-        return width * cScale;
+        return (int) (width * scale);
     }
 
     public int getHeight() {
-        return height * cScale;
+        return (int) (height * scale);
+    }
+
+    public double getScale() {
+        return scale;
     }
 
     public int getAnimRate() {
