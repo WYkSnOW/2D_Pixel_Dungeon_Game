@@ -10,11 +10,14 @@ import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.Items.Item;
 import com.example.myapplication.Model.entities.Items.Items;
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
+import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.Doorways.DoorwayType;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.HelpMethods;
+import com.example.myapplication.Model.loopVideo.GameVideos;
+import com.example.myapplication.Model.ui.playingUI.playerStateBar.PlayerStateBar;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 import java.util.ArrayList;
@@ -27,9 +30,26 @@ public class MapManager {
     private float cameraX;
     private float cameraY;
     private final Playing playing;
+    private Paint paint = new Paint();
+    private Paint healthPaint = new Paint();
+    private Paint hitBoxPaint = new Paint();
+    private Paint hitBoxPaint2 = new Paint();
     public MapManager(Playing playing) {
         this.playing = playing;
         initMap();
+        paint.setTextSize(15);
+        paint.setColor(Color.WHITE);
+
+        healthPaint.setTextSize(20);
+        healthPaint.setTextSize(Color.WHITE);
+
+        hitBoxPaint.setStrokeWidth(1);
+        hitBoxPaint.setStyle(Paint.Style.STROKE);
+        hitBoxPaint.setColor(Color.RED);
+
+        hitBoxPaint2.setStrokeWidth(2);
+        hitBoxPaint2.setStyle(Paint.Style.STROKE);
+        hitBoxPaint2.setColor(Color.BLUE);
     }
 
 
@@ -37,6 +57,119 @@ public class MapManager {
         drawTiles(c);
         drawItems(c);
         drawDoorway(c);
+
+        Player.getInstance().drawPlayer(c);
+
+        drawEnemies(c);
+
+
+        ProjectileHolder.getInstance().draw(c);
+
+
+        PlayerStateBar.getInstance().drawPlayerStateBar(c);
+    }
+
+
+
+    public void drawEnemies(Canvas c) {
+        for (AbstractEnemy enemy : currentMap.getMobArrayList()) {
+            if (enemy.isActive()) {
+                drawEnemy(c, enemy);
+
+            }
+        }
+    }
+
+    public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
+
+
+
+        int offsetX = enemy.getHitBoxOffsetX();
+
+
+
+        if (enemy.getFaceDir() == GameConstants.FaceDir.RIGHT) {
+            offsetX = 0;
+        }
+
+
+        canvas.drawBitmap(
+                enemy.getEnemySprite(),
+                enemy.getEnemyLeft() + cameraX,
+                enemy.getEnemyTop() + cameraY,
+                null
+        );
+
+        drawEnemyHitBox(canvas, enemy);
+
+
+        drawMobHealthBar(canvas, enemy);
+
+    }
+
+
+    private void drawEnemyHitBox(Canvas canvas, AbstractEnemy enemy) {
+        canvas.drawRect(
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top + cameraY,
+                enemy.getHitBox().right + cameraX,
+                enemy.getHitBox().bottom + cameraY,
+                hitBoxPaint); //draw mob's hitBox
+
+
+        canvas.drawRect(
+                enemy.getAtkRange().left + cameraX,
+                enemy.getAtkRange().top + cameraY,
+                enemy.getAtkRange().right + cameraX,
+                enemy.getAtkRange().bottom + cameraY,
+                hitBoxPaint2);
+
+        if (enemy.isMakingDamage()) {
+            canvas.drawRect(
+                    enemy.getAtkHitBox().left + cameraX,
+                    enemy.getAtkHitBox().top + cameraY,
+                    enemy.getAtkHitBox().right + cameraX,
+                    enemy.getAtkHitBox().bottom + cameraY,
+                    hitBoxPaint);
+        }
+
+    }
+
+
+    private void drawMobHealthBar(Canvas canvas, AbstractEnemy enemy) {
+        float currentX = enemy.getHitBox().left + (float) (enemy.getHitBoxWidth() / 2);
+        float xOffset = (float) (GameVideos.MOB_HEALTH_BAR.getScale());
+
+        currentX -= (float) (GameVideos.MOB_HEALTH_BAR.getWidth() / 2);
+
+        canvas.drawBitmap(
+                GameVideos.MOB_HEALTH_BAR.getSprite(0, 0),
+                currentX + cameraX,
+                enemy.getHitBox().top - 20 + cameraY,
+                null
+        );
+        currentX += xOffset;
+
+        int drawTime = (int) (enemy.getHealthPercentage() / 2.0);
+
+        int counter = 0;
+        while (counter < drawTime) {
+            canvas.drawBitmap(
+                    GameVideos.MOB_HEALTH.getSprite(0, 0),
+                    currentX + cameraX,
+                    enemy.getHitBox().top - 20 + cameraY,
+                    null
+            );
+            currentX += xOffset;
+            counter += 1;
+        }
+
+        canvas.drawText(
+                "" + enemy.getCurrentHealth() + " / " + enemy.getMaxHealth(),
+                enemy.getHitBox().left + cameraX,
+                enemy.getHitBox().top - 25 + cameraY,
+                paint
+        );
     }
 
 
@@ -118,7 +251,6 @@ public class MapManager {
 
         initMobList();
         initItemList();
-
         initDoorway();
 
         currentMap = mapOne;
@@ -145,17 +277,21 @@ public class MapManager {
 
     private void initMobList() {
         mapOne.addMobsToList(HelpMethods.getMobRandomized(
-                2, mapOne, GameCharacters.CHEST_MOB));
+                1, mapOne, GameCharacters.OGRE));
         mapOne.addMobsToList(HelpMethods.getMobRandomized(
-                3, mapOne, GameCharacters.STEEL_GOLEM));
+                1, mapOne, GameCharacters.STEEL_GOLEM));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                1, mapOne, GameCharacters.ROGUE_GOBLIN));
+        mapOne.addMobsToList(HelpMethods.getMobRandomized(
+                1, mapOne, GameCharacters.MINOTAUR));
 
         mapTwo.addMobsToList(HelpMethods.getMobRandomized(
-                3, mapTwo, GameCharacters.ZOMBIE));
+                3, mapTwo, GameCharacters.OGRE));
         mapTwo.addMobsToList(HelpMethods.getMobRandomized(
-                5, mapTwo, GameCharacters.CROW_MAN));
+                5, mapTwo, GameCharacters.ROGUE_GOBLIN));
 
         mapThree.addMobsToList(HelpMethods.getMobRandomized(
-                4, mapThree, GameCharacters.CHEST_MOB));
+                4, mapThree, GameCharacters.MINOTAUR));
         mapThree.addMobsToList(HelpMethods.getMobRandomized(
                 5, mapThree, GameCharacters.STEEL_GOLEM));
     }
@@ -205,6 +341,7 @@ public class MapManager {
         mapTwo.clearMobList();
         mapThree.clearMobList();
         initMobList();
+        initItemList();
 
     }
     public GameMap getCurrentMap() {

@@ -30,8 +30,8 @@ public enum GameCharacters implements BitmapMethods {
             30,
             30,
             3.5,
-            35,
-            30
+            51,
+            26
     ),
     WITCH2(
             R.drawable.new_witch_anim_list,
@@ -40,7 +40,7 @@ public enum GameCharacters implements BitmapMethods {
             30,
             30,
             3.5,
-            40,
+            46,
             30
     ),
     CENTAUR(
@@ -50,7 +50,7 @@ public enum GameCharacters implements BitmapMethods {
             30,
             30,
             3.5,
-            37,
+            36,
             28
     ),
 
@@ -87,6 +87,27 @@ public enum GameCharacters implements BitmapMethods {
             4
     ),
 
+    OGRE(
+            R.drawable.ogre_warrior_anim_list,
+            new PointF(96,
+                    96),
+            25,
+            10,
+            6,
+            83,
+            74
+    ),
+
+    MINOTAUR(
+            R.drawable.minotaur_anim_list,
+            new PointF(128, 128),
+            20,
+            10,
+            6,
+            114,
+            100
+    ),
+
     CHEST_MOB(
             R.drawable.chest_mob_list,
             new PointF(26, 34),
@@ -96,6 +117,17 @@ public enum GameCharacters implements BitmapMethods {
             6,
             8
     ),
+    ROGUE_GOBLIN(
+            R.drawable.rogue_goblin_anim_list,
+            new PointF(48, 48),
+            20,
+            10,
+            4,
+            32,
+            16
+    ),
+
+
     CROW_MAN(
             R.drawable.crow_mob_list,
             new PointF(22, 30),
@@ -106,13 +138,13 @@ public enum GameCharacters implements BitmapMethods {
             7
     ),
     STEEL_GOLEM(
-            R.drawable.steel_golem_mob_list,
-            new PointF(32, 40),
-            13,
-            4,
+            R.drawable.golem_steel_anim_list,
+            new PointF(96, 96),
+            20,
+            10,
             6,
-            13,
-            15
+            76,
+            69
     );
 
 

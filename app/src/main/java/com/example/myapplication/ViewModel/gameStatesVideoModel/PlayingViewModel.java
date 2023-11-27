@@ -10,10 +10,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.gameStatesLogic.PlayingLogic;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
+import com.example.myapplication.Model.ui.playingUI.bookUI.BookUI;
 
 public class PlayingViewModel extends ViewModel {
     private MutableLiveData<PointF> lastTouchDiff = new MutableLiveData<>();
@@ -78,6 +80,14 @@ public class PlayingViewModel extends ViewModel {
         );
     }
 
+    public boolean checkIntoWallX(MapManager mapManager, PointF camera) {
+        return playingLogic.checkIntoWallX(mapManager, camera);
+    }
+
+    public boolean checkIntoWallY(MapManager mapManager, PointF camera) {
+        return playingLogic.checkIntoWallY(mapManager, camera);
+    }
+
     public void checkAttack(boolean attacking, RectF attackBox,
                             MapManager mapManager,
                             float cameraX, float cameraY) {
@@ -92,6 +102,10 @@ public class PlayingViewModel extends ViewModel {
                                      MapManager mapManager,
                                      float cameraX, float cameraY) {
         playingLogic.checkAttackByEnemies(playerHitBox, mapManager, cameraX, cameraY);
+    }
+
+    public boolean ableMoveWhenOverlap() {
+        return Player.getInstance().ableMoveWhenOverlap();
     }
 
     public void updateZombies(MapManager mapManager, double delta, float cameraX, float cameraY) {
@@ -113,6 +127,19 @@ public class PlayingViewModel extends ViewModel {
     }
     public void pauseUiDrawUi(Canvas c, PauseUI pauseUI) {
         pauseUI.drawUI(c);
+    }
+
+
+    public void bookUiTouchEvent(MotionEvent event, BookUI bookUI) {
+        bookUI.touchEvent(event);
+    }
+    public void bookUiDrawUi(Canvas c, BookUI bookUI) {
+        bookUI.drawUI(c);
+    }
+
+
+    public void drawThingOnMap(Canvas c, MapManager mapManager) {
+        mapManager.draw(c);
     }
 
 

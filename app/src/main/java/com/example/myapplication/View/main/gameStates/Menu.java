@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.myapplication.Model.entities.GameCharacters;
-import com.example.myapplication.Model.entities.enemies.RunningZombie;
+import com.example.myapplication.Model.entities.enemies.UiEnemies.RunningZombie;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.loopVideo.GameAnimation;
@@ -108,7 +108,7 @@ public class Menu extends BaseState implements GameStateInterFace {
 
         c.drawBitmap(
                 runningZombie.getGameCharType().getSprite(
-                        runningZombie.getDrawDir(), runningZombie.getAniIndex()
+                        runningZombie.getFaceDir(), runningZombie.getAniIndex()
                 ),
                 runningZombie.getHitBox().left,
                 runningZombie.getHitBox().top,

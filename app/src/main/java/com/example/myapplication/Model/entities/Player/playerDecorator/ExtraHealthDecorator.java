@@ -2,14 +2,17 @@ package com.example.myapplication.Model.entities.Player.playerDecorator;
 
 import com.example.myapplication.Model.entities.Player.Player;
 
-public class ExtraHealthDecorator implements PlayerPowerUp {
+public class ExtraHealthDecorator extends PlayerDecorator implements PlayerPowerUp {
+    private int amount;
+
+    public ExtraHealthDecorator(Player decoratedPlayer, int amount) {
+        super(decoratedPlayer);
+        this.amount = amount;
+    }
+
 
     @Override
     public void applyPowerUp() {
-        addExtraHealth();
-    }
-
-    private void addExtraHealth() {
-        Player.getInstance().increaseHealth(50);
+        decoratedPlayer.increaseHealth(this.amount);
     }
 }
