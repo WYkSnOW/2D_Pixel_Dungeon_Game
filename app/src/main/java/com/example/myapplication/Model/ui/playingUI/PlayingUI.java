@@ -33,8 +33,8 @@ public class PlayingUI {
     private final PointF skillOneBtnCenterPos = new PointF(GAME_WIDTH - 480, GAME_HEIGHT - 400); */
 
 
-    private final PointF joystickCenterPos = new PointF(320, GAME_HEIGHT - 250);
-    private PointF innerJoystickCenterPos = joystickCenterPos;
+    public static final PointF JOYSTICK_CENTER_POS = new PointF(320, GAME_HEIGHT - 250);
+    private PointF innerJoystickCenterPos = JOYSTICK_CENTER_POS;
     private final PointF attackBtnCenterPos = new PointF(GAME_WIDTH - 320, GAME_HEIGHT - 250);
 
     private final PointF atkModBtnCenterPos =  new PointF(GAME_WIDTH - 100, GAME_HEIGHT - 350);
@@ -47,7 +47,7 @@ public class PlayingUI {
 
 
     private final int radius = 150;
-    private final int smallRadius = 60;
+    private static final int SMALL_RADIUS = 60;
     private final Paint circlePaint = new Paint();
     private final Paint circlePaint2 = new Paint();
     private final Paint circlePaint3 = new Paint();
@@ -161,25 +161,25 @@ public class PlayingUI {
 
 
     private void drawCircle(Canvas c) {
-        c.drawCircle(joystickCenterPos.x, joystickCenterPos.y,
+        c.drawCircle(JOYSTICK_CENTER_POS.x, JOYSTICK_CENTER_POS.y,
                 radius, circlePaint);
 
         c.drawCircle(attackBtnCenterPos.x, attackBtnCenterPos.y,
                 radius, circlePaint);
 
         c.drawCircle(dashBtnCenterPos.x, dashBtnCenterPos.y,
-                smallRadius, circlePaint);
+                SMALL_RADIUS, circlePaint);
 
         c.drawCircle(skillOneBtnCenterPos.x, skillOneBtnCenterPos.y,
-                smallRadius, circlePaint);
+                SMALL_RADIUS, circlePaint);
 
         c.drawCircle(innerJoystickCenterPos.x, innerJoystickCenterPos.y,
-                smallRadius, circlePaint);
+                SMALL_RADIUS, circlePaint);
 
 
         if (Player.getInstance().isHaveInteract()) {
             c.drawCircle(interactBtnCenterPos.x, interactBtnCenterPos.y,
-                    smallRadius, circlePaint2);
+                    SMALL_RADIUS, circlePaint2);
         }
 
 
@@ -191,7 +191,7 @@ public class PlayingUI {
             paint = circlePaint3;
         }
         c.drawCircle(runLockBtnCenterPos.x, runLockBtnCenterPos.y,
-                smallRadius, paint);
+                SMALL_RADIUS, paint);
 
 
         if (atkModState == 2) {
@@ -200,7 +200,7 @@ public class PlayingUI {
             paint = circlePaint;
         }
         c.drawCircle(atkModBtnCenterPos.x, atkModBtnCenterPos.y,
-                smallRadius, paint);
+                SMALL_RADIUS, paint);
     }
 
 
@@ -217,11 +217,11 @@ public class PlayingUI {
         float b = Math.abs(eventPos.y - circle.y);
         float c = (float) Math.hypot(a, b); //a与b的斜线
 
-        return c <= smallRadius; //光标在圆环内部
+        return c <= SMALL_RADIUS; //光标在圆环内部
     }
 
     private boolean checkInsideJoyStick(PointF eventPos, int pointerId) {
-        if (isInsideRadius(eventPos, joystickCenterPos)) {
+        if (isInsideRadius(eventPos, JOYSTICK_CENTER_POS)) {
             touchDown = true; //初始点击点在圆环内部
             joystickPointerId = pointerId;
             return true;
@@ -334,12 +334,12 @@ public class PlayingUI {
             for (int i = 0; i < event.getPointerCount(); i++) {
                 if (event.getPointerId(i) == joystickPointerId) {
                     //负数意味点击点x值在圆心x值左边（小于），即角色应该左移，反之右移
-                    float xDiff = event.getX(i) - joystickCenterPos.x;
-                    float yDiff = event.getY(i) - joystickCenterPos.y;
+                    float xDiff = event.getX(i) - JOYSTICK_CENTER_POS.x;
+                    float yDiff = event.getY(i) - JOYSTICK_CENTER_POS.y;
 
 
-                    float xPos = joystickCenterPos.x + returnDiff(xDiff); //更新摇杆内部小球
-                    float yPos = joystickCenterPos.y + returnDiff(yDiff);
+                    float xPos = JOYSTICK_CENTER_POS.x + returnDiff(xDiff); //更新摇杆内部小球
+                    float yPos = JOYSTICK_CENTER_POS.y + returnDiff(yDiff);
                     innerJoystickCenterPos = new PointF(xPos, yPos);
 
 
@@ -423,11 +423,11 @@ public class PlayingUI {
 
 
 
-    private float returnDiff(float diff) {
+    public static float returnDiff(float diff) {
         if (diff < 0) {
-            return Math.max(-(2 * smallRadius), diff);
+            return Math.max(-(2 * SMALL_RADIUS), diff);
         } else {
-            return Math.min((2 * smallRadius), diff);
+            return Math.min((2 * SMALL_RADIUS), diff);
         }
     }
 
@@ -508,7 +508,7 @@ public class PlayingUI {
 
     private void resetJoystickButton() {
         touchDown = false; //松开光标即操作消失
-        innerJoystickCenterPos = joystickCenterPos;
+        innerJoystickCenterPos = JOYSTICK_CENTER_POS;
         playing.setPlayerMoveFalse();
         joystickPointerId = -1;
     }
