@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class CalculateHealthByAttackUnitTest {
     @Test
+    // this unit test worked
     public void calculateHealthByAttackUnitTest() {
         //Calculate health base on given attack power and defence
         PlayingLogic playingLogic = new PlayingLogic();
