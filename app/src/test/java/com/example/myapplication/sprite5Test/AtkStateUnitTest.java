@@ -9,16 +9,17 @@ import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
 
 import org.junit.Test;
 
-public class AtkIdxUnitTest {
+public class AtkStateUnitTest {
     @Test
     public void atkIdxUnitTest() {
-        //mob only make damage during some idx of it's atk animation
+        //mob only make damage during Attack state
         EnemyStrategy enemyStrategy = new OgreStrategy();
-        int idx1 = 4;
-        int idx2 = 3;
+        int idx = 4;
 
-        assertTrue(enemyStrategy.isMakingDamage(EnemyStates.ATK, idx1));
-        assertFalse(enemyStrategy.isMakingDamage(EnemyStates.ATK, idx2));
+        assertTrue(enemyStrategy.isMakingDamage(EnemyStates.ATK, idx));
+        assertFalse(enemyStrategy.isMakingDamage(EnemyStates.IDLE, idx));
+        assertFalse(enemyStrategy.isMakingDamage(EnemyStates.WALK, idx));
+        assertFalse(enemyStrategy.isMakingDamage(EnemyStates.DEATH, idx));
 
     }
 }
