@@ -10,5 +10,4 @@ public abstract class PlayerDecorator {
         this.decoratedPlayer = decoratedPlayer;
     }
 
-    // Override methods from Player class as needed
 }

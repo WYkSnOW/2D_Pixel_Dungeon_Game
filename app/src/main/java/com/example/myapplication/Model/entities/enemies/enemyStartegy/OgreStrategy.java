@@ -77,4 +77,9 @@ public class OgreStrategy implements EnemyStrategy {
         }
         return false;
     }
+
+    @Override
+    public int getScore() {
+        return 20;
+    }
 }

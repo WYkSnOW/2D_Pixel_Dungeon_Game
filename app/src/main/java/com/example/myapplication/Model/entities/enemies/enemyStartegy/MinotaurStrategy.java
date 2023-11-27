@@ -71,4 +71,9 @@ public class MinotaurStrategy implements EnemyStrategy {
         }
         return false;
     }
+
+    @Override
+    public int getScore() {
+        return 100;
+    }
 }

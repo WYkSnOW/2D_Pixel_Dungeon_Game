@@ -73,4 +73,9 @@ public class RogueGoblinStrategy implements EnemyStrategy {
         }
         return false;
     }
+
+    @Override
+    public int getScore() {
+        return 10;
+    }
 }
