@@ -251,7 +251,6 @@ public class MapManager {
 
         initMobList();
         initItemList();
-
         initDoorway();
 
         currentMap = mapOne;
@@ -342,6 +341,7 @@ public class MapManager {
         mapTwo.clearMobList();
         mapThree.clearMobList();
         initMobList();
+        initItemList();
 
     }
     public GameMap getCurrentMap() {

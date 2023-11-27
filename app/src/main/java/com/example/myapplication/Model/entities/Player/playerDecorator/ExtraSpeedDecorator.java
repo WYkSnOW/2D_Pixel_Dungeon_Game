@@ -6,7 +6,6 @@ public class ExtraSpeedDecorator extends PlayerDecorator implements PlayerPowerU
     public ExtraSpeedDecorator(Player decoratedPlayer) {
         super(decoratedPlayer);
     }
-
     @Override
     public void applyPowerUp() {
         decoratedPlayer.increaseSpeed();
