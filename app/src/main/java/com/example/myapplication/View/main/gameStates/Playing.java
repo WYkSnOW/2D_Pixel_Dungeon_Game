@@ -12,11 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.myapplication.Model.entities.Player.Player;
-import com.example.myapplication.Model.entities.Player.playerDecorator.PlayerDecorator;
+
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.Doorways.Doorway;
 import com.example.myapplication.Model.environments.MapManager;
 import com.example.myapplication.Model.helper.GameConstants;
@@ -29,7 +28,7 @@ import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.coreLogic.Game;
 import com.example.myapplication.Model.ui.playingUI.PauseUI;
 import com.example.myapplication.Model.ui.playingUI.PlayingUI;
-import com.example.myapplication.Model.ui.playingUI.playerStateBar.PlayerStateBar;
+import com.example.myapplication.Model.ui.playingUI.bookUI.BookUI;
 import com.example.myapplication.ViewModel.gameStatesVideoModel.PlayingViewModel;
 
 import java.util.Random;
@@ -47,6 +46,9 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     private final PlayingUI playingUI;
     private final PauseUI pauseUI;
+    private final BookUI bookUI;
+
+
     private final Paint hitBoxPaint = new Paint();
     private boolean doorwayJustPassed;
     private PlayingViewModel viewModel;
@@ -56,9 +58,9 @@ public class Playing extends BaseState implements GameStateInterFace {
     private PlayerMoveStrategy playerDash;
     private float xSpeed;
     private float ySpeed;
-    private PlayerDecorator powerUps = new PlayerDecorator();
 
     private boolean onPause;
+    private boolean onBook;
 
 
 
@@ -93,6 +95,7 @@ public class Playing extends BaseState implements GameStateInterFace {
 
         playingUI = new PlayingUI(this);
         pauseUI = new PauseUI(this);
+        bookUI = new BookUI(this);
 
         //updateAttackHitbox();
 
@@ -161,6 +164,7 @@ public class Playing extends BaseState implements GameStateInterFace {
         lastTouchDiff = new PointF(0, 0);
         Player.getInstance().backToIdleState();
         onPause = false;
+        onBook = false;
     }
 
     @Override
@@ -169,11 +173,20 @@ public class Playing extends BaseState implements GameStateInterFace {
             return;
         }
 
-        if (onPause) {
+        if (onPause || onBook) {
             return;
         }
 
-        if (playerMoveStrategy != null) {
+        if (Player.getInstance().keepChangeOfDirDuringMovement()) {
+            if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.LEFT) {
+                lastTouchDiff.x = -1;
+            } else {
+                lastTouchDiff.x = 1;
+            }
+
+        }
+
+        if (playerMoveStrategy != null && !Player.getInstance().isOnSkill()) {
             playerMoveStrategy.setPlayerAnim(xSpeed, ySpeed, lastTouchDiff);
         }
 
@@ -220,6 +233,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     private void currentTouchEvent(MotionEvent event) {
         if (onPause) {
             viewModel.pauseUiTouchEvent(event, pauseUI);
+        } else if (onBook) {
+            viewModel.bookUiTouchEvent(event, bookUI);
         } else {
             viewModel.playingUiTouchEvent(event, playingUI);
         }
@@ -230,29 +245,17 @@ public class Playing extends BaseState implements GameStateInterFace {
         if (game.getCurrentGameState() != Game.GameState.PLAYING) {
             return;
         }
-        mapManager.draw(c);
-        //itemManager.draw(c);
-        Player.getInstance().drawPlayer(c);
-        for (AbstractEnemy enemy : mapManager.getCurrentMap().getMobArrayList()) {
-            if (enemy.isActive()) {
-                drawEnemy(c, enemy);
-
-            }
-        }
-        ProjectileHolder.getInstance().draw(c);
 
 
-        PlayerStateBar.getInstance().drawPlayerStateBar(c);
-
-
-        drawCurrentPlayingUI(c);
-
+        viewModel.drawThingOnMap(c, mapManager);
 
 
 
         drawUi(c);
 
-        //drawItemHitBox(c);
+
+        drawCurrentPlayingUI(c);
+
     }
 
 
@@ -260,6 +263,8 @@ public class Playing extends BaseState implements GameStateInterFace {
     private void drawCurrentPlayingUI(Canvas c) {
         if (onPause) {
             viewModel.pauseUiDrawUi(c, pauseUI);
+        } else if (onBook) {
+            viewModel.bookUiDrawUi(c, bookUI);
         } else {
             viewModel.playingUiDrawUi(c, playingUI);
         }
@@ -304,35 +309,8 @@ public class Playing extends BaseState implements GameStateInterFace {
         c.drawText("Health: " + Player.getInstance().getCurrentHealth(), 200, 250, paint);
         c.drawText("Game Score:" + Player.getInstance().getCurrentScore(), 200, 300, paint);
     }
-    public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
-        int offsetX = enemy.getHitBoxOffsetX();
-        if (enemy.getDrawDir() == GameConstants.DrawDir.RIGHT) {
-            offsetX = 0;
-        }
-        canvas.drawBitmap(
-                enemy.getGameCharType().getSprite(
-                        enemy.getDrawDir(),
-                        enemy.getAniIndex()
-                ),
-                enemy.getHitBox().left + cameraX - offsetX,
-                enemy.getHitBox().top + cameraY - enemy.getHitBoxOffsetY(),
-                null
-        );
-        canvas.drawRect(
-                enemy.getHitBox().left + cameraX,
-                enemy.getHitBox().top + cameraY,
-                enemy.getHitBox().right + cameraX,
-                enemy.getHitBox().bottom + cameraY,
-                hitBoxPaint); //draw mob's hitBox
 
-        canvas.drawText(
-                "" + enemy.getCurrentHealth(),
-                enemy.getHitBox().left + cameraX,
-                enemy.getHitBox().top - 20 + cameraY,
-                paint
-        );
 
-    }
 
 
 
@@ -391,17 +369,41 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     }
 
+//    private void updatePlayerPosition(double delta) {
+//        if (viewModel.ableMoveWhenOverlap()) {
+//            float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
+//            if (playerAbleMoveX) {
+//                cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+//            }
+//            if (playerAbleMoveY) {
+//                cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
+//            }
+//        }
+//
+//
+//    }
+
     private void updatePlayerPosition(double delta) {
-
         float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
-
-
-        if (playerAbleMoveX) {
-            cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+        if (viewModel.ableMoveWhenOverlap()) {
+            if (playerAbleMoveX) {
+                cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+            }
         }
         if (playerAbleMoveY) {
             cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
         }
+
+
+        if (viewModel.checkIntoWallX(mapManager, new PointF(cameraX, cameraY))) {
+            cameraX -= Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
+        }
+        if (viewModel.checkIntoWallY(mapManager, new PointF(cameraX, cameraY))) {
+            cameraY -= Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
+        }
+
+        System.out.println("into wall right: " + viewModel.checkIntoWallX(mapManager, new PointF(cameraX, cameraY)));
+
 
     }
 
@@ -443,5 +445,10 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     public void changeOnPause() {
         this.onPause = !this.onPause;
+        this.onBook = false;
+    }
+    public void changeOnBook() {
+        this.onBook = !this.onBook;
+        this.onPause = false;
     }
 }

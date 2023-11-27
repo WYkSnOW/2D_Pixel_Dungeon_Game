@@ -7,7 +7,7 @@ import android.graphics.PointF;
 import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.entities.Player.playerStates.PlayerStates;
 import com.example.myapplication.Model.entities.Player.projectile.Projectile;
-import com.example.myapplication.Model.entities.enemies.AbstractEnemy;
+import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.helper.GameConstants;
 
 public interface PlayerCharStrategy {
@@ -29,7 +29,7 @@ public interface PlayerCharStrategy {
     abstract void initBaseDamage();
     abstract void initDefence();
 
-    abstract int offSetX();
+
     abstract int offSetY();
     abstract int getAnimMaxIndex(PlayerStates state);
     abstract void drawAttackBox(Canvas c);
@@ -168,11 +168,25 @@ public interface PlayerCharStrategy {
 
     }
 
+
     default float getPlayerLeft() {
-        return Player.getInstance().getHitBox().left - offSetX(); //此处减去的为碰撞箱盒实际素材的误差
+        if (Player.getInstance().getFaceDir() == GameConstants.FaceDir.RIGHT) {
+            return Player.getInstance().getHitBox().left - Player.getInstance().getHitBoxOffsetX()
+                    + adjustX();
+        } else {
+            return Player.getInstance().getHitBox().left
+                    - adjustX();
+        }
     }
+
+
+    abstract float adjustX();
+    abstract float adjustY();
+
+
     default float getPlayerTop() {
-        return Player.getInstance().getHitBox().top - offSetY();
+        return Player.getInstance().getHitBox().top - Player.getInstance().getHitBoxOffsetY()
+                + adjustY();
     }
     default Bitmap getPlayerSprite() {
         return Player.getInstance().getGameCharType().getSprite(

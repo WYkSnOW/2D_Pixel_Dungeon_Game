@@ -6,6 +6,7 @@ import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.Entity;
 import com.example.myapplication.Model.entities.Player.Player;
+import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ProjectileStrategy;
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 
@@ -21,9 +22,11 @@ public class Projectile extends Entity {
     private final GameVideos anim;
     private final float animOffsetX;
     private final float animOffsetY;
+    private final ProjectileStrategy projectileStrategy;
 
     public Projectile(PointF pos, PointF size, boolean faceRight,
-                      float speed, GameVideos anim, PointF animOffset) {
+                      float speed, GameVideos anim, PointF animOffset,
+                      ProjectileStrategy projectileStrategy) {
         super(pos, size.x, size.y);
         this.faceRight = faceRight;
         this.speed = speed;
@@ -33,6 +36,7 @@ public class Projectile extends Entity {
         this.anim = anim;
         this.animOffsetX = animOffset.x;
         this.animOffsetY = animOffset.y;
+        this.projectileStrategy = projectileStrategy;
 
         if (faceRight) {
             direction = 0;
@@ -62,7 +66,6 @@ public class Projectile extends Entity {
         if (maxHit == -1) {
             return;
         }
-
         this.hitEnemyCount += 1;
         if (hitEnemyCount >= maxHit) {
             active = false;
@@ -73,9 +76,6 @@ public class Projectile extends Entity {
         return damage;
     }
 
-    public void increaseHitCount() {
-        this.hitEnemyCount += 1;
-    }
 
     public void drawProjectileHitBox(Canvas c, float cameraX, float cameraY, Paint hitBoxPaint) {
         c.drawRect(hitBox.left + cameraX,
@@ -87,13 +87,16 @@ public class Projectile extends Entity {
     }
 
 
-    protected void updateAnimation() {
+    private void updateAnimation() {
         aniTick++;
         if (aniTick >= GameConstants.Animation.ANI_SPEED) {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= anim.getMaxAnimIndex()) {
                 aniIndex = 0;
+                if (projectileStrategy.deactivateWhenAnimDone()) {
+                    active = false;
+                }
             }
         }
     }

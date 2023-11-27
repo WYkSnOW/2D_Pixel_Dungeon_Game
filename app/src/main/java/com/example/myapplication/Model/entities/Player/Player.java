@@ -51,6 +51,9 @@ public class Player extends Character {
     private boolean madeInteraction;
     private int defence;
 
+    private boolean overlapEnemy;
+    private int overlapDir;
+
 
 
     public Player(GameCharacters characterChoice) {
@@ -133,10 +136,11 @@ public class Player extends Character {
         invincible = false;
         haveInteract = false;
         madeInteraction = false;
+        overlapEnemy = false;
     }
+
     public synchronized void setCharacterChoice(GameCharacters characterChoice) {
         changeAnim(characterChoice);
-
         resetPlayer();
     }
 
@@ -211,9 +215,13 @@ public class Player extends Character {
 
 
 
-    public void setCurrentHealth(int health) {
+    public void lostHealth(int health, int fromDir) {
         if (!invincible) {
-            this.currentHealth = health;
+            if (currentHealth > health) {
+                this.currentHealth = health;
+                setToHurt(fromDir);
+            }
+
         }
 
     }
@@ -305,6 +313,25 @@ public class Player extends Character {
             aniIndex = 0;
             this.currentStates = currentStates;
         }
+    }
+
+    public void setToHurt(int fromDir) {
+        if (!onSkill) {
+            onSkill = true;
+            invincible = true;
+
+            if (fromDir == faceDir) {
+                if (faceDir == GameConstants.FaceDir.RIGHT) {
+                    faceDir = GameConstants.FaceDir.LEFT;
+                } else {
+                    faceDir = GameConstants.FaceDir.RIGHT;
+                }
+            }
+
+            setCurrentStates(PlayerStates.HURT);
+
+        }
+
     }
 
     public void setToDash() {
@@ -456,4 +483,24 @@ public class Player extends Character {
     public double getPercentHealth() {
         return ((double) currentHealth / (double) startingHealth) * 100.0;
     }
+
+    public boolean keepChangeOfDirDuringMovement() {
+        return currentStates == PlayerStates.HURT;
+    }
+
+    public void setOverlapEnemy(boolean overlapEnemy) {
+        if (overlapEnemy && !(this.overlapEnemy)) {
+            overlapDir = moveDir;
+        }
+        this.overlapEnemy = overlapEnemy;
+
+    }
+
+    public boolean ableMoveWhenOverlap() {
+        if (overlapEnemy && moveDir == overlapDir) {
+            return !(currentStates == PlayerStates.WALK || currentStates == PlayerStates.RUNNING);
+        }
+        return true;
+    }
+
 }

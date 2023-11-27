@@ -30,12 +30,6 @@ public class PauseUI {
     public void drawUI(Canvas c) {
         drawBtn(c);
 
-
-        //if(touchDown) { //初始点击点在圆环内且并未松开鼠标触发，松开光标被刷新掉
-        //    c.drawLine(xCenter, yCenter, xTouch, yTouch, yellowPaint); //画出光标与圆形的三角形
-        //    c.drawLine(xCenter, yCenter, xTouch, yCenter, yellowPaint);
-        //    c.drawLine(xTouch, yTouch, xTouch, yCenter, yellowPaint);
-        //}
     }
 
 

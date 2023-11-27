@@ -7,6 +7,7 @@ public enum PlayerStates {
     ATTACK(6),
     PROJECTILE(8),
     DASH(14),
+    HURT(16),
     SKILL_ONE(22);
     private final int animRow;
 
