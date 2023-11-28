@@ -11,4 +11,7 @@ public abstract class PlayerDecorator {
     }
 
     // Override methods from Player class as needed
+    public Player getDecoratedPlayer() {
+        return this.decoratedPlayer;
+    }
 }

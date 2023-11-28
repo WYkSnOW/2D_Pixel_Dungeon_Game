@@ -15,4 +15,8 @@ public class ExtraHealthDecorator extends PlayerDecorator implements PlayerPower
     public void applyPowerUp() {
         decoratedPlayer.increaseHealth(this.amount);
     }
+
+    public Player getDecoratedPlayer() {
+        return this.decoratedPlayer;
+    }
 }
