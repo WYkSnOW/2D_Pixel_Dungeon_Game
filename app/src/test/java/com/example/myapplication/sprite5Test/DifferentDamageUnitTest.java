@@ -12,7 +12,7 @@ import org.junit.Test;
 public class DifferentDamageUnitTest {
     @Test
     public void differentDamageUnitTest() {
-        //player enforces different amount of damage during different states.
+        //player enforces different amount of damage during different player states.
 
         PlayerStates atkState = PlayerStates.ATTACK;
         PlayerStates skillState = PlayerStates.SKILL_ONE;
