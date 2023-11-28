@@ -19,6 +19,7 @@ public class CheckTimePassUnitTest {
 
         long lastTime2 = System.currentTimeMillis() - 2000; //2 seconds after lastTime
         assertTrue(HelpMethods.checkTimePass(lastTime2, timeRange));
+        // this test is with time passing
 
 
     }
