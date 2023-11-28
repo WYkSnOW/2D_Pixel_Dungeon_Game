@@ -14,10 +14,10 @@ public class DifferentSpeedUnitTest {
         //tests if player moves faster when running (i.e. has different speeds when
         // animation player state changes) - Nikhil
         PlayerCharStrategy playerCharStrategy = new CharOne();
-        float baseSpeedNum = 100;
+        float baseSpeed = 100;
 
-        assertTrue(playerCharStrategy.getCurrentSpeed(baseSpeedNum, PlayerStates.WALK)
-                < playerCharStrategy.getCurrentSpeed(baseSpeedNum, PlayerStates.RUNNING));
+        assertTrue(playerCharStrategy.getCurrentSpeed(baseSpeed, PlayerStates.WALK)
+                < playerCharStrategy.getCurrentSpeed(baseSpeed, PlayerStates.RUNNING));
 
     }
 }

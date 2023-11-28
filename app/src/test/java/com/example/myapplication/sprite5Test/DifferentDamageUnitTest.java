@@ -12,18 +12,18 @@ import org.junit.Test;
 public class DifferentDamageUnitTest {
     @Test
     public void differentDamageUnitTest() {
-        //player make different amount of damage during different state.
+        //player enforces different amount of damage during different states.
 
         PlayerStates atkState = PlayerStates.ATTACK;
         PlayerStates skillState = PlayerStates.SKILL_ONE;
 
 
         PlayerCharStrategy playerCharStrategy = new CharOne();
-        int baseDamageNum = 100;
+        int baseDamage = 100;
 
         assertNotEquals(
-                playerCharStrategy.getCurrentDamage(atkState, baseDamageNum),
-                playerCharStrategy.getCurrentDamage(skillState, baseDamageNum)
+                playerCharStrategy.getCurrentDamage(atkState, baseDamage),
+                playerCharStrategy.getCurrentDamage(skillState, baseDamage)
         );
 
     }
