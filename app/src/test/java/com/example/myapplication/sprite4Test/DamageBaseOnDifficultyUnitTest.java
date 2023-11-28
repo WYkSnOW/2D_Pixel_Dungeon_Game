@@ -20,7 +20,7 @@ public class DamageBaseOnDifficultyUnitTest {
         int damageWhenDiffOne = playingLogic.calculateDamage(enemyAtk, difficultyOne);
         int damageWhenDiffTwo = playingLogic.calculateDamage(enemyAtk, difficultyTwo);
         int damageWhenDiffThree = playingLogic.calculateDamage(enemyAtk, difficultyThree);
-
+        // it calculates the damage based on difficulties
         assertNotSame(damageWhenDiffOne, damageWhenDiffTwo);
         assertNotSame(damageWhenDiffOne, damageWhenDiffThree);
         assertNotSame(damageWhenDiffTwo, damageWhenDiffThree);
