@@ -9,6 +9,7 @@ import org.junit.Test;
 public class DamageBaseOnDifficultyUnitTest {
     @Test
     public void damageBaseOnDifficulty() {
+        // damage based on difficulty
         PlayingLogic playingLogic = new PlayingLogic();
         int difficultyOne = 1;
         int difficultyTwo = 2;
