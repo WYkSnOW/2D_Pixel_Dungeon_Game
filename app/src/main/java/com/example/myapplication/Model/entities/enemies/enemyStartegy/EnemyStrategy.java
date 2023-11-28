@@ -6,7 +6,6 @@ import android.graphics.RectF;
 import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
 import com.example.myapplication.Model.helper.GameConstants;
-import com.example.myapplication.R;
 
 public interface EnemyStrategy {
     abstract int getAnimMaxIndex(EnemyStates enemyStates);
@@ -20,12 +19,12 @@ public interface EnemyStrategy {
         }
     }
 
-//    default RectF getAtkHitBox(AbstractEnemy enemy) {
-//        PointF pos = getAtkBoxPos(enemy);
-//        PointF size = getAtkBoxSize();
-//        return new RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-//
-//    }
+    default RectF getAtkHitBox(AbstractEnemy enemy) {
+        PointF pos = getAtkBoxPos(enemy);
+        PointF size = getAtkBoxSize();
+        return new RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+    }
 
     abstract int getScore();
 

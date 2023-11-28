@@ -2,7 +2,6 @@ package com.example.myapplication.Model.words;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 
 import com.example.myapplication.Model.helper.GameConstants;
 import com.example.myapplication.Model.helper.interfaces.BitmapMethods;
@@ -51,22 +50,6 @@ public enum WordsResource implements BitmapMethods {
         }
     }
 
-    public void drawWords(Canvas c) {
-        float xPos = 0;
-        float space = 1;
-//        for (int i = 0; i < sprites[0].length; i++) {
-//            c.drawBitmap(
-//                    sprites[0][i],
-//                    xPos,
-//                    0,
-//                    null);
-//            xPos += (getWordWidth(i) + space);
-//        }
-        c.drawBitmap(spriteSheet,
-                0,
-                0,
-                null);
-    }
 
 
 

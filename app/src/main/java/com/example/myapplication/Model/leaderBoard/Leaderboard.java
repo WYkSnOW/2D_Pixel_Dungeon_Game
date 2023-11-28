@@ -219,16 +219,12 @@ public class Leaderboard {
     }
 
     public void drawLeaderBoardInGame(Canvas c, PointF currentBoardPos, float scale) {
-        paint1.setTextSize(35);
-        paint1.setColor(Color.WHITE);
 
         boldPaint.setTextSize(20);
         boldPaint.setColor(Color.BLACK);
         Typeface boldTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
         boldPaint.setTypeface(boldTypeface);
 
-        blackPaint.setTextSize(20);
-        blackPaint.setColor(Color.BLACK);
 
         Score scoreInGame = Player.getInstance().sumbitScore();
         float currentScoreX = currentBoardPos.x + (120 * scale);
@@ -248,16 +244,25 @@ public class Leaderboard {
                 currentBoardPos.y + (188 * scale),
                 boldPaint);
 
+        for (int i = 0; i < playerRecords.size() && i < 5; i++) {
+            drawRankInfoInGame(c, i, currentBoardPos, scale);
+        }
+
+
+    }
+
+    private void drawRankInfoInGame(Canvas c, int i, PointF currentBoardPos, float scale) {
+        float addSpace = 32 * scale;
+        float recordScoreX = currentBoardPos.x + (313 * scale);
+        float recordScoreY = currentBoardPos.y + (60 * scale);
         c.drawText(
-                ""
-                        + playerRecords.get(0).getPlayerName()
-                        + "   " + playerRecords.get(0).getScore()
-                        + "   " + playerRecords.get(0).getDate(),
+                "Name: "
+                        + playerRecords.get(i).getPlayerName()
+                        + "   Score: " + playerRecords.get(i).getScore()
+                        + "   Date: " + playerRecords.get(i).getDate(),
                 recordScoreX,
-                currentBoardPos.y + (30 * scale),
+                recordScoreY + (addSpace * i),
                 boldPaint);
-
-
     }
 
 

@@ -56,7 +56,7 @@ public class MapManager {
     public void draw(Canvas c) {
         drawTiles(c);
         drawItems(c);
-        drawDoorway(c);
+        //drawDoorway(c);
 
         Player.getInstance().drawPlayer(c);
 
@@ -82,17 +82,6 @@ public class MapManager {
 
     public void drawEnemy(Canvas canvas, AbstractEnemy enemy) {
 
-
-
-        int offsetX = enemy.getHitBoxOffsetX();
-
-
-
-        if (enemy.getFaceDir() == GameConstants.FaceDir.RIGHT) {
-            offsetX = 0;
-        }
-
-
         canvas.drawBitmap(
                 enemy.getEnemySprite(),
                 enemy.getEnemyLeft() + cameraX,
@@ -100,7 +89,7 @@ public class MapManager {
                 null
         );
 
-        drawEnemyHitBox(canvas, enemy);
+        //drawEnemyHitBox(canvas, enemy);
 
 
         drawMobHealthBar(canvas, enemy);

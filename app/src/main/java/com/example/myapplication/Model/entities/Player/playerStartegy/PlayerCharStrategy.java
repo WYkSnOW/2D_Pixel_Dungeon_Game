@@ -150,10 +150,10 @@ public interface PlayerCharStrategy {
                 null
         );
 
-        c.drawRect(Player.getInstance().getHitBox(), Player.getInstance().getHitBoxPaint());
-        if (Player.getInstance().isMakingDamage()) {
-            Player.getInstance().drawAtk(c);
-        }
+        //c.drawRect(Player.getInstance().getHitBox(), Player.getInstance().getHitBoxPaint());
+        //if (Player.getInstance().isMakingDamage()) {
+        //    Player.getInstance().drawAtk(c);
+        //}
 
         drawSkill(c);
 

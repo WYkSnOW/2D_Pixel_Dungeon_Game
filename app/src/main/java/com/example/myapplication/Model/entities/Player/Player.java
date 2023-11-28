@@ -172,10 +172,6 @@ public class Player extends Character {
         return currentScore;
     }
 
-    private void updateGameScore() {
-        int tempScore = 20 - gameTime;
-        this.currentScore = checkScoreAboveZero(tempScore);
-    }
 
     public static int checkScoreAboveZero(int tempScore) {
         return Math.max(tempScore, 0);
@@ -511,6 +507,7 @@ public class Player extends Character {
     }
 
     public void increaseScore(int score) {
-        this.currentScore += score;
+        int temp = currentHealth + score;
+        this.currentScore = Math.min(99, temp);
     }
 }

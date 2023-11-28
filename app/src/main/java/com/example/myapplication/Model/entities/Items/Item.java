@@ -33,7 +33,7 @@ public class Item extends Entity {
 
     public void drawItem(Canvas c, float cameraX, float cameraY) {
         itemStrategy.drawItem(c, cameraX, cameraY, pos, this);
-        itemStrategy.drawItemHitBox(c, cameraX, cameraY, this);
+        //itemStrategy.drawItemHitBox(c, cameraX, cameraY, this);
     }
     public void onReaction() {
         itemStrategy.onReaction(this);

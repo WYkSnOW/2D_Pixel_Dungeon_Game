@@ -1,10 +1,5 @@
 package com.example.myapplication.Model.gameStatesLogic;
 
-import static com.example.myapplication.Model.helper.GameConstants.MoveDir.DOWN;
-import static com.example.myapplication.Model.helper.GameConstants.MoveDir.LEFT;
-import static com.example.myapplication.Model.helper.GameConstants.MoveDir.RIGHT;
-import static com.example.myapplication.Model.helper.GameConstants.MoveDir.UP;
-
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -14,7 +9,7 @@ import com.example.myapplication.Model.entities.Player.projectile.Projectile;
 import com.example.myapplication.Model.entities.Player.projectile.ProjectileHolder;
 import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 import com.example.myapplication.Model.environments.MapManager;
-import com.example.myapplication.Model.helper.GameConstants;
+
 
 public class PlayingLogic {
 
