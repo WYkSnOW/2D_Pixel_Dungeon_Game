@@ -19,6 +19,7 @@ public class DamageBaseOnDifficultyUnitTest {
         int enemyAtk = 10;
         // I initialized a damageWhenDiffOne variable
         int damageWhenDiffOne = playingLogic.calculateDamage(enemyAtk, difficultyOne);
+        // I initialiazed a damageWhenDiffTwo
         int damageWhenDiffTwo = playingLogic.calculateDamage(enemyAtk, difficultyTwo);
         int damageWhenDiffThree = playingLogic.calculateDamage(enemyAtk, difficultyThree);
         // it calculates the damage based on difficulties
