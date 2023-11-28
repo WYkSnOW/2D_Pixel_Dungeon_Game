@@ -19,11 +19,11 @@ public class DifferentDamageUnitTest {
 
 
         PlayerCharStrategy playerCharStrategy = new CharOne();
-        int baseDamage = 100;
+        int baseDamageNum = 100;
 
         assertNotEquals(
-                playerCharStrategy.getCurrentDamage(atkState, baseDamage),
-                playerCharStrategy.getCurrentDamage(skillState, baseDamage)
+                playerCharStrategy.getCurrentDamage(atkState, baseDamageNum),
+                playerCharStrategy.getCurrentDamage(skillState, baseDamageNum)
         );
 
     }
