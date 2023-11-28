@@ -10,8 +10,10 @@ import com.example.myapplication.Model.ui.playingUI.PlayingUI;
 
 import org.junit.Test;
 
+
 public class DifferentMapUnitTest {
 
+    //Tests if different maps are used in the game and that they are changed when player moves - Nikhil
     @Test
     public void differentMapUnitTest() {
 
@@ -20,3 +22,4 @@ public class DifferentMapUnitTest {
         assertNotEquals(InitMap.initMapTwo(), InitMap.initMapThree());
     }
 }
+
