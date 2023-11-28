@@ -16,7 +16,4 @@ public class ExtraHealthDecorator extends PlayerDecorator implements PlayerPower
         decoratedPlayer.increaseHealth(this.amount);
     }
 
-    public Player getDecoratedPlayer() {
-        return this.decoratedPlayer;
-    }
 }
