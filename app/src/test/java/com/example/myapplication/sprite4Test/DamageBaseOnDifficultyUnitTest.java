@@ -10,6 +10,7 @@ public class DamageBaseOnDifficultyUnitTest {
     @Test
     public void damageBaseOnDifficulty() {
         // damage based on difficulty
+        // it accounts for various difficulties
         PlayingLogic playingLogic = new PlayingLogic();
         int difficultyOne = 1;
         int difficultyTwo = 2;
