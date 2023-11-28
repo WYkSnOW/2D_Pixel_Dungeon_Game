@@ -1,7 +1,7 @@
 package com.example.myapplication.sprite5Test;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+
 
 import com.example.myapplication.Model.entities.Player.playerStartegy.CharOne;
 import com.example.myapplication.Model.entities.Player.playerStartegy.PlayerCharStrategy;
