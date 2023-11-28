@@ -11,6 +11,7 @@ public class DamageBaseOnDifficultyUnitTest {
     public void damageBaseOnDifficulty() {
         // damage based on difficulty
         // it accounts for various difficulties
+        // there are seperate integers that are created
         PlayingLogic playingLogic = new PlayingLogic();
         int difficultyOne = 1;
         int difficultyTwo = 2;
