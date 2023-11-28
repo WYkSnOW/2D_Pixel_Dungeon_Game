@@ -15,7 +15,8 @@ import org.junit.Test;
 public class DifferentSpeedUnitTest {
     @Test
     public void differentSpeedUnitTest() {
-        //tests if player moves faster when running (i.e. has different speeds) - Nikhil
+        //tests if player moves faster when running (i.e. has different speeds when
+        // animation player state changes) - Nikhil
         PlayerCharStrategy playerCharStrategy = new CharOne();
         float baseSpeed = 100;
 
