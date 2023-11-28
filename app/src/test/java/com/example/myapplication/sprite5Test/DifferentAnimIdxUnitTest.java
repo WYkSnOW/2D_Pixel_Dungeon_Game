@@ -6,11 +6,7 @@ import com.example.myapplication.Model.entities.enemies.enemyStartegy.EnemyStrat
 import com.example.myapplication.Model.entities.enemies.enemyStartegy.OgreStrategy;
 import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
 
-import static org.junit.Assert.assertNotEquals;
 
-import com.example.myapplication.Model.entities.enemies.enemyStartegy.EnemyStrategy;
-import com.example.myapplication.Model.entities.enemies.enemyStartegy.OgreStrategy;
-import com.example.myapplication.Model.entities.enemies.enemyStates.EnemyStates;
 
 import org.junit.Test;
 
