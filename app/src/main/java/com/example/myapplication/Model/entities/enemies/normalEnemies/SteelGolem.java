@@ -4,7 +4,6 @@ import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.GameCharacters;
 import com.example.myapplication.Model.entities.enemies.enemyStartegy.SteelGolemStrategy;
-import com.example.myapplication.Model.entities.enemies.normalEnemies.AbstractEnemy;
 
 public class SteelGolem extends AbstractEnemy {
 

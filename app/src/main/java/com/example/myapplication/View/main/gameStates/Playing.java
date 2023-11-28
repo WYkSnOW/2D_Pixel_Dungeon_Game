@@ -369,19 +369,6 @@ public class Playing extends BaseState implements GameStateInterFace {
 
     }
 
-//    private void updatePlayerPosition(double delta) {
-//        if (viewModel.ableMoveWhenOverlap()) {
-//            float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
-//            if (playerAbleMoveX) {
-//                cameraX += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).x;
-//            }
-//            if (playerAbleMoveY) {
-//                cameraY += Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
-//            }
-//        }
-//
-//
-//    }
 
     private void updatePlayerPosition(double delta) {
         float baseSpeed = (float) (delta * Player.getInstance().getCurrentSpeed());
@@ -402,7 +389,8 @@ public class Playing extends BaseState implements GameStateInterFace {
             cameraY -= Player.getInstance().getPlayerMovement(xSpeed, ySpeed, baseSpeed).y;
         }
 
-        System.out.println("into wall right: " + viewModel.checkIntoWallX(mapManager, new PointF(cameraX, cameraY)));
+        System.out.println("into wall right: "
+                + viewModel.checkIntoWallX(mapManager, new PointF(cameraX, cameraY)));
 
 
     }

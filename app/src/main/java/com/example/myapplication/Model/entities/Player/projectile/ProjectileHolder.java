@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ProjectileStrategy;
-import com.example.myapplication.Model.entities.Player.projectile.projecttileStrategy.ShotProjectile;
 import com.example.myapplication.Model.environments.GameMap;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 
@@ -102,7 +101,7 @@ public class ProjectileHolder {
 
         for (Projectile p : ProjectileHolder.getInstance().getProList()) {
             if (p.isActive()) {
-                p.drawProjectileHitBox(c, cameraX, cameraY, hitBoxPaint);
+                //p.drawProjectileHitBox(c, cameraX, cameraY, hitBoxPaint);
                 p.drawProjectile(c, cameraX, cameraY);
             }
         }

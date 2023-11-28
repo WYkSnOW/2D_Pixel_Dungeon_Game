@@ -1,8 +1,6 @@
 package com.example.myapplication.Model.helper.playerMoveStartegy;
 
 import android.graphics.PointF;
-
-import com.example.myapplication.Model.entities.Player.Player;
 import com.example.myapplication.Model.helper.HelpMethods;
 
 public class PlayerIdle implements PlayerMoveStrategy {

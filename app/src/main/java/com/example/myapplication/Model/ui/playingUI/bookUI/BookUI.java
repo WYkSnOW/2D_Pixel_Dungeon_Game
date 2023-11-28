@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 
 
+import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.ui.ButtonImage;
 import com.example.myapplication.Model.ui.CustomButton;
@@ -134,9 +135,15 @@ public class BookUI {
                         ableClick = true;
                         drawBookCategories(c);
 
+                        if (categoriesState == 3) {
+                            Leaderboard.getInstance().drawLeaderBoardInGame(
+                                            c, bookLeftTop,
+                                            (float) GameVideos.BOOK_OPENING.getScale()
+                            );
+                        }
+                        //WordsResource.WORDS.drawWords(c);
+
                     }
-
-
 
 
                 }
