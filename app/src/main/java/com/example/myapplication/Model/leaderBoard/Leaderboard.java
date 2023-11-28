@@ -232,21 +232,32 @@ public class Leaderboard {
 
         Score scoreInGame = Player.getInstance().sumbitScore();
         float currentScoreX = currentBoardPos.x + (120 * scale);
-
+        float recordScoreX = currentBoardPos.x + (300 * scale);
         c.drawText(
                 "" + scoreInGame.getScore(),
                 currentScoreX,
                 currentBoardPos.y + (164 * scale),
                 boldPaint);
         c.drawText(
-                "" + Player.getInstance().getGameTime() + "seconds",
+                "" + Player.getInstance().getGameTime() + " seconds",
                 currentScoreX,
                 currentBoardPos.y + (176 * scale),
                 boldPaint);
-        c.drawText(scoreInGame.getDate(),
+        c.drawText("" + Player.getInstance().getDifficulty(),
                 currentScoreX,
                 currentBoardPos.y + (188 * scale),
                 boldPaint);
+
+        c.drawText(
+                ""
+                        + playerRecords.get(0).getPlayerName()
+                        + "   " + playerRecords.get(0).getScore()
+                        + "   " + playerRecords.get(0).getDate(),
+                recordScoreX,
+                currentBoardPos.y + (30 * scale),
+                boldPaint);
+
+
     }
 
 
