@@ -15,6 +15,7 @@ public class DamageBaseOnDifficultyUnitTest {
         PlayingLogic playingLogic = new PlayingLogic();
         // I create a difficultyOne
         int difficultyOne = 1;
+        // I create a difficultyTwo
         int difficultyTwo = 2;
         int difficultyThree = 3;
         int enemyAtk = 10;
