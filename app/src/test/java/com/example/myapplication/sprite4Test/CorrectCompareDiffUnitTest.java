@@ -19,6 +19,7 @@ public class CorrectCompareDiffUnitTest {
         ArrayList<Score> scoreList = new ArrayList<>();
         scoreList.add(score1);
         scoreList.add(score2);
+        // we are adding the score above
 
         scoreList.sort(new DifficultyComparator());
         // score 2 has higher difficulty and becomes the first record in the list

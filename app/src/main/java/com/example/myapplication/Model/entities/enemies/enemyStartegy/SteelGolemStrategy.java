@@ -71,4 +71,9 @@ public class SteelGolemStrategy implements EnemyStrategy {
         }
         return false;
     }
+
+    @Override
+    public int getScore() {
+        return 50;
+    }
 }

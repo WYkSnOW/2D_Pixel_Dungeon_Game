@@ -12,9 +12,11 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 
 
+import com.example.myapplication.Model.leaderBoard.Leaderboard;
 import com.example.myapplication.Model.loopVideo.GameVideos;
 import com.example.myapplication.Model.ui.ButtonImage;
 import com.example.myapplication.Model.ui.CustomButton;
+import com.example.myapplication.Model.words.WordsResource;
 import com.example.myapplication.View.main.gameStates.Playing;
 
 public class BookUI {
@@ -134,9 +136,15 @@ public class BookUI {
                         ableClick = true;
                         drawBookCategories(c);
 
+                        if (categoriesState == 3) {
+                            Leaderboard.getInstance().drawLeaderBoardInGame(
+                                            c, bookLeftTop,
+                                            (float) GameVideos.BOOK_OPENING.getScale()
+                            );
+                        }
+                        //WordsResource.WORDS.drawWords(c);
+
                     }
-
-
 
 
                 }

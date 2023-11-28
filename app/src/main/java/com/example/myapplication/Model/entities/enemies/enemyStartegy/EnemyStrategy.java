@@ -27,6 +27,8 @@ public interface EnemyStrategy {
 //
 //    }
 
+    abstract int getScore();
+
     abstract float adjustX(EnemyStates states, float scale);
     abstract float adjustY(EnemyStates states, float scale);
 

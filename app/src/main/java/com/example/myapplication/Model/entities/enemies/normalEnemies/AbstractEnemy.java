@@ -352,6 +352,7 @@ public abstract class AbstractEnemy extends Character {
             resetAnimation();
             currentState = EnemyStates.DEATH;
             onDeath = true;
+            Player.getInstance().increaseScore(enemyStrategy.getScore());
         }
 
 

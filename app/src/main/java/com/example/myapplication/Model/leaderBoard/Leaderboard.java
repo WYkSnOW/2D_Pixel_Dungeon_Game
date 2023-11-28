@@ -218,5 +218,36 @@ public class Leaderboard {
         }
     }
 
+    public void drawLeaderBoardInGame(Canvas c, PointF currentBoardPos, float scale) {
+        paint1.setTextSize(35);
+        paint1.setColor(Color.WHITE);
+
+        boldPaint.setTextSize(20);
+        boldPaint.setColor(Color.BLACK);
+        Typeface boldTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
+        boldPaint.setTypeface(boldTypeface);
+
+        blackPaint.setTextSize(20);
+        blackPaint.setColor(Color.BLACK);
+
+        Score scoreInGame = Player.getInstance().sumbitScore();
+        float currentScoreX = currentBoardPos.x + (120 * scale);
+
+        c.drawText(
+                "" + scoreInGame.getScore(),
+                currentScoreX,
+                currentBoardPos.y + (164 * scale),
+                boldPaint);
+        c.drawText(
+                "" + Player.getInstance().getGameTime() + "seconds",
+                currentScoreX,
+                currentBoardPos.y + (176 * scale),
+                boldPaint);
+        c.drawText(scoreInGame.getDate(),
+                currentScoreX,
+                currentBoardPos.y + (188 * scale),
+                boldPaint);
+    }
+
 
 }

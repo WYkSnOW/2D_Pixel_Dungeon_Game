@@ -190,4 +190,9 @@ public final class GameConstants {
 
         //public static final int
     }
+
+    public static final class Words {
+        public static final String WORDS_RESOURCE
+                = "0123456789abcdefghijklnmopqrstuvwxyz/:.";
+    }
 }

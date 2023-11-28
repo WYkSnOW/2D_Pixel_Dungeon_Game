@@ -84,7 +84,6 @@ public class Player extends Character {
         updatePlayerAnim();
         //}
         updateGameTime();
-        updateGameScore();
         updateAtkBox();
 
 
@@ -124,6 +123,7 @@ public class Player extends Character {
     private void resetPlayer() {
         initializeGameTime();
         setDifficulty(difficulty);
+        currentScore = 20;
         winTheGame = false;
         baseSpeed = 300;
         attacking = false;
@@ -185,6 +185,9 @@ public class Player extends Character {
         long now = System.currentTimeMillis();
         if (now - lastUpdate >= 1000) { //increase gameTime every 100 milli second(1 second)
             gameTime++;
+            if (gameTime <= 20) {
+                currentScore--;
+            }
             lastUpdate += 1000;
         }
     }
@@ -226,6 +229,10 @@ public class Player extends Character {
 
     }
 
+
+    public int getGameTime() {
+        return gameTime;
+    }
     public String getPlayerName() {
         return playerName;
     }
@@ -503,4 +510,7 @@ public class Player extends Character {
         return true;
     }
 
+    public void increaseScore(int score) {
+        this.currentScore += score;
+    }
 }
