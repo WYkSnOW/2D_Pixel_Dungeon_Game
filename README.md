@@ -134,24 +134,6 @@ Each has unique attributes and special abilities:
 
 ---
 
-## 📂 Project Structure
-
-```
-.
-├── MainManager
-├── Player (Singleton)
-│   └── PlayerCharStrategy (Strategy Pattern)
-├── EnemyFactory (Factory Method)
-├── PlayerDecorator (Decorator Pattern)
-├── CollisionDetector (Observer Pattern)
-├── ItemSystem
-├── ScoreManager
-├── UI/UX Components
-└── system_design.png  ← Class diagram
-```
-
----
-
 ## 📌 Gameplay Summary
 
 Navigate a procedurally generated dungeon filled with monsters and collectibles. Survive and reach the exit before the timer runs out. Build score through kills and efficient navigation. Every decision and power-up matters.
